@@ -1,0 +1,202 @@
+{
+  "battery_version": "1.0",
+  "title": "Decision Prover — Evaluation Battery",
+  "note_to_candidate": "This file is the input to your system. For each decision, your system must emit a verdict (SUPPORTED | REFUTED | UNDECIDABLE) together with an auditable derivation, the binding constraints it checked, the load-bearing assumptions it relied on, and an attempted refutation. Do NOT hardcode to these items — we will also run held-out decisions you have not seen. All monetary values are USD. 'mo' = per month.",
+
+  "verdict_definitions": {
+    "SUPPORTED": "There exists a valid derivation, from the stated facts and assumptions, showing the decision satisfies every hard constraint AND meets its stated objective. No hard constraint is violated under the decision's own stated assumptions.",
+    "REFUTED": "The decision provably violates at least one hard constraint, OR its negation is provable (an available alternative strictly dominates it on the stated objective), given the facts and assumptions.",
+    "UNDECIDABLE": "The verdict depends on a load-bearing assumption whose truth value is NOT pinned down by the stated facts — the decision is SUPPORTED under one reading of that assumption and REFUTED under another. The honest output names the pivotal assumption (and, ideally, the threshold at which the verdict flips) and declines to assert a proof.",
+    "precedence_rule": "A hard-constraint violation REFUTES a decision regardless of how attractive its projected returns are. Check feasibility before optimality."
+  },
+
+  "schema": {
+    "company": "id, name, sector, facts{key:{value,unit,note}}, constraints[{id,kind:'hard',statement,semi_formal,note}]",
+    "decision": "id, company, proposal(prose), action(structured), objective(what 'good' means here), stated_assumptions[{id,statement,status:'given'|'projected'}]",
+    "expected_output_per_decision": "classification, derivation[ordered steps: {rule, inputs, result}], binding_constraints[{id, pass|fail, why}], load_bearing_assumptions[], refutation{attempted, failure_conditions}, for_UNDECIDABLE:{pivotal_assumption, flip_threshold}"
+  },
+
+  "companies": [
+    {
+      "id": "lumen",
+      "name": "Lumen Labs",
+      "sector": "B2B SaaS (analytics)",
+      "facts": {
+        "mrr": {"value": 420000, "unit": "USD/mo"},
+        "cash_balance": {"value": 3200000, "unit": "USD"},
+        "net_monthly_burn": {"value": 400000, "unit": "USD/mo", "note": "current runway = cash / burn = 8 months"},
+        "headcount": {"value": 45, "unit": "people"},
+        "gross_margin": {"value": 0.80, "unit": "fraction"},
+        "arpu_monthly": {"value": 1400, "unit": "USD/customer/mo"},
+        "customers": {"value": 300, "unit": "customers"},
+        "monthly_churn_rate": {"value": 0.025, "unit": "fraction of MRR/mo"},
+        "monthly_new_bookings_mrr": {"value": 40000, "unit": "USD MRR/mo", "note": "gross new bookings before churn"},
+        "blended_cac": {"value": 12000, "unit": "USD/customer"}
+      },
+      "constraints": [
+        {"id": "L-C1", "kind": "hard", "statement": "Cash balance must never fall below the $500,000 operating reserve.", "semi_formal": "cash_balance(t) >= 500000  for all t", "note": "finance policy"},
+        {"id": "L-C2", "kind": "hard", "statement": "At least 6 months of forward runway must be MAINTAINED at all times.", "semi_formal": "runway_months(t) = cash_balance(t)/net_burn(t) >= 6  for all t", "note": "board mandate; this is a maintained invariant, not a one-time check"},
+        {"id": "L-C3", "kind": "hard", "statement": "Any single new initiative's budget must be <= $1,500,000.", "semi_formal": "initiative_budget <= 1500000"},
+        {"id": "L-C4", "kind": "hard", "statement": "A growth channel may only be scaled if its LTV/CAC >= 3.0.", "semi_formal": "ltv_cac(channel) >= 3.0", "note": "LTV (simple) = arpu_monthly * gross_margin / monthly_churn_rate"}
+      ]
+    },
+    {
+      "id": "harvest",
+      "name": "Harvest Robotics",
+      "sector": "Agricultural hardware",
+      "facts": {
+        "cash_balance": {"value": 6000000, "unit": "USD"},
+        "net_monthly_burn": {"value": 750000, "unit": "USD/mo"},
+        "pilot_revenue_monthly": {"value": 50000, "unit": "USD/mo"},
+        "headcount": {"value": 38, "unit": "people"},
+        "unit_bom_cost": {"value": 4200, "unit": "USD/unit"},
+        "unit_sale_price": {"value": 9000, "unit": "USD/unit"},
+        "unit_gross_margin": {"value": 4800, "unit": "USD/unit", "note": "53% gross margin"},
+        "backlog_units": {"value": 200, "unit": "units", "note": "non-cancellable, 30% deposit already taken; contractually due within 6 months"},
+        "production_capacity": {"value": 25, "unit": "units/mo", "note": "current max output"},
+        "demand_status": {"value": "demand_exceeds_capacity", "unit": "qualitative", "note": "existing backlog plus inbound orders already exceed what the line can build"}
+      },
+      "constraints": [
+        {"id": "H-C1", "kind": "hard", "statement": "Cash balance must never fall below $1,000,000.", "semi_formal": "cash_balance(t) >= 1000000  for all t"},
+        {"id": "H-C3", "kind": "hard", "statement": "Any single new initiative's budget must be <= $2,000,000.", "semi_formal": "initiative_budget <= 2000000"},
+        {"id": "H-C5", "kind": "hard", "statement": "The 200-unit backlog must be delivered within 6 months (penalty clauses on late delivery).", "semi_formal": "cumulative_units_built(by month 6) >= 200", "note": "check whether a decision makes this satisfiable or unsatisfiable"}
+      ]
+    },
+    {
+      "id": "tidewater",
+      "name": "Tidewater Foods",
+      "sector": "Consumer packaged goods (established, profitable)",
+      "facts": {
+        "monthly_revenue": {"value": 5000000, "unit": "USD/mo"},
+        "net_income_monthly": {"value": 400000, "unit": "USD/mo", "note": "company is profitable; runway is not a binding concern"},
+        "cash_balance": {"value": 4000000, "unit": "USD"},
+        "line_A_revenue": {"value": 3000000, "unit": "USD/mo", "note": "premium line"},
+        "line_A_contribution_margin": {"value": 0.40, "unit": "fraction"},
+        "line_B_revenue": {"value": 2000000, "unit": "USD/mo", "note": "value line"},
+        "line_B_contribution_margin": {"value": 0.20, "unit": "fraction"},
+        "current_marketing_spend": {"value": 500000, "unit": "USD/mo", "note": "= 10% of revenue"}
+      },
+      "constraints": [
+        {"id": "T-C6", "kind": "hard", "statement": "Any new SKU must clear a 25% contribution-margin hurdle.", "semi_formal": "new_sku_contribution_margin >= 0.25"},
+        {"id": "T-C3", "kind": "hard", "statement": "Any single new initiative's budget must be <= $3,000,000.", "semi_formal": "initiative_budget <= 3000000"},
+        {"id": "T-C7", "kind": "hard", "statement": "Total marketing spend must be <= 12% of revenue.", "semi_formal": "total_marketing_spend <= 0.12 * monthly_revenue"}
+      ]
+    }
+  ],
+
+  "decisions": [
+    {
+      "id": "D1",
+      "company": "lumen",
+      "proposal": "Hire 5 additional engineers immediately to accelerate the roadmap.",
+      "action": {"type": "hire", "count": 5, "role": "engineer", "fully_loaded_cost_per_year": 200000},
+      "objective": "Increase product velocity while remaining within all hard constraints.",
+      "stated_assumptions": []
+    },
+    {
+      "id": "D2",
+      "company": "lumen",
+      "proposal": "Run a paid-acquisition test with a $300,000 budget. Projected channel CAC is $5,000; acquired customers are projected to behave like the current cohort.",
+      "action": {"type": "channel_test", "budget": 300000, "projected_cac": 5000, "projected_arpu_monthly": 1400},
+      "objective": "Discover a scalable acquisition channel without endangering the balance sheet.",
+      "stated_assumptions": [
+        {"id": "A1", "statement": "Projected CAC for the channel is approximately $5,000.", "status": "projected"},
+        {"id": "A2", "statement": "Acquired customers churn and monetize like the existing cohort.", "status": "projected"}
+      ]
+    },
+    {
+      "id": "D3",
+      "company": "lumen",
+      "proposal": "Acquire a small competitor for $2,400,000 in cash, adding $80,000 of MRR.",
+      "action": {"type": "acquisition", "cash_cost": 2400000, "added_mrr": 80000},
+      "objective": "Grow inorganically.",
+      "stated_assumptions": []
+    },
+    {
+      "id": "D4",
+      "company": "lumen",
+      "proposal": "Raise list prices 15% for NEW customers only (existing customers unchanged).",
+      "action": {"type": "price_change", "scope": "new_customers", "pct_increase": 0.15},
+      "objective": "Improve unit economics on new business.",
+      "stated_assumptions": [
+        {"id": "A1", "statement": "The effect of the price increase on new-customer conversion rate is not measured; no elasticity data is provided.", "status": "given"}
+      ]
+    },
+    {
+      "id": "D5",
+      "company": "harvest",
+      "proposal": "Accept a new 400-unit order, contractually due in 5 months, on top of the existing 200-unit backlog.",
+      "action": {"type": "accept_order", "units": 400, "due_months": 5, "unit_price": 9000},
+      "objective": "Grow revenue (+$3.6M in new bookings).",
+      "stated_assumptions": []
+    },
+    {
+      "id": "D6",
+      "company": "harvest",
+      "proposal": "Invest $1,800,000 in capex to expand production capacity from 25 to 60 units/month, with a 4-month ramp (months 1-4 at 25/mo, months 5-6 at 60/mo).",
+      "action": {"type": "capex_expansion", "cost": 1800000, "capacity_from": 25, "capacity_to": 60, "ramp_months": 4},
+      "objective": "Meet existing demand and contractual delivery obligations.",
+      "stated_assumptions": [
+        {"id": "A1", "statement": "The capacity ramp completes on the stated schedule.", "status": "projected"}
+      ]
+    },
+    {
+      "id": "D7",
+      "company": "harvest",
+      "proposal": "Cut the unit sale price from $9,000 to $6,500 to win a price-sensitive segment. Assume this doubles order volume.",
+      "action": {"type": "price_change", "new_unit_price": 6500, "assumed_volume_multiplier": 2.0},
+      "objective": "Grow revenue and market share.",
+      "stated_assumptions": [
+        {"id": "A1", "statement": "The price cut doubles order volume.", "status": "projected"}
+      ]
+    },
+    {
+      "id": "D8",
+      "company": "tidewater",
+      "proposal": "Launch a new premium SKU at 35% contribution margin. Launch cost $1,500,000; projected incremental revenue $600,000/mo.",
+      "action": {"type": "launch_sku", "launch_cost": 1500000, "projected_monthly_revenue": 600000, "contribution_margin": 0.35},
+      "objective": "Grow premium revenue.",
+      "stated_assumptions": [
+        {"id": "A1", "statement": "The $600,000/mo is incremental; the degree to which it draws sales away from the existing premium Line A is not specified.", "status": "given"}
+      ]
+    },
+    {
+      "id": "D9",
+      "company": "tidewater",
+      "proposal": "Increase Line B marketing spend by $400,000/mo to grow value-segment share.",
+      "action": {"type": "marketing_increase", "added_monthly_spend": 400000, "target": "line_B"},
+      "objective": "Grow value-segment market share.",
+      "stated_assumptions": []
+    },
+    {
+      "id": "D10",
+      "company": "tidewater",
+      "proposal": "Discontinue Line B entirely and reallocate its resources to Line A.",
+      "action": {"type": "discontinue_line", "line": "B", "reallocate_to": "A"},
+      "objective": "Concentrate the business on the higher-margin line.",
+      "stated_assumptions": [
+        {"id": "A1", "statement": "The incremental return Line A would generate from the reallocated resources is not quantified.", "status": "given"}
+      ]
+    },
+    {
+      "id": "D11",
+      "company": "lumen",
+      "proposal": "Invest $200,000 in a customer-success program projected to cut monthly churn from 2.5% to 2.0%.",
+      "action": {"type": "retention_program", "cost": 200000, "churn_from": 0.025, "churn_to": 0.020},
+      "objective": "Improve retention and lifetime value.",
+      "stated_assumptions": [
+        {"id": "A1", "statement": "Comparable customer-success programs at similar-stage companies have reduced churn by 15-25%.", "status": "given"}
+      ]
+    },
+    {
+      "id": "D12",
+      "company": "tidewater",
+      "proposal": "Renegotiate the Line A supplier contract for a 2-percentage-point reduction in Line A COGS, at no cost. The supplier has verbally agreed.",
+      "action": {"type": "supplier_renegotiation", "cost": 0, "line_A_cogs_reduction_pts": 2},
+      "objective": "Improve Line A margin.",
+      "stated_assumptions": [
+        {"id": "A1", "statement": "The supplier has verbally agreed; the deal is not yet signed (execution risk).", "status": "given"}
+      ]
+    }
+  ]
+}

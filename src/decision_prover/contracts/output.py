@@ -48,6 +48,44 @@ class VerificationResult(StrictModel):
     refutation: RefutationResult
     pivotal_assumption: str | None = None
     flip_threshold: Any | None = None
+    supported_if: str | None = None
+    refuted_if: str | None = None
+
+
+class AiIndependentNote(StrictModel):
+    topic: str = Field(min_length=1)
+    note: str = Field(min_length=1)
+
+
+class AiIndependentResult(StrictModel):
+    classification: Classification
+    summary: str = Field(min_length=1)
+    notes: list[AiIndependentNote] = Field(default_factory=list)
+
+
+class ExplainDiagnostics(StrictModel):
+    stage: Literal["success", "provider", "parse"]
+    provider_response_json: dict[str, Any] | None = None
+    response_id: str | None = None
+    response_model: str | None = None
+    provider: str | None = None
+    system_fingerprint: str | None = None
+    finish_reason: str | None = None
+    native_finish_reason: str | None = None
+    usage: dict[str, Any] | None = None
+    openrouter_metadata: dict[str, Any] | None = None
+    http_status: int | None = None
+    parsed_ai_result: AiIndependentResult | None = None
+
+
+class VerificationExplainResponse(StrictModel):
+    result: VerificationResult
+    ai_status: Literal["generated", "error"]
+    comparison: Literal["match", "mismatch", "ai_error"]
+    model: str | None = None
+    ai_result: AiIndependentResult | None = None
+    message: str | None = None
+    diagnostics: ExplainDiagnostics | None = None
 
 
 class OperationStatus(StrictModel):

@@ -127,30 +127,37 @@ The verifier can run against the full battery and produce audit-ready Stage 2 ou
 
 ### Goal
 
-Add limited AI assistance to Stage 2 without giving it authority over truth, premises, or verdicts.
+Add an independent AI second-opinion layer to Stage 2 without giving it authority over truth or the final verdict.
 
 ### Build Scope
 
-- Add an AI-assisted layer for candidate proof drafting, refutation phrasing, and readable summaries.
-- Enforce premise locking so the AI cannot introduce new facts, constraints, or proof steps.
-- Reject any AI-proposed step that cannot be grounded in the normalized input and validated by code.
+- Add an AI layer that sees only the normalized `DecisionContext` and produces its own advisory classification plus short reasoning notes.
+- Keep the deterministic verifier result and the AI result side by side on the explain surface.
+- Report whether the two verdicts match or mismatch, but do not let the AI override the checked result.
+- Keep the current AI response narrow:
+  - `classification`
+  - `summary`
+  - `notes[{topic, note}]`
+- Enforce structured JSON shape for the AI result, but do not treat its reasoning strings as proof-carrying data.
 - Keep the deterministic verifier as the final authority on classification and checked derivation.
 
 ### Runnable Checkpoint
 
-The verifier can run with AI assistance enabled or disabled, and both modes still return the same verified classification and checked reasoning structure.
+The verifier can run with AI assistance enabled or disabled, and both modes still return the same verified classification and checked reasoning structure. With AI enabled, the explain surface also returns an independent advisory AI verdict plus a simple match/mismatch comparison.
 
 ### Battery/Test Gate
 
 - AI-on and AI-off runs match on classification across the full battery.
-- Validation tests prove unsupported AI steps are dropped rather than accepted.
+- Tests confirm the AI sees `DecisionContext` only, not the deterministic verifier result.
+- Match and mismatch cases are both covered with mocked AI outputs.
+- Parse and provider failures surface as `ai_error` without altering the deterministic verifier result.
 - Regression tests confirm the output contract remains unchanged.
 
 ### Exit Criteria
 
-- Stage 2 gains readability help without losing audit integrity.
+- Stage 2 gains a real second opinion without losing audit integrity.
 - The README can clearly defend the code-versus-model boundary.
-- No black-box reasoning path is allowed into the final verdict.
+- No black-box reasoning path is allowed to override the final verdict.
 
 ## Phase 5: Stage 1 Planner And Formalizer
 
@@ -219,7 +226,44 @@ The end-to-end pipeline can take a raw proposal, run the interview, produce a no
 - Missing proof-critical information is surfaced, not patched over.
 - The pipeline is ready for UI integration using real outputs.
 
-## Phase 7: Audit UI And Submission Assembly
+## Phase 7: AI Proof-Gap Audit And Clarification Loop
+
+### Goal
+
+Add a bounded post-verifier AI audit only after Stage 1 and grounding checks exist, so the system can distinguish missing user premises from verifier rule-coverage gaps without turning the model into a second hidden verifier.
+
+### Build Scope
+
+- Review the normalized formal object, deterministic Stage 2 result, and known verifier rule coverage.
+- Emit one advisory audit outcome:
+  - `no_gap_detected`
+  - `clarification_needed`
+  - `rule_coverage_gap`
+- When the outcome is `clarification_needed`, produce concrete follow-up questions tied to specific verification checks that Stage 1 can ask the user.
+- When the outcome is `rule_coverage_gap`, identify the missing supported inference family or checker rather than pretending the user omitted a fact.
+- Keep the audit advisory only:
+  - it may recommend returning to Stage 1
+  - it may not alter the deterministic verdict
+  - it may not invent new premises or new proof steps
+
+### Runnable Checkpoint
+
+The end-to-end pipeline can take a raw proposal, run Stage 1, run deterministic Stage 2, then run the proof-gap audit and return the checked verdict plus either no action, a clarification agenda, or a rule-coverage-gap notice.
+
+### Battery/Test Gate
+
+- Audit tests verify that missing user premises are surfaced as `clarification_needed` with concrete check-linked questions.
+- Coverage-gap tests verify that unsupported reasoning families are surfaced as `rule_coverage_gap` rather than fake clarification requests.
+- Regression tests confirm the audit layer never changes the deterministic Stage 2 classification.
+- Grounding tests confirm the audit layer never invents new facts, constraints, or proof steps.
+
+### Exit Criteria
+
+- AI contributes more than summary text by identifying actionable proof gaps.
+- The system can route unresolved cases either back to Stage 1 or to future verifier work without hiding uncertainty.
+- The model still does not become the final authority on truth or verdicts.
+
+## Phase 8: Audit UI And Submission Assembly
 
 ### Goal
 
@@ -259,7 +303,8 @@ A reviewer can launch the UI, inspect one raw proposal end to end, inspect one b
 1. Finish Phases 1 through 3 before touching Stage 1.
 2. Add Phase 4 only after deterministic Stage 2 behavior is stable.
 3. Build Stage 1 in Phases 5 and 6 against the already-proven verifier boundary.
-4. Leave the UI for Phase 7 so it reflects real artifacts instead of mocked placeholders.
+4. Add the bounded proof-gap audit in Phase 7 only after Stage 1 and grounding checks are real.
+5. Leave the UI for Phase 8 so it reflects real artifacts instead of mocked placeholders.
 
 ## Definition Of Success
 

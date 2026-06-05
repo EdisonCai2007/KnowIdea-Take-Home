@@ -51,7 +51,7 @@ def test_proposals_run_cli_returns_stage1_pending(proposals_path: Path) -> None:
     assert len(payload["proposals"]) == 6
 
 
-def test_verify_run_cli_returns_stage2_pending(battery_path: Path) -> None:
+def test_verify_run_cli_returns_undecidable_payload(battery_path: Path) -> None:
     result = runner.invoke(
         app,
         ["verify", "run", "--input", str(battery_path), "--decision-id", "D1"],
@@ -59,6 +59,8 @@ def test_verify_run_cli_returns_stage2_pending(battery_path: Path) -> None:
 
     assert result.exit_code == 0
     payload = json.loads(result.stdout)
-    assert payload["status"]["state"] == "stage2_pending"
-    assert payload["decision_context"]["id"] == "D1"
-
+    assert payload["classification"] == "UNDECIDABLE"
+    assert payload["derivation"][-1]["rule"] == "check_hire_objective"
+    assert payload["pivotal_assumption"]
+    assert payload["supported_if"]
+    assert payload["refuted_if"]

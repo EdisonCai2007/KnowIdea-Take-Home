@@ -1,0 +1,128 @@
+{
+  "model": "google/gemini-2.5-flash-lite",
+  "temperature": 0,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You annotate already-verified business-decision outputs.\nReturn JSON only. Do not wrap it in markdown.\nYou may explain only what is present in the supplied decision context and verification result.\nNever add a new fact, number, constraint, assumption, rule, verdict, or proof step.\nOnly annotate targets explicitly supplied in the request payload.\nIf a section does not need a note, return an empty list for arrays and null for pivotal_assumption_note.\n"
+    },
+    {
+      "role": "user",
+      "content": "{\n  \"allowed_targets\": {\n    \"assumption_ids\": [],\n    \"constraint_ids\": [\n      \"L-C1\",\n      \"L-C2\",\n      \"L-C3\"\n    ],\n    \"has_pivotal_assumption\": true,\n    \"step_rules\": [\n      \"compute_action_impact\",\n      \"check_cash_reserve_floor\",\n      \"check_runway_floor\",\n      \"check_initiative_budget\",\n      \"check_hire_objective\"\n    ]\n  },\n  \"decision_context\": {\n    \"action\": {\n      \"count\": 5,\n      \"fully_loaded_cost_per_year\": 200000.0,\n      \"role\": \"engineer\",\n      \"type\": \"hire\"\n    },\n    \"company\": {\n      \"constraints\": [\n        {\n          \"id\": \"L-C1\",\n          \"kind\": \"hard\",\n          \"note\": \"finance policy\",\n          \"semi_formal\": \"cash_balance(t) >= 500000  for all t\",\n          \"statement\": \"Cash balance must never fall below the $500,000 operating reserve.\"\n        },\n        {\n          \"id\": \"L-C2\",\n          \"kind\": \"hard\",\n          \"note\": \"board mandate; this is a maintained invariant, not a one-time check\",\n          \"semi_formal\": \"runway_months(t) = cash_balance(t)/net_burn(t) >= 6  for all t\",\n          \"statement\": \"At least 6 months of forward runway must be MAINTAINED at all times.\"\n        },\n        {\n          \"id\": \"L-C3\",\n          \"kind\": \"hard\",\n          \"note\": null,\n          \"semi_formal\": \"initiative_budget <= 1500000\",\n          \"statement\": \"Any single new initiative's budget must be <= $1,500,000.\"\n        },\n        {\n          \"id\": \"L-C4\",\n          \"kind\": \"hard\",\n          \"note\": \"LTV (simple) = arpu_monthly * gross_margin / monthly_churn_rate\",\n          \"semi_formal\": \"ltv_cac(channel) >= 3.0\",\n          \"statement\": \"A growth channel may only be scaled if its LTV/CAC >= 3.0.\"\n        }\n      ],\n      \"facts\": {\n        \"arpu_monthly\": {\n          \"note\": null,\n          \"unit\": \"USD/customer/mo\",\n          \"value\": 1400\n        },\n        \"blended_cac\": {\n          \"note\": null,\n          \"unit\": \"USD/customer\",\n          \"value\": 12000\n        },\n        \"cash_balance\": {\n          \"note\": null,\n          \"unit\": \"USD\",\n          \"value\": 3200000\n        },\n        \"customers\": {\n          \"note\": null,\n          \"unit\": \"customers\",\n          \"value\": 300\n        },\n        \"gross_margin\": {\n          \"note\": null,\n          \"unit\": \"fraction\",\n          \"value\": 0.8\n        },\n        \"headcount\": {\n          \"note\": null,\n          \"unit\": \"people\",\n          \"value\": 45\n        },\n        \"monthly_churn_rate\": {\n          \"note\": null,\n          \"unit\": \"fraction of MRR/mo\",\n          \"value\": 0.025\n        },\n        \"monthly_new_bookings_mrr\": {\n          \"note\": \"gross new bookings before churn\",\n          \"unit\": \"USD MRR/mo\",\n          \"value\": 40000\n        },\n        \"mrr\": {\n          \"note\": null,\n          \"unit\": \"USD/mo\",\n          \"value\": 420000\n        },\n        \"net_monthly_burn\": {\n          \"note\": \"current runway = cash / burn = 8 months\",\n          \"unit\": \"USD/mo\",\n          \"value\": 400000\n        }\n      },\n      \"id\": \"lumen\",\n      \"name\": \"Lumen Labs\",\n      \"sector\": \"B2B SaaS (analytics)\"\n    },\n    \"id\": \"D1\",\n    \"objective\": \"Increase product velocity while remaining within all hard constraints.\",\n    \"proposal\": \"Hire 5 additional engineers immediately to accelerate the roadmap.\",\n    \"stated_assumptions\": []\n  },\n  \"verification_result\": {\n    \"binding_constraints\": [\n      {\n        \"id\": \"L-C1\",\n        \"pass\": true,\n        \"why\": \"post-action cash 3200000 >= reserve floor 500000\"\n      },\n      {\n        \"id\": \"L-C2\",\n        \"pass\": true,\n        \"why\": \"post-action runway 6.6207 months >= floor 6\"\n      },\n      {\n        \"id\": \"L-C3\",\n        \"pass\": true,\n        \"why\": \"initiative budget 1000000 <= cap 1500000\"\n      }\n    ],\n    \"classification\": \"UNDECIDABLE\",\n    \"derivation\": [\n      {\n        \"inputs\": {\n          \"action_type\": \"hire\"\n        },\n        \"result\": {\n          \"cash_outflow\": 0,\n          \"initiative_budget\": 1000000,\n          \"monthly_burn_delta\": 83333.3333\n        },\n        \"rule\": \"compute_action_impact\"\n      },\n      {\n        \"inputs\": {\n          \"cash_outflow\": 0,\n          \"constraint_id\": \"L-C1\",\n          \"current_cash_balance\": 3200000\n        },\n        \"result\": {\n          \"passed\": true,\n          \"post_cash_balance\": 3200000,\n          \"threshold\": 500000\n        },\n        \"rule\": \"check_cash_reserve_floor\"\n      },\n      {\n        \"inputs\": {\n          \"constraint_id\": \"L-C2\",\n          \"post_action_cash_balance\": 3200000,\n          \"post_action_net_monthly_burn\": 483333.3333\n        },\n        \"result\": {\n          \"passed\": true,\n          \"post_action_runway_months\": 6.6207,\n          \"threshold\": 6\n        },\n        \"rule\": \"check_runway_floor\"\n      },\n      {\n        \"inputs\": {\n          \"constraint_id\": \"L-C3\"\n        },\n        \"result\": {\n          \"initiative_budget\": 1000000,\n          \"passed\": true,\n          \"threshold\": 1500000\n        },\n        \"rule\": \"check_initiative_budget\"\n      },\n      {\n        \"inputs\": {\n          \"current_headcount\": 45,\n          \"objective\": \"Increase product velocity while remaining within all hard constraints.\"\n        },\n        \"result\": {\n          \"annual_cost_per_hire\": 200000,\n          \"headcount_added\": 5,\n          \"objective_forced_by_facts\": false\n        },\n        \"rule\": \"check_hire_objective\"\n      }\n    ],\n    \"flip_threshold\": \"Product-velocity improvement threshold is not quantified in the provided facts.\",\n    \"load_bearing_assumptions\": [],\n    \"pivotal_assumption\": \"The five additional engineers materially increase product velocity enough to justify the hire.\",\n    \"refutation\": {\n      \"attempted\": true,\n      \"failure_conditions\": \"objective depends on unquantified engineering productivity and delivery impact\"\n    },\n    \"refuted_if\": \"the added engineering capacity does not produce a material velocity gain\",\n    \"supported_if\": \"the added engineering capacity yields a material product-velocity gain\"\n  }\n}"
+    }
+  ],
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "decision_prover_explanation",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "step_notes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "rule": {
+                  "type": "string",
+                  "enum": [
+                    "compute_action_impact",
+                    "check_cash_reserve_floor",
+                    "check_runway_floor",
+                    "check_initiative_budget",
+                    "check_hire_objective"
+                  ]
+                },
+                "note": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "rule",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "constraint_notes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "L-C1",
+                    "L-C2",
+                    "L-C3"
+                  ]
+                },
+                "note": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "note"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "assumption_notes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": []
+                },
+                "note": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "note"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 0
+          },
+          "pivotal_assumption_note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "refutation_note": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "summary",
+          "step_notes",
+          "constraint_notes",
+          "assumption_notes",
+          "pivotal_assumption_note",
+          "refutation_note"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

@@ -10,7 +10,9 @@ from pydantic import BaseModel
 from .constants import DEFAULT_BATTERY_PATH, DEFAULT_PROPOSALS_PATH
 from .contracts.output import ValidationSummary
 from .fixtures import FixtureLoadError, get_decision_context, load_battery_fixture, load_proposals_fixture
-from .services import build_stage1_pending_response, build_stage2_pending_response
+from .settings import ConfigurationError
+from .services import build_stage1_pending_response
+from .verifier import explain_verification, verify_decision
 
 app = typer.Typer(help="Decision Prover Phase 1 tooling.", no_args_is_help=True)
 fixtures_app = typer.Typer(help="Validate and export fixture data.", no_args_is_help=True)
@@ -39,6 +41,11 @@ def _emit_json(value: Any) -> None:
 
 
 def _exit_with_fixture_error(error: FixtureLoadError) -> None:
+    typer.echo(str(error), err=True)
+    raise typer.Exit(code=1)
+
+
+def _exit_with_configuration_error(error: ConfigurationError) -> None:
     typer.echo(str(error), err=True)
     raise typer.Exit(code=1)
 
@@ -92,14 +99,32 @@ def run_verifier(
     input: Path = typer.Option(..., exists=True, readable=True, dir_okay=False),
     decision_id: str = typer.Option(..., help="Decision id to normalize and return."),
 ) -> None:
-    """Return a normalized decision context with an honest stage2_pending envelope."""
+    """Run the Phase 2 verifier on one normalized decision context."""
     try:
         loaded_battery = load_battery_fixture(input)
         decision_context = get_decision_context(loaded_battery, decision_id)
     except FixtureLoadError as error:
         _exit_with_fixture_error(error)
 
-    _emit_json(build_stage2_pending_response(decision_context))
+    _emit_json(verify_decision(decision_context))
+
+
+@verify_app.command("explain")
+def explain_verifier(
+    input: Path = typer.Option(..., exists=True, readable=True, dir_okay=False),
+    decision_id: str = typer.Option(..., help="Decision id to normalize and explain."),
+) -> None:
+    """Run the verifier and request an independent AI verdict alongside the checked result."""
+    try:
+        loaded_battery = load_battery_fixture(input)
+        decision_context = get_decision_context(loaded_battery, decision_id)
+    except FixtureLoadError as error:
+        _exit_with_fixture_error(error)
+
+    try:
+        _emit_json(explain_verification(decision_context))
+    except ConfigurationError as error:
+        _exit_with_configuration_error(error)
 
 
 @ui_app.command("serve")

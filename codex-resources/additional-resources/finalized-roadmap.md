@@ -58,8 +58,9 @@ The planner should stay flexible on variable names, but narrow on reasoning scop
 
 Stage 2 is hybrid:
 
-- AI helps draft candidate reasoning, proof structure, refutation paths, and readable explanations.
+- AI can produce an independent second-opinion verdict from the normalized decision context and later support bounded audit flows.
 - Code checks the math, constraints, assumptions, and rule validity.
+- After Stage 1 and grounding are complete, AI may also run a bounded proof-gap audit that suggests clarification needs or rule-coverage gaps, but only as an advisory layer.
 
 The key rule is premise locking:
 
@@ -77,7 +78,7 @@ Code remains the final authority on:
 - threshold / flip-point logic for `UNDECIDABLE`
 - whether each derivation step is actually supported
 
-If the AI proposes a proof step that cannot be grounded in the formal object or validated by the rule set, that step is rejected. If no valid proof or refutation remains after checking, the system returns `UNDECIDABLE`.
+For the current Phase 4 second-opinion layer, the AI should see the normalized decision context only and return its own advisory classification plus short reasoning notes. The explain surface should return both the deterministic verifier result and the independent AI result, along with a simple match/mismatch indicator. The AI result remains advisory and never overrides the checked result.
 
 ## Supported Reasoning Scope
 
@@ -150,6 +151,14 @@ Optional AI review can still be used for:
 - readability checks
 - spotting wording inconsistencies for developer review
 
+After Stage 1 and grounding checks are implemented, we may add a bounded proof-gap audit that can classify an unresolved case as:
+
+- `no_gap_detected`
+- `clarification_needed`
+- `rule_coverage_gap`
+
+That audit should stay outside the verdict path. Its job is to help decide whether the next action is to ask the user for a missing premise or extend verifier coverage, not to replace the deterministic verifier.
+
 But those findings should be advisory unless they map to a concrete grounding failure.
 
 ## Output Contract
@@ -219,10 +228,11 @@ Stretch goal status:
    - hard-constraint breakage
    - explicit dominance checks
    - threshold solving for undecidable cases
-5. Add the Stage 2 AI layer for candidate proof drafting and readable explanation, with premise locking and step validation.
+5. Add the Stage 2 AI layer as an independent second-opinion verdict over the normalized decision context, returning its own classification and short reasoning notes beside the deterministic verifier result.
 6. Build Stage 1 planner and formalizer around verifier needs.
 7. Add grounding checks for Stage 1 outputs.
-8. Build the audit UI on top of real outputs, not mocked ones.
+8. Add the bounded AI proof-gap audit after Stage 1 and grounding are real, so unresolved cases can route either to clarification or to verifier-extension work.
+9. Build the audit UI on top of real outputs, not mocked ones.
 
 ## What We Are Explicitly Not Doing in v1
 
@@ -231,7 +241,7 @@ Stretch goal status:
 - letting an LLM own the final verdict
 - letting an LLM invent premises to complete a proof
 - treating the assumption-toggle UI as a required deliverable
-- adding a heavy semantic-drift critic that acts like a second verifier
+- adding a heavy semantic-drift critic that acts like a second verifier or silently overrides the deterministic pipeline
 
 ## Resolved Contradictions and Tensions
 
@@ -257,7 +267,7 @@ Whenever a load-bearing quantity is approximate, we should ask the user to tight
 
 ### Tension 4
 
-The earlier hybrid critic idea is removed from the critical path for v1. Grounding checks stay, but we are not building a complicated semantic-drift judge right now.
+The earlier hybrid critic idea is removed from the critical path for v1. Grounding checks stay, and any later AI proof-gap audit must remain bounded and advisory rather than becoming a complicated semantic-drift judge.
 
 ## Success Criteria
 

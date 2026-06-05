@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -10,8 +10,11 @@ from .. import __version__
 from ..constants import DEFAULT_BATTERY_PATH, DEFAULT_PROPOSALS_PATH
 from ..contracts.battery import DecisionBattery
 from ..contracts.context import DecisionContextList
-from ..fixtures import LoadedBattery, load_battery_fixture, load_proposals_fixture
+from ..contracts.output import VerificationExplainResponse, VerificationResult
+from ..fixtures import FixtureLoadError, LoadedBattery, get_decision_context, load_battery_fixture, load_proposals_fixture
 from ..proposals import ProposalFixture
+from ..settings import ConfigurationError
+from ..verifier import explain_verification, verify_decision
 
 TEMPLATE_DIR = Path(__file__).resolve().parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATE_DIR))
@@ -41,6 +44,27 @@ def create_app(
     @app.get("/api/battery/contexts", response_model=DecisionContextList)
     def get_battery_contexts() -> DecisionContextList:
         return DecisionContextList(root=app.state.loaded_battery.decision_contexts)
+
+    @app.get("/api/verify/{decision_id}", response_model=VerificationResult)
+    def get_verification(decision_id: str) -> VerificationResult:
+        try:
+            decision_context = get_decision_context(app.state.loaded_battery, decision_id)
+        except FixtureLoadError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+        return verify_decision(decision_context)
+
+    @app.get("/api/verify/{decision_id}/explain", response_model=VerificationExplainResponse)
+    def get_verification_explanation(decision_id: str) -> VerificationExplainResponse:
+        try:
+            decision_context = get_decision_context(app.state.loaded_battery, decision_id)
+        except FixtureLoadError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+        try:
+            return explain_verification(decision_context)
+        except ConfigurationError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     @app.get("/api/proposals", response_model=ProposalFixture)
     def get_proposals() -> ProposalFixture:

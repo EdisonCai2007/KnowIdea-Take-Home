@@ -17,20 +17,26 @@ from .battery import (
 )
 from .context import CompanyContext, DecisionContext, DecisionContextList
 from .output import (
+    AiIndependentNote,
+    AiIndependentResult,
     BindingConstraintResult,
     Classification,
     DerivationStep,
+    ExplainDiagnostics,
     OperationStatus,
     ProposalRunResponse,
     RefutationResult,
     Stage2PendingResponse,
     ValidationSummary,
+    VerificationExplainResponse,
     VerificationResult,
 )
 
 __all__ = [
     "ACTION_REGISTRY",
     "ActionPayload",
+    "AiIndependentNote",
+    "AiIndependentResult",
     "BatterySchemaDescription",
     "BindingConstraintResult",
     "Classification",
@@ -43,6 +49,7 @@ __all__ = [
     "DecisionContext",
     "DecisionContextList",
     "DerivationStep",
+    "ExplainDiagnostics",
     "GenericActionPayload",
     "OperationStatus",
     "PriceChangeAction",
@@ -52,7 +59,7 @@ __all__ = [
     "StatedAssumption",
     "ValidationSummary",
     "VerdictDefinitions",
+    "VerificationExplainResponse",
     "VerificationResult",
     "validate_action_payload",
 ]
-

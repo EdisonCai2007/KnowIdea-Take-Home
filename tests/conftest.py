@@ -4,6 +4,8 @@ from pathlib import Path
 
 import pytest
 
+import decision_prover.ai.client as openrouter_client_module
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
 
@@ -28,3 +30,13 @@ def proposals_path() -> Path:
 def battery_data(battery_path: Path) -> dict:
     return json.loads(battery_path.read_text())
 
+
+@pytest.fixture(autouse=True)
+def block_live_openrouter_calls(monkeypatch: pytest.MonkeyPatch) -> None:
+    def _blocked_httpx_post(*args, **kwargs):
+        raise AssertionError(
+            "Tests must not make live OpenRouter requests. Inject a fake client or monkeypatch"
+            " OpenRouterClient for explain-path tests."
+        )
+
+    monkeypatch.setattr(openrouter_client_module.httpx, "post", _blocked_httpx_post)

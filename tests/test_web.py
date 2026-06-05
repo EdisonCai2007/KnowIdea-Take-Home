@@ -25,6 +25,17 @@ def test_web_health_and_data_endpoints(battery_path: Path, proposals_path: Path)
     assert contexts.status_code == 200
     assert len(contexts.json()) == 12
 
+    supported_verification = client.get("/api/verify/D2")
+    assert supported_verification.status_code == 200
+    assert supported_verification.json()["classification"] == "SUPPORTED"
+
+    undecidable_verification = client.get("/api/verify/D1")
+    assert undecidable_verification.status_code == 200
+    assert undecidable_verification.json()["classification"] == "UNDECIDABLE"
+    assert undecidable_verification.json()["pivotal_assumption"]
+    assert undecidable_verification.json()["supported_if"]
+    assert undecidable_verification.json()["refuted_if"]
+
     proposals = client.get("/api/proposals")
     assert proposals.status_code == 200
     assert len(proposals.json()["proposals"]) == 6

@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 
-from ..proposals import ProposalPrompt
-from .battery import StatedAssumption
+from .battery import DecisionBattery, StatedAssumption
 from .context import DecisionContext
 
 
@@ -89,13 +88,94 @@ class VerificationExplainResponse(StrictModel):
 
 
 class OperationStatus(StrictModel):
-    state: Literal["stage1_pending", "stage2_pending"]
+    state: Literal["stage1_complete", "stage1_pending", "stage2_pending"]
     message: str = Field(min_length=1)
 
 
-class ProposalRunResponse(StrictModel):
+class Stage1Gap(StrictModel):
+    id: str = Field(min_length=1)
+    category: Literal[
+        "action_details",
+        "company_fact",
+        "company_metadata",
+        "hard_constraint",
+        "objective",
+        "scope",
+    ]
+    field: str = Field(min_length=1)
+    verification_check: str = Field(min_length=1)
+    reason: str = Field(min_length=1)
+
+
+class Stage1Question(StrictModel):
+    id: str = Field(min_length=1)
+    field: str = Field(min_length=1)
+    question: str = Field(min_length=1)
+    verification_check: str = Field(min_length=1)
+    rationale: str = Field(min_length=1)
+
+
+class Stage1TranscriptTurn(StrictModel):
+    speaker: Literal["assistant", "user"]
+    kind: Literal["answer", "formalization", "note", "proposal", "question"]
+    text: str = Field(min_length=1)
+    question_id: str | None = None
+
+
+class ClarificationNeededOutcome(StrictModel):
+    outcome: Literal["clarification_needed"]
+    proposal_id: str = Field(min_length=1)
+    proposal: str = Field(min_length=1)
+    scope_status: Literal["supported_family", "unsupported_family", "ambiguous_family"]
+    action_type: str | None = None
+    objective: str | None = None
+    blocking_fields: list[str] = Field(default_factory=list)
+    gaps: list[Stage1Gap] = Field(default_factory=list)
+    questions: list[Stage1Question] = Field(default_factory=list)
+    ignored_details: list[str] = Field(default_factory=list)
+    transcript: list[Stage1TranscriptTurn] = Field(default_factory=list)
+
+
+class GroundingReportEntry(StrictModel):
+    field: str = Field(min_length=1)
+    source_type: Literal["proposal", "answer"]
+    source_quote: str = Field(min_length=1)
+    source_locator: str = Field(min_length=1)
+
+
+class GroundingReport(StrictModel):
+    entries: list[GroundingReportEntry] = Field(default_factory=list)
+
+
+class FormalizedOutcome(StrictModel):
+    outcome: Literal["formalized"]
+    proposal_id: str = Field(min_length=1)
+    proposal: str = Field(min_length=1)
+    battery_document: DecisionBattery
+    primary_decision_id: str = Field(min_length=1)
+    grounding_report: GroundingReport
+    ignored_details: list[str] = Field(default_factory=list)
+    transcript: list[Stage1TranscriptTurn] = Field(default_factory=list)
+
+
+Stage1Outcome = Annotated[
+    ClarificationNeededOutcome | FormalizedOutcome,
+    Field(discriminator="outcome"),
+]
+
+
+class Stage1RunRequest(StrictModel):
+    proposal_ids: list[str] = Field(default_factory=list)
+    answers: dict[str, dict[str, str]] = Field(default_factory=dict)
+
+
+class Stage1RunResponse(StrictModel):
     status: OperationStatus
-    proposals: list[ProposalPrompt] = Field(default_factory=list)
+    title: str = Field(min_length=1)
+    results: list[Stage1Outcome] = Field(default_factory=list)
+
+
+ProposalRunResponse = Stage1RunResponse
 
 
 class Stage2PendingResponse(StrictModel):

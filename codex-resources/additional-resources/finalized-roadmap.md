@@ -14,6 +14,28 @@ Build a two-stage Decision Prover that:
 - returns `SUPPORTED`, `REFUTED`, or `UNDECIDABLE`
 - shows an auditable derivation a skeptic can inspect
 
+## Product Workflow Decision
+
+V1 should be a single-company workflow.
+
+The product flow should be:
+
+1. the user lands on a simple intake page
+2. the user enters lightweight company context such as company name, sector, and optionally a short description
+3. the user enters a proposed business decision for that company
+4. Stage 1 interviews for only the missing proof-bearing facts, constraints, objectives, and assumptions needed to formalize that proposal
+5. Stage 2 verifies the resulting formal object and returns an auditable verdict
+
+Important boundary:
+
+- the initial company-intake step is session framing, not proof-bearing formalization by itself
+- company name and sector may be collected before the proposal, even when they are not yet part of the verifier input
+- once a proposal is entered, Stage 1 questioning must still stay verifier-driven and may only ask for information that unlocks a concrete check
+
+This means the user works inside one active company context at a time. V1 should not support multiple simultaneous company contexts in one live workflow, even though fixture files such as [decision_battery.json](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/codex-resources/original-project-specs/decision_battery.json) can contain multiple companies for evaluation purposes.
+
+If we later want multi-company support, the preferred extension is multiple separate company workspaces or chats, not one mixed shared context.
+
 ## Non-Negotiable Rules
 
 1. The public product stays a two-stage system:
@@ -37,7 +59,7 @@ Build a two-stage Decision Prover that:
 
 ### Stage 1: Interview and Formalize
 
-Stage 1 is LLM-led. Its job is to turn a natural-language proposal into a structured decision object without hallucinating facts.
+Stage 1 is LLM-led. Its job is to turn a natural-language proposal inside one active company workspace into a structured decision object without hallucinating facts.
 
 Internal responsibilities:
 
@@ -115,6 +137,11 @@ Bad reasons to ask:
 - broad brainstorming
 - collecting non-load-bearing context
 - forcing the proposal into an unnecessary taxonomy
+
+Exception:
+
+- the product may collect lightweight company-identity fields before the proposal starts, because that is part of session setup rather than proof elicitation
+- after the proposal starts, non-load-bearing discovery should stop and Stage 1 should only ask verifier-relevant questions
 
 Question style should be explicit about why the answer is needed, for example:
 
@@ -203,8 +230,16 @@ We should keep the original spec artifacts in the test loop:
 
 The UI should stay plain and audit-first.
 
+The UI should also reflect the approved single-company workflow:
+
+- start with a landing page that creates one active company workspace
+- show the active company context at the top of the working view
+- let the user submit one proposal into that company context and continue the clarification flow from there
+- defer multi-company switching or multi-chat management to a later version
+
 Required views for v1:
 
+- company intake / company summary
 - interview transcript
 - missing-information trace or gap list
 - formal object

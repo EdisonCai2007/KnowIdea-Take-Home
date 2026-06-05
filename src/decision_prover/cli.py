@@ -6,12 +6,14 @@ from typing import Any
 
 import typer
 from pydantic import BaseModel
+from pydantic import ValidationError
 
 from .constants import DEFAULT_BATTERY_PATH, DEFAULT_PROPOSALS_PATH
-from .contracts.output import ValidationSummary
+from .contracts.output import Stage1RunRequest, ValidationSummary
 from .fixtures import FixtureLoadError, get_decision_context, load_battery_fixture, load_proposals_fixture
 from .settings import ConfigurationError
-from .services import build_stage1_pending_response
+from .services import build_stage1_run_response
+from .stage1 import Stage1ExecutionError, Stage1InputError
 from .verifier import explain_verification, verify_decision
 
 app = typer.Typer(help="Decision Prover Phase 1 tooling.", no_args_is_help=True)
@@ -50,6 +52,28 @@ def _exit_with_configuration_error(error: ConfigurationError) -> None:
     raise typer.Exit(code=1)
 
 
+def _exit_with_stage1_input_error(error: Stage1InputError | ValidationError) -> None:
+    typer.echo(str(error), err=True)
+    raise typer.Exit(code=1)
+
+
+def _load_stage1_request(
+    proposal_ids: list[str],
+    answers_path: Path | None,
+) -> Stage1RunRequest:
+    answers_payload: dict[str, Any] = {}
+    if answers_path is not None:
+        raw = json.loads(answers_path.read_text())
+        if isinstance(raw, dict) and "answers" in raw:
+            answers_payload = raw["answers"]
+        else:
+            answers_payload = raw
+    return Stage1RunRequest(
+        proposal_ids=proposal_ids,
+        answers=answers_payload,
+    )
+
+
 @fixtures_app.command("validate")
 def validate_fixture(input: Path = typer.Option(..., exists=True, readable=True, dir_okay=False)) -> None:
     """Validate the battery fixture and print a concise JSON summary."""
@@ -84,14 +108,37 @@ def export_fixture(
 
 
 @proposals_app.command("run")
-def run_proposals(input: Path = typer.Option(..., exists=True, readable=True, dir_okay=False)) -> None:
-    """Parse proposal markdown and return a stage1_pending envelope."""
+def run_proposals(
+    input: Path = typer.Option(..., exists=True, readable=True, dir_okay=False),
+    proposal_id: list[str] = typer.Option(
+        None,
+        "--proposal-id",
+        help="Limit Stage 1 execution to one or more proposal ids.",
+    ),
+    answers: Path | None = typer.Option(
+        None,
+        exists=True,
+        readable=True,
+        dir_okay=False,
+        help="Optional JSON file mapping proposal ids to question answers.",
+    ),
+) -> None:
+    """Run Stage 1 planning and formalization on raw proposal markdown."""
     try:
         proposal_fixture = load_proposals_fixture(input)
     except FixtureLoadError as error:
         _exit_with_fixture_error(error)
 
-    _emit_json(build_stage1_pending_response(proposal_fixture))
+    try:
+        stage1_request = _load_stage1_request(proposal_id or [], answers)
+        _emit_json(build_stage1_run_response(proposal_fixture, stage1_request))
+    except ConfigurationError as error:
+        _exit_with_configuration_error(error)
+    except Stage1ExecutionError as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(code=1)
+    except (Stage1InputError, ValidationError, json.JSONDecodeError) as error:
+        _exit_with_stage1_input_error(error)
 
 
 @verify_app.command("run")

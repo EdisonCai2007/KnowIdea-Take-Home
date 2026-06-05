@@ -3,15 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Decision Prover Fixture Explorer</title>
+    <title>Decision Prover Phase 5 Workspace</title>
     <style>
       :root {
-        --bg: #f4efe6;
-        --card: rgba(255, 251, 245, 0.82);
-        --ink: #1f2a30;
-        --muted: #57656d;
-        --border: rgba(31, 42, 48, 0.12);
-        --accent: #0e7a6d;
+        --bg: #f8f1e5;
+        --paper: rgba(255, 252, 247, 0.94);
+        --panel: rgba(255, 247, 238, 0.88);
+        --ink: #1f2730;
+        --muted: #606971;
+        --border: rgba(31, 39, 48, 0.14);
+        --accent: #b14d2e;
+        --accent-deep: #7f2d17;
+        --accent-soft: rgba(177, 77, 46, 0.14);
+        --success: #215f4c;
+        --danger: #9a3528;
       }
 
       * {
@@ -24,151 +29,501 @@
         font-family: Georgia, "Times New Roman", serif;
         color: var(--ink);
         background:
-          radial-gradient(circle at top left, rgba(14, 122, 109, 0.16), transparent 28rem),
-          linear-gradient(180deg, #fbf7f0 0%, var(--bg) 100%);
+          radial-gradient(circle at top left, rgba(177, 77, 46, 0.18), transparent 26rem),
+          radial-gradient(circle at bottom right, rgba(33, 95, 76, 0.12), transparent 24rem),
+          linear-gradient(180deg, #fff9f2 0%, var(--bg) 100%);
       }
 
       main {
-        width: min(72rem, calc(100vw - 2rem));
+        width: min(74rem, calc(100vw - 2rem));
         margin: 0 auto;
-        padding: 2rem 0 3rem;
+        padding: 2rem 0 3.5rem;
       }
 
-      header {
-        padding: 1rem 0 2rem;
+      .hero {
+        display: grid;
+        gap: 1.5rem;
+        padding: 1.5rem 0 2rem;
       }
 
-      h1,
-      h2,
-      h3 {
+      h1, h2, h3, p {
+        margin: 0;
+      }
+
+      h1, h2, h3 {
         margin: 0;
         font-weight: 600;
       }
 
       h1 {
-        font-size: clamp(2rem, 4vw, 3rem);
+        font-size: clamp(2.4rem, 5vw, 4rem);
         letter-spacing: -0.04em;
+        max-width: 11ch;
       }
 
       p,
-      li {
-        line-height: 1.5;
+      label,
+      button,
+      input,
+      textarea {
+        line-height: 1.45;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        width: fit-content;
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-deep);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
       .lede {
-        max-width: 48rem;
-        margin-top: 0.75rem;
+        max-width: 40rem;
+        margin-top: 0.8rem;
         color: var(--muted);
+        font-size: 1.05rem;
       }
 
-      .meta,
-      .grid {
+      .hero-grid,
+      .workspace-grid,
+      .summary-grid {
         display: grid;
         gap: 1rem;
       }
 
-      .meta {
-        grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-        margin-top: 1.5rem;
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
+        align-items: start;
       }
 
-      .grid {
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-        margin-top: 1.5rem;
+      .workspace-grid {
+        grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+        margin-top: 2rem;
+        align-items: start;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+        margin-top: 1rem;
       }
 
       .card {
-        padding: 1rem 1.1rem;
+        padding: 1.2rem 1.25rem;
         border: 1px solid var(--border);
-        border-radius: 1rem;
-        background: var(--card);
-        box-shadow: 0 20px 60px rgba(31, 42, 48, 0.06);
-        backdrop-filter: blur(6px);
+        border-radius: 1.15rem;
+        background: var(--paper);
+        box-shadow: 0 24px 60px rgba(31, 39, 48, 0.08);
+        backdrop-filter: blur(8px);
+      }
+
+      .feature-list,
+      .meta-list {
+        margin: 0;
+        padding-left: 1.1rem;
+        color: var(--muted);
+      }
+
+      .feature-list li + li,
+      .meta-list li + li {
+        margin-top: 0.45rem;
       }
 
       .label {
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.35rem;
         font-size: 0.85rem;
         color: var(--muted);
         text-transform: uppercase;
         letter-spacing: 0.08em;
       }
 
-      .value {
-        font-size: 1.1rem;
+      .value,
+      .summary-value {
+        font-size: 1.05rem;
       }
 
-      ul {
-        padding-left: 1.1rem;
-        margin: 0.75rem 0 0;
+      .muted {
+        color: var(--muted);
       }
 
-      code {
-        font-family: "SFMono-Regular", Menlo, monospace;
-        font-size: 0.92em;
-        color: var(--accent);
+      .workspace-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: rgba(33, 95, 76, 0.12);
+        color: var(--success);
+      }
+
+      .stack {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .workspace-title {
+        max-width: 18ch;
+      }
+
+      .support-copy {
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      form {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .field-grid {
+        display: grid;
+        gap: 0.9rem;
+        grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      }
+
+      .field {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .field span {
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 0.8rem 0.9rem;
+        border-radius: 0.9rem;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--ink);
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 10rem;
+        resize: vertical;
+      }
+
+      input[type="text"]:focus,
+      textarea:focus {
+        outline: 2px solid rgba(177, 77, 46, 0.22);
+        border-color: rgba(177, 77, 46, 0.5);
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      button {
+        padding: 0.72rem 1.05rem;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+      }
+
+      button:hover:not(:disabled) {
+        transform: translateY(-1px);
+        background: var(--accent-deep);
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.56;
+      }
+
+      .button-secondary {
+        background: transparent;
+        color: var(--accent-deep);
+        border-color: rgba(177, 77, 46, 0.28);
+      }
+
+      .workspace-card {
+        background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(255, 245, 236, 0.92));
+      }
+
+      .proposal-shell {
+        border-style: dashed;
+        background: linear-gradient(180deg, rgba(255, 250, 245, 0.95), rgba(252, 242, 234, 0.9));
+      }
+
+      .proposal-note {
+        margin-top: 0.75rem;
+        padding: 0.85rem 0.95rem;
+        border-radius: 0.9rem;
+        background: rgba(177, 77, 46, 0.08);
+        color: var(--accent-deep);
+      }
+
+      .empty-state {
+        background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(255, 246, 237, 0.92));
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .form-message {
+        min-height: 1.25rem;
+        color: var(--danger);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 860px) {
+        .hero-grid,
+        .workspace-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .workspace-head {
+          align-items: start;
+          flex-direction: column;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <header>
-        <h1>Decision Prover</h1>
-        <p class="lede">
-          Phase 1 fixture explorer for the canonical battery and proposal inputs. This view is
-          audit-first: it shows what was imported, how many normalized decision contexts were
-          produced, and which source files the app is reading.
-        </p>
-      </header>
-
-      <section class="meta">
-        <article class="card">
-          <div class="label">Battery Source</div>
-          <div class="value"><code>{{ battery_input }}</code></div>
-        </article>
-        <article class="card">
-          <div class="label">Proposal Source</div>
-          <div class="value"><code>{{ proposal_input }}</code></div>
-        </article>
-        <article class="card">
-          <div class="label">Battery Version</div>
-          <div class="value">{{ battery.battery_version }}</div>
-        </article>
-        <article class="card">
-          <div class="label">Normalized Contexts</div>
-          <div class="value">{{ decision_contexts|length }}</div>
-        </article>
+      <section class="hero">
+        <span class="eyebrow">Phase 5 · Current Phases Roadmap</span>
+        <div class="hero-grid">
+          <div>
+            <h1>Decision Prover starts with one company workspace.</h1>
+            <p class="lede">
+              This phase sets the product shell around one active company context before the
+              proposal interview begins. Company identity is captured here, while proof-bearing
+              facts and verification logic stay downstream.
+            </p>
+          </div>
+          <article class="card">
+            <div class="label">This Phase Adds</div>
+            <ul class="feature-list">
+              <li>One active company workspace in app memory</li>
+              <li>Lightweight company intake before proposal entry</li>
+              <li>A proposal surface scoped to that company</li>
+              <li>No multi-company switching in v1</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
-      <section class="grid">
-        <article class="card">
-          <h2>Companies</h2>
-          <ul>
-            {% for company in battery.companies %}
-            <li>{{ company.id }}: {{ company.name }} ({{ company.constraints|length }} constraints)</li>
-            {% endfor %}
-          </ul>
+      {% if workspace.active_company %}
+      <section class="workspace-grid">
+        <article class="card workspace-card">
+          <div class="workspace-head">
+            <div>
+              <div class="label">Active Company Workspace</div>
+              <h2 class="workspace-title">{{ workspace.active_company.name }}</h2>
+            </div>
+            <span class="status-pill">Workspace Active</span>
+          </div>
+          <p class="support-copy">
+            Proposal entry is now scoped to a single company. Edit the company profile here before
+            analysis is introduced in Phase 6.
+          </p>
+          <div class="summary-grid">
+            <div>
+              <div class="label">Company Name</div>
+              <div class="summary-value">{{ workspace.active_company.name }}</div>
+            </div>
+            <div>
+              <div class="label">Sector</div>
+              <div class="summary-value">{{ workspace.active_company.sector }}</div>
+            </div>
+            <div>
+              <div class="label">Description</div>
+              <div class="summary-value">
+                {% if workspace.active_company.description %}
+                {{ workspace.active_company.description }}
+                {% else %}
+                <span class="muted">No short description yet.</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="button-row" style="margin-top: 1rem;">
+            <button type="button" id="edit-company-toggle" class="button-secondary">Edit company</button>
+          </div>
+          <div id="edit-company-panel" class="hidden" style="margin-top: 1rem;">
+            <form id="company-edit-form" novalidate>
+              <div class="field-grid">
+                <label class="field">
+                  <span>Company name</span>
+                  <input
+                    type="text"
+                    name="name"
+                    value="{{ workspace.active_company.name }}"
+                    autocomplete="organization"
+                  >
+                </label>
+                <label class="field">
+                  <span>Sector</span>
+                  <input
+                    type="text"
+                    name="sector"
+                    value="{{ workspace.active_company.sector }}"
+                    autocomplete="organization-title"
+                  >
+                </label>
+              </div>
+              <label class="field">
+                <span>Short description (optional)</span>
+                <textarea name="description" placeholder="Add a short description of the company.">{{ workspace.active_company.description or "" }}</textarea>
+              </label>
+              <div class="button-row">
+                <button type="submit">Save company</button>
+                <button type="button" id="edit-company-cancel" class="button-secondary">Cancel</button>
+              </div>
+              <div class="form-message" id="company-edit-message" aria-live="polite"></div>
+            </form>
+          </div>
+        </article>
+
+        <article class="card proposal-shell">
+          <div class="label">Proposal Entry Surface</div>
+          <h2>Proposal composer for {{ workspace.active_company.name }}</h2>
+          <p class="support-copy">
+            The proposal flow will attach to this company workspace next. For Phase 5, the shell is
+            visible, but analysis remains blocked until the Phase 6 interview is added.
+          </p>
+          <label class="field" style="margin-top: 1rem;">
+            <span>Draft proposal</span>
+            <textarea placeholder="Example: Should {{ workspace.active_company.name }} invest in a new initiative this quarter?"></textarea>
+          </label>
+          <div class="button-row">
+            <button type="button" disabled>Analyze Proposal (Phase 6)</button>
+          </div>
+          <div class="proposal-note">
+            Proposal analysis is intentionally disabled in this phase. No draft is saved yet, and
+            Stage 1 is not invoked from the UI.
+          </div>
+        </article>
+      </section>
+      {% else %}
+      <section class="workspace-grid">
+        <article class="card empty-state">
+          <div class="label">Create Active Workspace</div>
+          <h2>Set up the company context before proposal intake.</h2>
+          <p class="support-copy">
+            The landing flow captures only lightweight company identity. It does not claim to be a
+            formal decision object, and it must exist before proposal analysis can start.
+          </p>
+          <form id="company-create-form" novalidate style="margin-top: 1rem;">
+            <div class="field-grid">
+              <label class="field">
+                <span>Company name</span>
+                <input type="text" name="name" placeholder="Northwind Software" autocomplete="organization">
+              </label>
+              <label class="field">
+                <span>Sector</span>
+                <input type="text" name="sector" placeholder="B2B SaaS" autocomplete="organization-title">
+              </label>
+            </div>
+            <label class="field">
+              <span>Short description (optional)</span>
+              <textarea name="description" placeholder="Two to three sentences on what the company does."></textarea>
+            </label>
+            <div class="button-row">
+              <button type="submit">Create company workspace</button>
+            </div>
+            <div class="form-message" id="company-create-message" aria-live="polite"></div>
+          </form>
         </article>
 
         <article class="card">
-          <h2>Decisions</h2>
-          <ul>
-            {% for decision in battery.decisions %}
-            <li>{{ decision.id }}: {{ decision.action.type }} for {{ decision.company }}</li>
-            {% endfor %}
-          </ul>
-        </article>
-
-        <article class="card">
-          <h2>Proposals</h2>
-          <ul>
-            {% for proposal in proposal_fixture.proposals %}
-            <li>{{ proposal.id }}: {{ proposal.text }}</li>
-            {% endfor %}
+          <div class="label">Why This Gate Exists</div>
+          <ul class="meta-list">
+            <li>Proposal entry stays inside one active company context.</li>
+            <li>Company name and sector are editable before any proposal is submitted.</li>
+            <li>The old phased roadmap is not the workflow source for this UI.</li>
+            <li>Phase 6 will attach the interview-driven proposal flow here.</li>
           </ul>
         </article>
       </section>
+      {% endif %}
     </main>
+
+    <script>
+      function extractErrorMessage(payload) {
+        if (payload && Array.isArray(payload.detail) && payload.detail.length) {
+          return payload.detail.map((entry) => entry.msg).join("; ");
+        }
+        if (payload && payload.detail) {
+          return payload.detail;
+        }
+        return "Company workspace request failed.";
+      }
+
+      function bindWorkspaceForm(formId, messageId) {
+        const form = document.getElementById(formId);
+        if (!form) {
+          return;
+        }
+        const message = document.getElementById(messageId);
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          message.textContent = "";
+          const payload = Object.fromEntries(new FormData(form).entries());
+          try {
+            const response = await fetch("/api/workspace", {
+              method: "PUT",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(payload),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+              message.textContent = extractErrorMessage(data);
+              return;
+            }
+            window.location.reload();
+          } catch (error) {
+            message.textContent = "Company workspace request failed.";
+          }
+        });
+      }
+
+      bindWorkspaceForm("company-create-form", "company-create-message");
+      bindWorkspaceForm("company-edit-form", "company-edit-message");
+
+      const editToggle = document.getElementById("edit-company-toggle");
+      const editPanel = document.getElementById("edit-company-panel");
+      const editCancel = document.getElementById("edit-company-cancel");
+      if (editToggle && editPanel) {
+        editToggle.addEventListener("click", () => {
+          editPanel.classList.remove("hidden");
+        });
+      }
+      if (editCancel && editPanel) {
+        editCancel.addEventListener("click", () => {
+          editPanel.classList.add("hidden");
+          const message = document.getElementById("company-edit-message");
+          if (message) {
+            message.textContent = "";
+          }
+        });
+      }
+    </script>
   </body>
 </html>
-

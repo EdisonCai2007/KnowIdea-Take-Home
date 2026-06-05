@@ -25,7 +25,7 @@ class HireAction(ActionBase):
 
 class ChannelTestAction(ActionBase):
     type: Literal["channel_test"]
-    budget: PositiveNumber = Field(gt=0)
+    budget: PositiveNumber | None = None
     projected_cac: PositiveNumber = Field(gt=0)
     projected_arpu_monthly: PositiveNumber = Field(gt=0)
 
@@ -34,6 +34,13 @@ class AcquisitionAction(ActionBase):
     type: Literal["acquisition"]
     cash_cost: PositiveNumber = Field(gt=0)
     added_mrr: PositiveNumber = Field(gt=0)
+    target: str | None = None
+
+
+class OneTimeSpendAction(ActionBase):
+    type: Literal["one_time_spend"]
+    cash_cost: PositiveNumber = Field(gt=0)
+    label: str = Field(min_length=1)
 
 
 class PriceChangeAction(ActionBase):
@@ -173,6 +180,7 @@ ActionPayload: TypeAlias = (
     HireAction
     | ChannelTestAction
     | AcquisitionAction
+    | OneTimeSpendAction
     | PriceChangeAction
     | AcceptOrderAction
     | CapexExpansionAction
@@ -188,6 +196,7 @@ ACTION_REGISTRY = {
     "hire": HireAction,
     "channel_test": ChannelTestAction,
     "acquisition": AcquisitionAction,
+    "one_time_spend": OneTimeSpendAction,
     "price_change": PriceChangeAction,
     "accept_order": AcceptOrderAction,
     "capex_expansion": CapexExpansionAction,

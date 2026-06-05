@@ -3,6 +3,7 @@ from pydantic import ValidationError
 
 from decision_prover.contracts.actions import GenericActionPayload, PriceChangeAction
 from decision_prover.contracts.battery import CompanyFact, Constraint, Decision, StatedAssumption
+from decision_prover.contracts.workspace import WorkspaceCompanyProfile
 
 
 def _decision_payload(action: dict) -> dict:
@@ -73,6 +74,34 @@ def test_known_action_types_validate_explicitly() -> None:
     assert decision.action.count == 3
 
 
+def test_channel_test_allows_missing_budget() -> None:
+    decision = Decision.model_validate(
+        _decision_payload(
+            {
+                "type": "channel_test",
+                "projected_cac": 400,
+                "projected_arpu_monthly": 80,
+            }
+        )
+    )
+    assert decision.action.type == "channel_test"
+    assert decision.action.budget is None
+
+
+def test_one_time_spend_validates_explicitly() -> None:
+    decision = Decision.model_validate(
+        _decision_payload(
+            {
+                "type": "one_time_spend",
+                "cash_cost": 1_000_000,
+                "label": "brand_marketing_campaign",
+            }
+        )
+    )
+    assert decision.action.type == "one_time_spend"
+    assert decision.action.cash_cost == 1_000_000
+
+
 def test_price_change_accepts_percentage_shape() -> None:
     decision = Decision.model_validate(
         _decision_payload(
@@ -136,3 +165,24 @@ def test_generic_action_requires_valid_extras() -> None:
             _decision_payload({"type": "custom_action", "unsupported": {"bad": {1, 2, 3}}})
         )
 
+
+def test_workspace_company_profile_normalizes_and_validates_text() -> None:
+    profile = WorkspaceCompanyProfile.model_validate(
+        {
+            "name": "  Northwind Software  ",
+            "sector": "  B2B SaaS ",
+            "description": "   ",
+        }
+    )
+    assert profile.name == "Northwind Software"
+    assert profile.sector == "B2B SaaS"
+    assert profile.description is None
+
+    with pytest.raises(ValidationError):
+        WorkspaceCompanyProfile.model_validate(
+            {
+                "name": "   ",
+                "sector": "B2B SaaS",
+                "description": "Optional copy",
+            }
+        )

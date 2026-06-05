@@ -10,10 +10,18 @@ from .. import __version__
 from ..constants import DEFAULT_BATTERY_PATH, DEFAULT_PROPOSALS_PATH
 from ..contracts.battery import DecisionBattery
 from ..contracts.context import DecisionContextList
-from ..contracts.output import VerificationExplainResponse, VerificationResult
+from ..contracts.output import (
+    Stage1RunRequest,
+    Stage1RunResponse,
+    VerificationExplainResponse,
+    VerificationResult,
+)
+from ..contracts.workspace import WorkspaceCompanyProfile, WorkspaceState
 from ..fixtures import FixtureLoadError, LoadedBattery, get_decision_context, load_battery_fixture, load_proposals_fixture
 from ..proposals import ProposalFixture
 from ..settings import ConfigurationError
+from ..stage1 import Stage1ExecutionError, Stage1InputError
+from ..services import build_stage1_run_response
 from ..verifier import explain_verification, verify_decision
 
 TEMPLATE_DIR = Path(__file__).resolve().parent / "templates"
@@ -32,6 +40,7 @@ def create_app(
     app.state.proposal_fixture = proposal_fixture
     app.state.battery_input = str(Path(battery_input).resolve())
     app.state.proposal_input = str(Path(proposal_input).resolve())
+    app.state.workspace = WorkspaceState()
 
     @app.get("/healthz")
     def healthz() -> dict[str, str]:
@@ -70,17 +79,42 @@ def create_app(
     def get_proposals() -> ProposalFixture:
         return app.state.proposal_fixture
 
+    @app.get("/api/workspace", response_model=WorkspaceState)
+    def get_workspace() -> WorkspaceState:
+        return app.state.workspace
+
+    @app.put("/api/workspace", response_model=WorkspaceState)
+    def put_workspace(payload: WorkspaceCompanyProfile) -> WorkspaceState:
+        app.state.workspace = WorkspaceState(active_company=payload)
+        return app.state.workspace
+
+    @app.get("/api/stage1", response_model=Stage1RunResponse)
+    def get_stage1() -> Stage1RunResponse:
+        try:
+            return build_stage1_run_response(app.state.proposal_fixture)
+        except ConfigurationError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        except Stage1ExecutionError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @app.post("/api/stage1", response_model=Stage1RunResponse)
+    def run_stage1(request_body: Stage1RunRequest) -> Stage1RunResponse:
+        try:
+            return build_stage1_run_response(app.state.proposal_fixture, request_body)
+        except ConfigurationError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        except Stage1ExecutionError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+        except Stage1InputError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+
     @app.get("/", response_class=HTMLResponse)
     def index(request: Request) -> HTMLResponse:
         return templates.TemplateResponse(
             request=request,
             name="index.html",
             context={
-                "battery": app.state.loaded_battery.fixture,
-                "battery_input": app.state.battery_input,
-                "proposal_fixture": app.state.proposal_fixture,
-                "proposal_input": app.state.proposal_input,
-                "decision_contexts": app.state.loaded_battery.decision_contexts,
+                "workspace": app.state.workspace,
             },
         )
 

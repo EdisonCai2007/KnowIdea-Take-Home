@@ -828,11 +828,17 @@ def _build_hire_impact(context: DecisionContext) -> ActionImpact:
 
 
 def _build_channel_test_impact(context: DecisionContext) -> ActionImpact:
-    budget = float(getattr(context.action, "budget"))
+    raw_budget = getattr(context.action, "budget", None)
+    budget = 0.0 if raw_budget is None else float(raw_budget)
     return ActionImpact(initiative_budget=budget, cash_outflow=budget)
 
 
 def _build_acquisition_impact(context: DecisionContext) -> ActionImpact:
+    cash_cost = float(getattr(context.action, "cash_cost"))
+    return ActionImpact(initiative_budget=cash_cost, cash_outflow=cash_cost)
+
+
+def _build_one_time_spend_impact(context: DecisionContext) -> ActionImpact:
     cash_cost = float(getattr(context.action, "cash_cost"))
     return ActionImpact(initiative_budget=cash_cost, cash_outflow=cash_cost)
 
@@ -885,6 +891,7 @@ _ACTION_IMPACT_BUILDERS: dict[str, Callable[[DecisionContext], ActionImpact]] = 
     "hire": _build_hire_impact,
     "channel_test": _build_channel_test_impact,
     "acquisition": _build_acquisition_impact,
+    "one_time_spend": _build_one_time_spend_impact,
     "price_change": _build_price_change_impact,
     "accept_order": _build_accept_order_impact,
     "capex_expansion": _build_capex_impact,

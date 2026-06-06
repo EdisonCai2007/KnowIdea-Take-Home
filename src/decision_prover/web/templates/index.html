@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Decision Prover Phase 5 Workspace</title>
+    <title>Decision Prover Phase 6 Workspace</title>
     <style>
       :root {
         --bg: #f8f1e5;
-        --paper: rgba(255, 252, 247, 0.94);
-        --panel: rgba(255, 247, 238, 0.88);
+        --paper: rgba(255, 252, 247, 0.95);
+        --paper-strong: rgba(255, 247, 238, 0.92);
         --ink: #1f2730;
         --muted: #606971;
         --border: rgba(31, 39, 48, 0.14);
@@ -16,6 +16,9 @@
         --accent-deep: #7f2d17;
         --accent-soft: rgba(177, 77, 46, 0.14);
         --success: #215f4c;
+        --success-soft: rgba(33, 95, 76, 0.12);
+        --warning: #8b5e16;
+        --warning-soft: rgba(139, 94, 22, 0.12);
         --danger: #9a3528;
       }
 
@@ -35,15 +38,9 @@
       }
 
       main {
-        width: min(74rem, calc(100vw - 2rem));
+        width: min(76rem, calc(100vw - 2rem));
         margin: 0 auto;
         padding: 2rem 0 3.5rem;
-      }
-
-      .hero {
-        display: grid;
-        gap: 1.5rem;
-        padding: 1.5rem 0 2rem;
       }
 
       h1, h2, h3, p {
@@ -51,7 +48,6 @@
       }
 
       h1, h2, h3 {
-        margin: 0;
         font-weight: 600;
       }
 
@@ -69,46 +65,60 @@
         line-height: 1.45;
       }
 
-      .eyebrow {
+      .hero,
+      .workspace-grid,
+      .summary-grid,
+      .preview-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .hero {
+        gap: 1.5rem;
+        padding: 1.5rem 0 2rem;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .workspace-grid {
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        align-items: start;
+      }
+
+      .summary-grid,
+      .preview-grid {
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+      }
+
+      .eyebrow,
+      .pill {
         display: inline-flex;
         width: fit-content;
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
-        background: var(--accent-soft);
-        color: var(--accent-deep);
         font-size: 0.78rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
       }
 
-      .lede {
-        max-width: 40rem;
-        margin-top: 0.8rem;
-        color: var(--muted);
-        font-size: 1.05rem;
+      .eyebrow {
+        background: var(--accent-soft);
+        color: var(--accent-deep);
       }
 
-      .hero-grid,
-      .workspace-grid,
-      .summary-grid {
-        display: grid;
-        gap: 1rem;
+      .pill {
+        background: var(--success-soft);
+        color: var(--success);
       }
 
-      .hero-grid {
-        grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
-        align-items: start;
-      }
-
-      .workspace-grid {
-        grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
-        margin-top: 2rem;
-        align-items: start;
-      }
-
-      .summary-grid {
-        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-        margin-top: 1rem;
+      .pill.warning {
+        background: var(--warning-soft);
+        color: var(--warning);
       }
 
       .card {
@@ -120,16 +130,8 @@
         backdrop-filter: blur(8px);
       }
 
-      .feature-list,
-      .meta-list {
-        margin: 0;
-        padding-left: 1.1rem;
-        color: var(--muted);
-      }
-
-      .feature-list li + li,
-      .meta-list li + li {
-        margin-top: 0.45rem;
+      .card.feature {
+        background: var(--paper-strong);
       }
 
       .label {
@@ -140,49 +142,24 @@
         letter-spacing: 0.08em;
       }
 
-      .value,
-      .summary-value {
-        font-size: 1.05rem;
-      }
-
+      .lede,
+      .support-copy,
       .muted {
         color: var(--muted);
       }
 
-      .workspace-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-      }
-
-      .status-pill {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.35rem 0.65rem;
-        border-radius: 999px;
-        font-size: 0.78rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        background: rgba(33, 95, 76, 0.12);
-        color: var(--success);
-      }
-
-      .stack {
-        display: grid;
-        gap: 1rem;
-      }
-
-      .workspace-title {
-        max-width: 18ch;
+      .lede {
+        max-width: 40rem;
+        margin-top: 0.8rem;
+        font-size: 1.05rem;
       }
 
       .support-copy {
-        color: var(--muted);
         font-size: 0.96rem;
       }
 
+      .stack,
+      .field,
       form {
         display: grid;
         gap: 0.9rem;
@@ -192,11 +169,6 @@
         display: grid;
         gap: 0.9rem;
         grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-      }
-
-      .field {
-        display: grid;
-        gap: 0.35rem;
       }
 
       .field span {
@@ -210,13 +182,13 @@
         padding: 0.8rem 0.9rem;
         border-radius: 0.9rem;
         border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.94);
+        background: rgba(255, 255, 255, 0.95);
         color: var(--ink);
         font: inherit;
       }
 
       textarea {
-        min-height: 10rem;
+        min-height: 9rem;
         resize: vertical;
       }
 
@@ -260,29 +232,106 @@
         border-color: rgba(177, 77, 46, 0.28);
       }
 
-      .workspace-card {
-        background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(255, 245, 236, 0.92));
+      .button-danger {
+        background: transparent;
+        color: var(--danger);
+        border-color: rgba(154, 53, 40, 0.28);
       }
 
-      .proposal-shell {
-        border-style: dashed;
-        background: linear-gradient(180deg, rgba(255, 250, 245, 0.95), rgba(252, 242, 234, 0.9));
+      .list {
+        margin: 0;
+        padding-left: 1.1rem;
+        color: var(--muted);
       }
 
+      .list li + li {
+        margin-top: 0.45rem;
+      }
+
+      .workspace-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .workspace-title {
+        max-width: 18ch;
+      }
+
+      .locked-note,
       .proposal-note {
         margin-top: 0.75rem;
         padding: 0.85rem 0.95rem;
         border-radius: 0.9rem;
-        background: rgba(177, 77, 46, 0.08);
+        background: var(--accent-soft);
         color: var(--accent-deep);
       }
 
-      .empty-state {
-        background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(255, 246, 237, 0.92));
+      .locked-note {
+        background: var(--warning-soft);
+        color: var(--warning);
       }
 
-      .hidden {
-        display: none;
+      .status-card {
+        background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(255, 245, 236, 0.92));
+      }
+
+      .stage-card {
+        background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(252, 242, 234, 0.9));
+      }
+
+      .transcript-list {
+        display: grid;
+        gap: 0.75rem;
+        list-style: none;
+        margin: 1rem 0 0;
+        padding: 0;
+      }
+
+      .transcript-turn {
+        padding: 0.9rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 0.95rem;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .transcript-turn.assistant {
+        border-left: 4px solid rgba(177, 77, 46, 0.4);
+      }
+
+      .transcript-turn.user {
+        border-left: 4px solid rgba(33, 95, 76, 0.4);
+      }
+
+      .question-list {
+        display: grid;
+        gap: 0.85rem;
+        margin-top: 1rem;
+      }
+
+      .question-card {
+        padding: 0.9rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 0.95rem;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .helper {
+        font-size: 0.86rem;
+        color: var(--muted);
+      }
+
+      .code-block {
+        margin: 0;
+        padding: 0.9rem 1rem;
+        overflow-x: auto;
+        border-radius: 0.95rem;
+        border: 1px solid var(--border);
+        background: rgba(31, 39, 48, 0.04);
+        white-space: pre-wrap;
+        font-family: "SFMono-Regular", Menlo, monospace;
+        font-size: 0.9rem;
       }
 
       .form-message {
@@ -291,39 +340,40 @@
         font-size: 0.9rem;
       }
 
-      @media (max-width: 860px) {
+      @media (max-width: 920px) {
         .hero-grid,
         .workspace-grid {
           grid-template-columns: 1fr;
         }
 
         .workspace-head {
-          align-items: start;
           flex-direction: column;
         }
       }
     </style>
   </head>
   <body>
+    {% set active_session = proposal_session.active_session %}
     <main>
       <section class="hero">
-        <span class="eyebrow">Phase 5 · Current Phases Roadmap</span>
+        <span class="eyebrow">Phase 6 | Current Phases Roadmap</span>
         <div class="hero-grid">
           <div>
-            <h1>Decision Prover starts with one company workspace.</h1>
+            <h1>Proposal intake now runs a live Stage 1 interview.</h1>
             <p class="lede">
-              This phase sets the product shell around one active company context before the
-              proposal interview begins. Company identity is captured here, while proof-bearing
-              facts and verification logic stay downstream.
+              This phase attaches one proposal flow to one active company workspace. The UI sends
+              proposal text into the OpenRouter-backed Stage 1 engine, surfaces business-focused
+              clarification questions inline, and stops once the decision brief is ready to hand
+              off.
             </p>
           </div>
-          <article class="card">
+          <article class="card feature">
             <div class="label">This Phase Adds</div>
-            <ul class="feature-list">
-              <li>One active company workspace in app memory</li>
-              <li>Lightweight company intake before proposal entry</li>
-              <li>A proposal surface scoped to that company</li>
-              <li>No multi-company switching in v1</li>
+            <ul class="list">
+              <li>One live proposal interview per active company workspace</li>
+              <li>AI reasoning over the proposal before asking follow-up questions</li>
+              <li>Inline clarification in plain business language</li>
+              <li>Locked workspace context until the active interview is reset</li>
             </ul>
           </article>
         </div>
@@ -331,30 +381,34 @@
 
       {% if workspace.active_company %}
       <section class="workspace-grid">
-        <article class="card workspace-card">
+        <article class="card status-card">
           <div class="workspace-head">
             <div>
               <div class="label">Active Company Workspace</div>
               <h2 class="workspace-title">{{ workspace.active_company.name }}</h2>
             </div>
-            <span class="status-pill">Workspace Active</span>
+            {% if active_session %}
+            <span class="pill warning">Interview Locked</span>
+            {% else %}
+            <span class="pill">Workspace Ready</span>
+            {% endif %}
           </div>
           <p class="support-copy">
-            Proposal entry is now scoped to a single company. Edit the company profile here before
-            analysis is introduced in Phase 6.
+            Proposal intake is scoped to this company only. Workspace name and sector are treated
+            as pre-grounded identity during Stage 1.
           </p>
-          <div class="summary-grid">
+          <div class="summary-grid" style="margin-top: 1rem;">
             <div>
               <div class="label">Company Name</div>
-              <div class="summary-value">{{ workspace.active_company.name }}</div>
+              <div>{{ workspace.active_company.name }}</div>
             </div>
             <div>
               <div class="label">Sector</div>
-              <div class="summary-value">{{ workspace.active_company.sector }}</div>
+              <div>{{ workspace.active_company.sector }}</div>
             </div>
             <div>
               <div class="label">Description</div>
-              <div class="summary-value">
+              <div>
                 {% if workspace.active_company.description %}
                 {{ workspace.active_company.description }}
                 {% else %}
@@ -363,29 +417,30 @@
               </div>
             </div>
           </div>
+
+          {% if active_session %}
+          <div class="locked-note">
+            The active proposal interview snapshots this company context. Reset the interview before
+            editing the workspace or starting a new proposal.
+          </div>
+          <div class="button-row" style="margin-top: 1rem;">
+            <button type="button" id="proposal-reset-button" class="button-danger">Reset proposal interview</button>
+          </div>
+          <div class="form-message" id="proposal-reset-message" aria-live="polite"></div>
+          {% else %}
           <div class="button-row" style="margin-top: 1rem;">
             <button type="button" id="edit-company-toggle" class="button-secondary">Edit company</button>
           </div>
-          <div id="edit-company-panel" class="hidden" style="margin-top: 1rem;">
+          <div id="edit-company-panel" style="display: none; margin-top: 1rem;">
             <form id="company-edit-form" novalidate>
               <div class="field-grid">
                 <label class="field">
                   <span>Company name</span>
-                  <input
-                    type="text"
-                    name="name"
-                    value="{{ workspace.active_company.name }}"
-                    autocomplete="organization"
-                  >
+                  <input type="text" name="name" value="{{ workspace.active_company.name }}" autocomplete="organization">
                 </label>
                 <label class="field">
                   <span>Sector</span>
-                  <input
-                    type="text"
-                    name="sector"
-                    value="{{ workspace.active_company.sector }}"
-                    autocomplete="organization-title"
-                  >
+                  <input type="text" name="sector" value="{{ workspace.active_company.sector }}" autocomplete="organization-title">
                 </label>
               </div>
               <label class="field">
@@ -399,36 +454,180 @@
               <div class="form-message" id="company-edit-message" aria-live="polite"></div>
             </form>
           </div>
+          {% endif %}
         </article>
 
-        <article class="card proposal-shell">
-          <div class="label">Proposal Entry Surface</div>
-          <h2>Proposal composer for {{ workspace.active_company.name }}</h2>
+        <article class="card stage-card">
+          {% if not active_session %}
+          <div class="label">Proposal Intake</div>
+          <h2>Start a Stage 1 interview for {{ workspace.active_company.name }}</h2>
           <p class="support-copy">
-            The proposal flow will attach to this company workspace next. For Phase 5, the shell is
-            visible, but analysis remains blocked until the Phase 6 interview is added.
+            Submit one proposal. Stage 1 will build a working understanding, ask up to three
+            proof-focused clarification questions at a time, and stop once no more strong proof-critical
+            questions remain or the 3-round clarification limit is reached.
           </p>
-          <label class="field" style="margin-top: 1rem;">
-            <span>Draft proposal</span>
-            <textarea placeholder="Example: Should {{ workspace.active_company.name }} invest in a new initiative this quarter?"></textarea>
-          </label>
-          <div class="button-row">
-            <button type="button" disabled>Analyze Proposal (Phase 6)</button>
-          </div>
+          <form id="proposal-start-form" novalidate style="margin-top: 1rem;">
+            <label class="field">
+              <span>Proposal</span>
+              <textarea
+                name="proposal"
+                placeholder="Example: We want to open a second location this year if the cost and timeline are realistic for our budget."
+              ></textarea>
+            </label>
+            <div class="button-row">
+              <button type="submit">Start Stage 1</button>
+            </div>
+            <div class="form-message" id="proposal-start-message" aria-live="polite"></div>
+          </form>
           <div class="proposal-note">
-            Proposal analysis is intentionally disabled in this phase. No draft is saved yet, and
-            Stage 1 is not invoked from the UI.
+            The workspace description stays display-only in this phase. Only the workspace name,
+            sector, proposal text, and clarification answers shape the Stage 1 decision brief.
           </div>
+          {% elif active_session.result.outcome == "clarification_needed" %}
+          <div class="label">Live Stage 1 Interview</div>
+          <h2>Clarifications for {{ active_session.proposal_id }}</h2>
+          <p class="support-copy">
+            The AI has already built a lightweight decision brief for this proposal. Answer the current
+            clarification questions, which can be up to three strong proof-input questions. You can choose one of the suggested answers or type your own.
+          </p>
+
+          <div class="question-list">
+            <article class="question-card">
+              <div class="label">Current Proposal</div>
+              <p>{{ active_session.proposal }}</p>
+            </article>
+            <article class="question-card">
+              <div class="label">Decision</div>
+              <p>{{ active_session.result.working_context.decision }}</p>
+            </article>
+            <article class="question-card">
+              <div class="label">Objective</div>
+              <p>{{ active_session.result.working_context.objective }}</p>
+            </article>
+            <article class="question-card">
+              <div class="label">What Still Matters</div>
+              <ul class="list">
+                {% for point in active_session.result.working_context.what_still_matters %}
+                <li>{{ point }}</li>
+                {% endfor %}
+              </ul>
+            </article>
+          </div>
+
+          <ol class="transcript-list">
+            {% for turn in active_session.result.transcript %}
+            <li class="transcript-turn {{ turn.speaker }}">
+              <div class="label">{{ turn.speaker }} | {{ turn.kind }}</div>
+              <p>{{ turn.text }}</p>
+            </li>
+            {% endfor %}
+          </ol>
+
+          <div class="stack" style="margin-top: 1rem;">
+            <div>
+              <div class="label">Current Decision Brief</div>
+              <pre class="code-block">{{ active_session.result.working_context.model_dump(mode='json') | tojson(indent=2) }}</pre>
+            </div>
+          </div>
+
+          <form id="proposal-answer-form" novalidate style="margin-top: 1rem;">
+            <div class="label">Current Clarification Batch</div>
+            {% for question in active_session.result.questions %}
+            <div class="question-card" style="margin-top: 1rem;">
+              <label class="field">
+                <span>{{ question.prompt }}</span>
+                <small>{{ question.rationale }}</small>
+                <textarea data-answer-input="{{ question.id }}" name="{{ question.id }}" placeholder="Type your answer here.">{{ active_session.answers.get(question.id, "") }}</textarea>
+              </label>
+              {% if question.suggested_answers %}
+              <div class="button-row">
+                {% for option in question.suggested_answers %}
+                <button
+                  type="button"
+                  class="button-secondary suggestion-button"
+                  data-answer-target="{{ question.id }}"
+                  data-answer-value="{{ option.value }}"
+                >
+                  {{ option.label }}{% if question.recommended_answer_index == loop.index0 %} (Recommended){% endif %}
+                </button>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            {% endfor %}
+            <div class="button-row">
+              <button type="submit">Submit clarification answers</button>
+              <button type="button" id="proposal-skip-button" class="button-secondary">Continue without more clarification</button>
+            </div>
+            <div class="form-message" id="proposal-answer-message" aria-live="polite"></div>
+          </form>
+          {% else %}
+          <div class="label">Stage 1 Ready</div>
+          <h2>{{ active_session.proposal_id }} is ready to hand off</h2>
+          <p class="support-copy">
+            Stage 1 has stopped asking clarification questions. The decision brief and transcript
+            stay attached to this workspace until you reset the proposal session.
+          </p>
+
+          <div class="question-list">
+            <article class="question-card">
+              <div class="label">Current Proposal</div>
+              <p>{{ active_session.proposal }}</p>
+            </article>
+            <article class="question-card">
+              <div class="label">Completion Reason</div>
+              <p>
+                {% if active_session.result.completion_reason == "no_more_questions" %}
+                No additional proof-critical clarification questions remained.
+                {% elif active_session.result.completion_reason == "max_rounds" %}
+                The 3-round clarification limit was reached.
+                {% else %}
+                The user chose to continue without more clarification.
+                {% endif %}
+              </p>
+            </article>
+            <article class="question-card">
+              <div class="label">Readiness Summary</div>
+              <p>{{ active_session.result.readiness_summary }}</p>
+            </article>
+            {% if active_session.result.unresolved_notes %}
+            <article class="question-card">
+              <div class="label">Unresolved Notes</div>
+              <ul class="list">
+                {% for note in active_session.result.unresolved_notes %}
+                <li>{{ note }}</li>
+                {% endfor %}
+              </ul>
+            </article>
+            {% endif %}
+          </div>
+
+          <ol class="transcript-list">
+            {% for turn in active_session.result.transcript %}
+            <li class="transcript-turn {{ turn.speaker }}">
+              <div class="label">{{ turn.speaker }} | {{ turn.kind }}</div>
+              <p>{{ turn.text }}</p>
+            </li>
+            {% endfor %}
+          </ol>
+
+          <div class="stack" style="margin-top: 1rem;">
+            <div>
+              <div class="label">Stage 1 Decision Brief</div>
+              <pre class="code-block">{{ active_session.result.working_context.model_dump(mode='json') | tojson(indent=2) }}</pre>
+            </div>
+          </div>
+          {% endif %}
         </article>
       </section>
       {% else %}
       <section class="workspace-grid">
-        <article class="card empty-state">
+        <article class="card status-card">
           <div class="label">Create Active Workspace</div>
           <h2>Set up the company context before proposal intake.</h2>
           <p class="support-copy">
-            The landing flow captures only lightweight company identity. It does not claim to be a
-            formal decision object, and it must exist before proposal analysis can start.
+            The landing flow captures lightweight company identity only. Proposal submission stays
+            blocked until one active company workspace exists.
           </p>
           <form id="company-create-form" novalidate style="margin-top: 1rem;">
             <div class="field-grid">
@@ -452,13 +651,13 @@
           </form>
         </article>
 
-        <article class="card">
+        <article class="card feature">
           <div class="label">Why This Gate Exists</div>
-          <ul class="meta-list">
-            <li>Proposal entry stays inside one active company context.</li>
-            <li>Company name and sector are editable before any proposal is submitted.</li>
-            <li>The old phased roadmap is not the workflow source for this UI.</li>
-            <li>Phase 6 will attach the interview-driven proposal flow here.</li>
+          <ul class="list">
+            <li>Stage 1 runs inside one active company workspace only.</li>
+            <li>Company name and sector are captured before the proposal loop starts.</li>
+            <li>Live proposal sessions are stored in app memory and survive page reloads.</li>
+            <li>No multi-company navigation or cross-workspace switching is introduced in v1.</li>
           </ul>
         </article>
       </section>
@@ -473,7 +672,31 @@
         if (payload && payload.detail) {
           return payload.detail;
         }
-        return "Company workspace request failed.";
+        return "Request failed.";
+      }
+
+      async function sendJson(url, method, payload, messageElement) {
+        messageElement.textContent = "";
+        try {
+          const options = {
+            method,
+            headers: {"Content-Type": "application/json"},
+          };
+          if (payload !== undefined) {
+            options.body = JSON.stringify(payload);
+          }
+          const response = await fetch(url, options);
+          const data = await response.json();
+          if (!response.ok) {
+            messageElement.textContent = extractErrorMessage(data);
+            return false;
+          }
+          window.location.reload();
+          return true;
+        } catch (error) {
+          messageElement.textContent = "Request failed.";
+          return false;
+        }
       }
 
       function bindWorkspaceForm(formId, messageId) {
@@ -484,46 +707,103 @@
         const message = document.getElementById(messageId);
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
-          message.textContent = "";
           const payload = Object.fromEntries(new FormData(form).entries());
-          try {
-            const response = await fetch("/api/workspace", {
-              method: "PUT",
-              headers: {"Content-Type": "application/json"},
-              body: JSON.stringify(payload),
-            });
-            const data = await response.json();
-            if (!response.ok) {
-              message.textContent = extractErrorMessage(data);
-              return;
-            }
-            window.location.reload();
-          } catch (error) {
-            message.textContent = "Company workspace request failed.";
-          }
+          await sendJson("/api/workspace", "PUT", payload, message);
         });
       }
 
-      bindWorkspaceForm("company-create-form", "company-create-message");
-      bindWorkspaceForm("company-edit-form", "company-edit-message");
+      function bindProposalStartForm() {
+        const form = document.getElementById("proposal-start-form");
+        if (!form) {
+          return;
+        }
+        const message = document.getElementById("proposal-start-message");
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const proposal = String(new FormData(form).get("proposal") || "");
+          await sendJson("/api/workspace/proposal", "POST", {proposal}, message);
+        });
+      }
+
+      function bindProposalAnswerForm() {
+        const form = document.getElementById("proposal-answer-form");
+        if (!form) {
+          return;
+        }
+        const message = document.getElementById("proposal-answer-message");
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const answers = Object.fromEntries(new FormData(form).entries());
+          await sendJson("/api/workspace/proposal/answers", "POST", {answers}, message);
+        });
+      }
+
+      function bindSuggestionButtons() {
+        document.querySelectorAll(".suggestion-button").forEach((button) => {
+          button.addEventListener("click", () => {
+            const target = button.getAttribute("data-answer-target");
+            const value = button.getAttribute("data-answer-value") || "";
+            if (!target) {
+              return;
+            }
+            const input = document.querySelector(`[data-answer-input="${target}"]`);
+            if (input) {
+              input.value = value;
+              input.focus();
+            }
+          });
+        });
+      }
+
+      function bindProposalSkip() {
+        const button = document.getElementById("proposal-skip-button");
+        if (!button) {
+          return;
+        }
+        const message = document.getElementById("proposal-answer-message");
+        button.addEventListener("click", async () => {
+          await sendJson("/api/workspace/proposal/skip", "POST", undefined, message);
+        });
+      }
+
+      function bindProposalReset() {
+        const button = document.getElementById("proposal-reset-button");
+        if (!button) {
+          return;
+        }
+        const message = document.getElementById("proposal-reset-message");
+        button.addEventListener("click", async () => {
+          await sendJson("/api/workspace/proposal", "DELETE", undefined, message);
+        });
+      }
 
       const editToggle = document.getElementById("edit-company-toggle");
       const editPanel = document.getElementById("edit-company-panel");
       const editCancel = document.getElementById("edit-company-cancel");
+
       if (editToggle && editPanel) {
         editToggle.addEventListener("click", () => {
-          editPanel.classList.remove("hidden");
+          editPanel.style.display = "block";
         });
       }
+
       if (editCancel && editPanel) {
         editCancel.addEventListener("click", () => {
-          editPanel.classList.add("hidden");
+          editPanel.style.display = "none";
           const message = document.getElementById("company-edit-message");
           if (message) {
             message.textContent = "";
           }
         });
       }
+
+      bindWorkspaceForm("company-create-form", "company-create-message");
+      bindWorkspaceForm("company-edit-form", "company-edit-message");
+      bindProposalStartForm();
+      bindProposalAnswerForm();
+      bindSuggestionButtons();
+      bindProposalSkip();
+      bindProposalReset();
     </script>
   </body>
 </html>

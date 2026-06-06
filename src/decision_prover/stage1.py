@@ -2,113 +2,29 @@ from __future__ import annotations
 
 import json
 import re
-import unicodedata
 from dataclasses import dataclass
-from functools import lru_cache
-from typing import Any, Literal
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from .constants import DEFAULT_BATTERY_PATH
-from .contracts.actions import validate_action_payload
-from .contracts.battery import Company, CompanyFact, Constraint, Decision, DecisionBattery, StatedAssumption
 from .contracts.output import (
     ClarificationNeededOutcome,
-    FormalizedOutcome,
-    GroundingReport,
-    GroundingReportEntry,
     OperationStatus,
-    Stage1Gap,
+    Stage1CompanyContext,
     Stage1Question,
+    Stage1ReadyOutcome,
     Stage1RunRequest,
     Stage1RunResponse,
+    Stage1SuggestedAnswer,
     Stage1TranscriptTurn,
+    Stage1WorkingContext,
 )
-from .fixtures import load_battery_fixture
-from .proposals import ProposalFixture, ProposalPrompt
+from .contracts.workspace import WorkspaceCompanyProfile
+from .proposals import ProposalFixture
+from .runtime_logging import log_event
 from .settings import ConfigurationError, OpenRouterSettings, get_openrouter_settings
 
-SUPPORTED_ACTIONS: dict[str, dict[str, Any]] = {
-    "hire": {
-        "description": "Hiring additional people.",
-        "required_action_fields": ["count", "role", "fully_loaded_cost_per_year"],
-        "required_fact_keys": ["headcount"],
-        "required_constraint_families": [],
-    },
-    "channel_test": {
-        "description": "Testing or scaling an acquisition or marketing channel.",
-        "required_action_fields": ["projected_cac", "projected_arpu_monthly"],
-        "required_fact_keys": ["gross_margin", "monthly_churn_rate"],
-        "required_constraint_families": ["ltv_cac_minimum"],
-    },
-    "acquisition": {
-        "description": "Acquiring another company or business line.",
-        "required_action_fields": ["cash_cost", "added_mrr"],
-        "required_fact_keys": [],
-        "required_constraint_families": [],
-    },
-    "one_time_spend": {
-        "description": "A one-time spend such as a campaign or initiative.",
-        "required_action_fields": ["cash_cost", "label"],
-        "required_fact_keys": [],
-        "required_constraint_families": [],
-    },
-    "price_change": {
-        "description": "Changing price for a product, plan, or customer segment.",
-        "required_action_fields": [],
-        "required_fact_keys": [],
-        "required_constraint_families": [],
-    },
-    "accept_order": {
-        "description": "Accepting an order with a delivery deadline.",
-        "required_action_fields": ["units", "due_months", "unit_price"],
-        "required_fact_keys": ["production_capacity", "backlog_units"],
-        "required_constraint_families": ["capacity_backlog"],
-    },
-    "capex_expansion": {
-        "description": "A capital expansion that changes production capacity.",
-        "required_action_fields": ["cost", "capacity_from", "capacity_to", "ramp_months"],
-        "required_fact_keys": [],
-        "required_constraint_families": ["capacity_backlog"],
-    },
-    "launch_sku": {
-        "description": "Launching a new SKU or line extension.",
-        "required_action_fields": ["launch_cost", "projected_monthly_revenue", "contribution_margin"],
-        "required_fact_keys": [],
-        "required_constraint_families": ["new_sku_margin"],
-    },
-    "marketing_increase": {
-        "description": "Increasing ongoing marketing spend.",
-        "required_action_fields": ["added_monthly_spend", "target"],
-        "required_fact_keys": ["current_marketing_spend", "monthly_revenue"],
-        "required_constraint_families": ["marketing_spend_cap"],
-    },
-    "discontinue_line": {
-        "description": "Discontinuing one product line and reallocating resources.",
-        "required_action_fields": ["line", "reallocate_to"],
-        "required_fact_keys": ["line_B_revenue", "line_B_contribution_margin"],
-        "required_constraint_families": [],
-    },
-    "retention_program": {
-        "description": "Investing in a program to reduce churn or improve retention.",
-        "required_action_fields": ["cost", "churn_from", "churn_to"],
-        "required_fact_keys": ["gross_margin", "arpu_monthly"],
-        "required_constraint_families": [],
-    },
-    "supplier_renegotiation": {
-        "description": "Renegotiating supplier terms to improve margin.",
-        "required_action_fields": ["cost", "line_A_cogs_reduction_pts"],
-        "required_fact_keys": ["line_A_contribution_margin"],
-        "required_constraint_families": [],
-    },
-}
-
-QUESTION_PRIORITY = {
-    "scope": 0,
-    "company.name": 1,
-    "company.sector": 2,
-    "objective": 3,
-}
+MAX_CLARIFICATION_ROUNDS = 3
 
 
 class Stage1InputError(ValueError):
@@ -116,74 +32,36 @@ class Stage1InputError(ValueError):
 
 
 class Stage1ExecutionError(RuntimeError):
-    """Raised when the Stage 1 AI planner cannot produce a usable result."""
+    """Raised when the Stage 1 AI cannot produce a usable result."""
 
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-class PlannerEvidence(StrictModel):
-    field: str = Field(min_length=1)
-    source_type: Literal["proposal", "answer"]
-    source_quote: str = Field(min_length=1)
-    source_locator: str = Field(min_length=1)
+class InitialContextOutput(StrictModel):
+    working_context: Stage1WorkingContext
 
 
-class PlannerCompany(StrictModel):
-    id: str | None = None
-    name: str | None = None
-    sector: str | None = None
-    facts: dict[str, CompanyFact] = Field(default_factory=dict)
-    constraints: list[Constraint] = Field(default_factory=list)
-
-
-class PlannerDecision(StrictModel):
-    id: str | None = None
-    company: str | None = None
-    proposal: str | None = None
-    action: dict[str, Any] = Field(default_factory=dict)
-    objective: str | None = None
-    stated_assumptions: list[StatedAssumption] = Field(default_factory=list)
-
-
-class PlannerGap(StrictModel):
-    category: Literal[
-        "action_details",
-        "company_fact",
-        "company_metadata",
-        "hard_constraint",
-        "objective",
-        "scope",
-    ]
-    field: str = Field(min_length=1)
-    verification_check: str = Field(min_length=1)
-    reason: str = Field(min_length=1)
-
-
-class PlannerQuestion(StrictModel):
-    field: str = Field(min_length=1)
-    verification_check: str = Field(min_length=1)
-    question: str = Field(min_length=1)
+class ClarificationQuestionOutput(StrictModel):
+    prompt: str = Field(min_length=1)
     rationale: str = Field(min_length=1)
+    suggested_answers: list[Stage1SuggestedAnswer] = Field(min_length=3, max_length=3)
+    recommended_answer_index: int = Field(ge=0, le=2)
 
 
-class Stage1PlannerOutput(StrictModel):
-    scope_status: Literal["supported_family", "unsupported_family", "ambiguous_family"]
-    action_family: str | None = None
-    ignored_details: list[str] = Field(default_factory=list)
-    companies: list[PlannerCompany] = Field(default_factory=list)
-    decisions: list[PlannerDecision] = Field(default_factory=list)
-    gaps: list[PlannerGap] = Field(default_factory=list)
-    questions: list[PlannerQuestion] = Field(default_factory=list)
-    evidence: list[PlannerEvidence] = Field(default_factory=list)
+class ClarificationQuestionsOutput(StrictModel):
+    questions: list[ClarificationQuestionOutput] = Field(default_factory=list, max_length=3)
+
+
+class ContextUpdateOutput(StrictModel):
+    working_context: Stage1WorkingContext
 
 
 @dataclass(slots=True)
 class _PreparedAnswer:
     question_id: str
-    field: str
-    question: str
+    prompt: str
     answer: str
 
 
@@ -212,20 +90,99 @@ def run_stage1(
     settings, resolved_client = _resolve_client(settings=settings, client=client)
     results = [
         _run_single_proposal(
-            proposal_lookup[proposal_id],
-            request.answers.get(proposal_id, {}),
+            proposal_id=proposal_id,
+            proposal_text=proposal_lookup[proposal_id].text,
+            answers=request.answers.get(proposal_id, {}),
+            skip_remaining=request.skip_remaining,
             settings=settings,
             client=resolved_client,
+            workspace_company=None,
         )
         for proposal_id in selected_ids
     ]
+    has_pending = any(result.outcome == "clarification_needed" for result in results)
     return Stage1RunResponse(
         status=OperationStatus(
-            state="stage1_complete",
-            message="Stage 1 AI planning complete.",
+            state="stage1_pending" if has_pending else "stage1_complete",
+            message=(
+                "Stage 1 needs clarification answers for at least one proposal."
+                if has_pending
+                else "Stage 1 AI workflow complete."
+            ),
         ),
         title=proposal_fixture.title,
         results=results,
+    )
+
+
+def run_stage1_for_workspace_proposal(
+    proposal_id: str,
+    proposal_text: str,
+    workspace_company: WorkspaceCompanyProfile,
+    *,
+    settings: OpenRouterSettings | None = None,
+    client: Any | None = None,
+) -> ClarificationNeededOutcome | Stage1ReadyOutcome:
+    settings, resolved_client = _resolve_client(settings=settings, client=client)
+    return _start_stage1_proposal(
+        proposal_id=proposal_id,
+        proposal_text=proposal_text,
+        workspace_company=workspace_company,
+        settings=settings,
+        client=resolved_client,
+    )
+
+
+def continue_stage1_for_workspace_proposal(
+    result: ClarificationNeededOutcome,
+    *,
+    answers: dict[str, str],
+    workspace_company: WorkspaceCompanyProfile,
+    settings: OpenRouterSettings | None = None,
+    client: Any | None = None,
+) -> ClarificationNeededOutcome | Stage1ReadyOutcome:
+    settings, resolved_client = _resolve_client(settings=settings, client=client)
+    return _continue_stage1_proposal(
+        result=result,
+        answers=answers,
+        workspace_company=workspace_company,
+        settings=settings,
+        client=resolved_client,
+    )
+
+
+def skip_stage1_for_workspace_proposal(
+    result: ClarificationNeededOutcome,
+) -> Stage1ReadyOutcome:
+    transcript = list(result.transcript)
+    transcript.append(
+        Stage1TranscriptTurn(
+            speaker="user",
+            kind="continue",
+            text="Continue without answering more clarification questions.",
+        )
+    )
+    readiness_summary = "Stage 1 was marked ready at the user's request with unresolved notes carried forward."
+    unresolved_notes = _dedupe_strings(
+        result.working_context.what_still_matters
+        + [question.rationale for question in result.questions]
+    )
+    transcript.append(
+        Stage1TranscriptTurn(
+            speaker="assistant",
+            kind="ready",
+            text=readiness_summary,
+        )
+    )
+    return Stage1ReadyOutcome(
+        outcome="stage1_ready",
+        proposal_id=result.proposal_id,
+        proposal=result.proposal,
+        working_context=result.working_context,
+        readiness_summary=readiness_summary,
+        completion_reason="user_continue",
+        unresolved_notes=unresolved_notes,
+        transcript=transcript,
     )
 
 
@@ -240,7 +197,7 @@ def _resolve_client(
     settings = settings or get_openrouter_settings(require_api_key=True)
     try:
         from .ai.client import OpenRouterClient
-    except ModuleNotFoundError as exc:  # pragma: no cover - exercised only without dependencies
+    except ModuleNotFoundError as exc:  # pragma: no cover
         raise ConfigurationError(
             "Stage 1 AI requires project dependencies to be installed before OpenRouter can be used."
         ) from exc
@@ -248,763 +205,553 @@ def _resolve_client(
 
 
 def _run_single_proposal(
-    proposal: ProposalPrompt,
-    answers: dict[str, str],
     *,
+    proposal_id: str,
+    proposal_text: str,
+    answers: dict[str, str],
+    skip_remaining: bool,
     settings: OpenRouterSettings | None,
     client: Any,
-) -> ClarificationNeededOutcome | FormalizedOutcome:
+    workspace_company: WorkspaceCompanyProfile | None,
+) -> ClarificationNeededOutcome | Stage1ReadyOutcome:
+    outcome = _start_stage1_proposal(
+        proposal_id=proposal_id,
+        proposal_text=proposal_text,
+        workspace_company=workspace_company,
+        settings=settings,
+        client=client,
+    )
+
+    if answers:
+        if outcome.outcome != "clarification_needed":
+            raise Stage1InputError(
+                f"{proposal_id}: clarification answers were provided but no questions are pending."
+            )
+        outcome = _continue_stage1_proposal(
+            result=outcome,
+            answers=answers,
+            workspace_company=workspace_company,
+            settings=settings,
+            client=client,
+        )
+
+    if skip_remaining and outcome.outcome == "clarification_needed":
+        outcome = skip_stage1_for_workspace_proposal(outcome)
+
+    return outcome
+
+
+def _start_stage1_proposal(
+    *,
+    proposal_id: str,
+    proposal_text: str,
+    workspace_company: WorkspaceCompanyProfile | None,
+    settings: OpenRouterSettings | None,
+    client: Any,
+) -> ClarificationNeededOutcome | Stage1ReadyOutcome:
+    log_event(
+        settings=settings,
+        event="stage1.start",
+        payload={
+            "proposal_id": proposal_id,
+            "phase": "initial_context",
+            "has_workspace_company": workspace_company is not None,
+        },
+        console_message=f"stage1.start proposal_id={proposal_id} phase=initial_context",
+    )
     transcript = [
         Stage1TranscriptTurn(
             speaker="user",
             kind="proposal",
-            text=proposal.text,
+            text=proposal_text,
         )
     ]
-
-    prepared_answers: list[_PreparedAnswer] = []
-    if answers:
-        initial_plan = _plan_proposal(
-            proposal=proposal,
-            prepared_answers=[],
-            settings=settings,
-            client=client,
-        )
-        initial_questions = _questions_by_id(
-            proposal_id=proposal.id,
-            gaps=initial_plan.gaps,
-            questions=initial_plan.questions,
-        )
-        unknown_answers = sorted(set(answers) - set(initial_questions))
-        if unknown_answers:
-            raise Stage1InputError(
-                f"{proposal.id}: unexpected answer keys {', '.join(unknown_answers)}."
-            )
-        for question_id, question in initial_questions.items():
-            answer_text = answers.get(question_id)
-            if answer_text is None:
-                continue
-            cleaned = answer_text.strip()
-            if not cleaned:
-                continue
-            prepared_answers.append(
-                _PreparedAnswer(
-                    question_id=question_id,
-                    field=question.field,
-                    question=question.question,
-                    answer=cleaned,
-                )
-            )
-            transcript.append(
-                Stage1TranscriptTurn(
-                    speaker="assistant",
-                    kind="question",
-                    text=question.question,
-                    question_id=question_id,
-                )
-            )
-            transcript.append(
-                Stage1TranscriptTurn(
-                    speaker="user",
-                    kind="answer",
-                    text=cleaned,
-                    question_id=question_id,
-                )
-            )
-
-    plan = _plan_proposal(
-        proposal=proposal,
-        prepared_answers=prepared_answers,
-        settings=settings,
+    working_context = _build_initial_context(
+        proposal_id=proposal_id,
+        proposal_text=proposal_text,
+        workspace_company=workspace_company,
         client=client,
     )
-    return _materialize_outcome(
-        proposal=proposal,
-        plan=plan,
-        prepared_answers=prepared_answers,
+    questions = _generate_clarifications(
+        proposal_id=proposal_id,
+        proposal_text=proposal_text,
+        working_context=working_context,
+        transcript=transcript,
+        client=client,
+    )
+    if not questions:
+        return _build_stage1_ready_outcome(
+            proposal_id=proposal_id,
+            proposal_text=proposal_text,
+            working_context=working_context,
+            readiness_summary=(
+                "Stage 1 is ready because no additional proof-critical clarification questions remain."
+            ),
+            unresolved_notes=working_context.what_still_matters,
+            transcript=transcript,
+            completion_reason="no_more_questions",
+        )
+    return _build_clarification_outcome(
+        proposal_id=proposal_id,
+        proposal_text=proposal_text,
+        working_context=working_context,
+        questions=questions,
         transcript=transcript,
     )
 
 
-def _plan_proposal(
+def _continue_stage1_proposal(
     *,
-    proposal: ProposalPrompt,
-    prepared_answers: list[_PreparedAnswer],
+    result: ClarificationNeededOutcome,
+    answers: dict[str, str],
+    workspace_company: WorkspaceCompanyProfile | None,
     settings: OpenRouterSettings | None,
     client: Any,
-) -> Stage1PlannerOutput:
+) -> ClarificationNeededOutcome | Stage1ReadyOutcome:
+    normalized_answers = _normalize_answer_map(answers)
+    question_lookup = {question.id: question for question in result.questions}
+    unknown_answers = sorted(set(normalized_answers) - set(question_lookup))
+    if unknown_answers:
+        raise Stage1InputError(
+            f"{result.proposal_id}: unexpected answer keys {', '.join(unknown_answers)}."
+        )
+
+    transcript = list(result.transcript)
+    prepared_answers: list[_PreparedAnswer] = []
+    for question in result.questions:
+        answer_text = normalized_answers.get(question.id)
+        if answer_text is None:
+            continue
+        prepared_answers.append(
+            _PreparedAnswer(
+                question_id=question.id,
+                prompt=question.prompt,
+                answer=answer_text,
+            )
+        )
+        transcript.append(
+            Stage1TranscriptTurn(
+                speaker="user",
+                kind="answer",
+                text=answer_text,
+                question_id=question.id,
+            )
+        )
+
+    working_context = _update_working_context(
+        proposal_id=result.proposal_id,
+        proposal_text=result.proposal,
+        workspace_company=workspace_company,
+        current_context=result.working_context,
+        current_questions=result.questions,
+        prepared_answers=prepared_answers,
+        transcript=transcript,
+        client=client,
+    )
+    current_round = _round_number_from_questions(result.questions)
+    if current_round >= MAX_CLARIFICATION_ROUNDS:
+        return _build_stage1_ready_outcome(
+            proposal_id=result.proposal_id,
+            proposal_text=result.proposal,
+            working_context=working_context,
+            readiness_summary=(
+                "Stage 1 stopped after the 3-round clarification limit. "
+                "Use the current decision brief with the unresolved notes below."
+            ),
+            unresolved_notes=working_context.what_still_matters,
+            transcript=transcript,
+            completion_reason="max_rounds",
+        )
+    questions = _generate_clarifications(
+        proposal_id=result.proposal_id,
+        proposal_text=result.proposal,
+        working_context=working_context,
+        transcript=transcript,
+        client=client,
+    )
+    if not questions:
+        return _build_stage1_ready_outcome(
+            proposal_id=result.proposal_id,
+            proposal_text=result.proposal,
+            working_context=working_context,
+            readiness_summary=(
+                "Stage 1 is ready because no additional proof-critical clarification questions remain."
+            ),
+            unresolved_notes=working_context.what_still_matters,
+            transcript=transcript,
+            completion_reason="no_more_questions",
+        )
+    return _build_clarification_outcome(
+        proposal_id=result.proposal_id,
+        proposal_text=result.proposal,
+        working_context=working_context,
+        questions=questions,
+        transcript=transcript,
+    )
+
+
+def _build_initial_context(
+    *,
+    proposal_id: str,
+    proposal_text: str,
+    workspace_company: WorkspaceCompanyProfile | None,
+    client: Any,
+) -> Stage1WorkingContext:
+    payload = {
+        "proposal_id": proposal_id,
+        "proposal_text": proposal_text,
+        "workspace_company": _workspace_payload(workspace_company),
+    }
+    output = _call_stage1_model(
+        client=client,
+        messages=[
+            {"role": "system", "content": _initial_context_system_prompt()},
+            {"role": "user", "content": json.dumps(payload, indent=2, sort_keys=True)},
+        ],
+        response_schema=InitialContextOutput,
+        error_label="initial context JSON",
+    )
+    return _stabilize_working_context(
+        output.working_context,
+        proposal_text=proposal_text,
+        workspace_company=workspace_company,
+    )
+
+
+def _generate_clarifications(
+    *,
+    proposal_id: str,
+    proposal_text: str,
+    working_context: Stage1WorkingContext,
+    transcript: list[Stage1TranscriptTurn],
+    client: Any,
+) -> list[Stage1Question]:
+    payload = {
+        "proposal_id": proposal_id,
+        "proposal_text": proposal_text,
+        "working_context": working_context.model_dump(mode="json"),
+        "transcript": [turn.model_dump(mode="json") for turn in transcript],
+    }
+    output = _call_stage1_model(
+        client=client,
+        messages=[
+            {"role": "system", "content": _clarification_system_prompt()},
+            {"role": "user", "content": json.dumps(payload, indent=2, sort_keys=True)},
+        ],
+        response_schema=ClarificationQuestionsOutput,
+        error_label="clarification question JSON",
+    )
+    round_number = _next_question_round(transcript)
+    return [
+        Stage1Question(
+            id=_question_id(proposal_id, round_number, index),
+            prompt=question.prompt,
+            rationale=question.rationale,
+            suggested_answers=question.suggested_answers,
+            recommended_answer_index=question.recommended_answer_index,
+            allow_custom_answer=True,
+        )
+        for index, question in enumerate(output.questions, start=1)
+    ]
+
+
+def _update_working_context(
+    *,
+    proposal_id: str,
+    proposal_text: str,
+    workspace_company: WorkspaceCompanyProfile | None,
+    current_context: Stage1WorkingContext,
+    current_questions: list[Stage1Question],
+    prepared_answers: list[_PreparedAnswer],
+    transcript: list[Stage1TranscriptTurn],
+    client: Any,
+) -> Stage1WorkingContext:
+    payload = {
+        "proposal_id": proposal_id,
+        "proposal_text": proposal_text,
+        "workspace_company": _workspace_payload(workspace_company),
+        "current_working_context": current_context.model_dump(mode="json"),
+        "current_questions": [question.model_dump(mode="json") for question in current_questions],
+        "answers": [
+            {
+                "question_id": answer.question_id,
+                "prompt": answer.prompt,
+                "answer": answer.answer,
+            }
+            for answer in prepared_answers
+        ],
+        "transcript": [turn.model_dump(mode="json") for turn in transcript],
+    }
+    output = _call_stage1_model(
+        client=client,
+        messages=[
+            {"role": "system", "content": _context_update_system_prompt()},
+            {"role": "user", "content": json.dumps(payload, indent=2, sort_keys=True)},
+        ],
+        response_schema=ContextUpdateOutput,
+        error_label="context update JSON",
+    )
+    return _stabilize_working_context(
+        output.working_context,
+        proposal_text=proposal_text,
+        workspace_company=workspace_company,
+        prior_company=current_context.company,
+    )
+
+
+def _call_stage1_model(
+    *,
+    client: Any,
+    messages: list[dict[str, str]],
+    response_schema: type[BaseModel],
+    error_label: str,
+) -> Any:
     try:
         completion = client.create_chat_completion(
-            messages=_build_messages(proposal=proposal, prepared_answers=prepared_answers),
-            response_format=_build_response_format(),
+            messages=messages,
+            response_format=_build_response_format(response_schema),
         )
-    except Exception as exc:  # pragma: no cover - provider path covered by tests through fake clients
+    except Exception as exc:  # pragma: no cover
         if exc.__class__.__name__ == "OpenRouterError":
             raise Stage1ExecutionError(str(exc)) from exc
         raise
 
     try:
-        return Stage1PlannerOutput.model_validate_json(completion.raw_model_response)
+        return response_schema.model_validate_json(completion.raw_model_response)
     except ValidationError as exc:
-        error_message = exc.errors()[0]["msg"] if exc.errors() else "invalid planner JSON"
+        error_message = exc.errors()[0]["msg"] if exc.errors() else "invalid JSON"
         raise Stage1ExecutionError(
-            f"OpenRouter returned invalid Stage 1 planner JSON: {error_message}."
+            f"OpenRouter returned invalid Stage 1 {error_label}: {error_message}."
         ) from exc
 
 
-def _build_messages(
-    *,
-    proposal: ProposalPrompt,
-    prepared_answers: list[_PreparedAnswer],
-) -> list[dict[str, str]]:
-    payload = {
-        "proposal_id": proposal.id,
-        "proposal_text": proposal.text,
-        "supported_action_families": [
-            {
-                "action_family": action_family,
-                "description": spec["description"],
-                "required_action_fields": spec["required_action_fields"],
-            }
-            for action_family, spec in SUPPORTED_ACTIONS.items()
-        ],
-        "prior_answers": [
-            {
-                "question_id": answer.question_id,
-                "field": answer.field,
-                "question": answer.question,
-                "answer": answer.answer,
-            }
-            for answer in prepared_answers
-        ],
-    }
-    return [
-        {"role": "system", "content": _stage1_system_prompt()},
-        {"role": "user", "content": json.dumps(payload, indent=2, sort_keys=True)},
-    ]
-
-
-def _stage1_system_prompt() -> str:
-    return """You are the Stage 1 planner for a business Decision Prover.
-Return JSON only. Do not wrap it in markdown.
-
-Your job is to extract a proposal into a verifier-scoped structured draft without inventing any fact.
-
-Hard rules:
-- Never invent or infer a missing company name, sector, fact, constraint, number, action parameter, or assumption.
-- You may normalize explicit values, for example "$2M" -> 2000000 and "six months" -> 6.
-- If a value is not explicitly stated in the proposal or prior answers, leave it out and add a blocking gap plus a clarification question.
-- Do not create likely constraints from generic business practice.
-- Stay inside the supported action families supplied by the user payload. If the proposal does not clearly fit one, return scope_status as unsupported_family or ambiguous_family.
-- Every extracted semantic field must have one evidence record with an exact source quote from either the proposal text or an answer text.
-- Use source_locator "proposal" for proposal quotes, or the provided question_id for answer quotes.
-
-Required output shape:
-- scope_status
-- action_family
-- ignored_details
-- companies[]
-- decisions[]
-- gaps[]
-- questions[]
-- evidence[]
-
-Evidence field path conventions:
-- companies[0].name
-- companies[0].sector
-- companies[0].facts.<fact_key>
-- companies[0].constraints[<index>]
-- decisions[0].action.type
-- decisions[0].action.<field_name>
-- decisions[0].objective
-- decisions[0].stated_assumptions[<index>]
-
-Questioning policy:
-- Ask only clarification questions that unlock a concrete verifier need.
-- Ask for company name and sector if they are missing.
-- Ask in batches: include all currently blocking questions in the same response.
-"""
-
-
-def _build_response_format() -> dict[str, Any]:
+def _build_response_format(schema_model: type[BaseModel]) -> dict[str, Any]:
     return {
         "type": "json_schema",
         "json_schema": {
-            "name": "decision_prover_stage1_plan",
+            "name": f"decision_prover_{schema_model.__name__.casefold()}",
             "strict": True,
-            "schema": Stage1PlannerOutput.model_json_schema(),
+            "schema": schema_model.model_json_schema(),
         },
     }
 
 
-def _materialize_outcome(
+def _build_clarification_outcome(
     *,
-    proposal: ProposalPrompt,
-    plan: Stage1PlannerOutput,
-    prepared_answers: list[_PreparedAnswer],
+    proposal_id: str,
+    proposal_text: str,
+    working_context: Stage1WorkingContext,
+    questions: list[Stage1Question],
     transcript: list[Stage1TranscriptTurn],
-) -> ClarificationNeededOutcome | FormalizedOutcome:
-    grounding_lookup = _validated_grounding_lookup(
-        proposal_text=proposal.text,
-        prepared_answers=prepared_answers,
-        evidence=plan.evidence,
-    )
-    scope_status = _normalized_scope_status(plan)
-    action_type = plan.action_family if plan.action_family in SUPPORTED_ACTIONS else None
-
-    ai_gaps = _normalize_planner_gaps(
-        proposal_id=proposal.id,
-        gaps=plan.gaps,
-    )
-    ai_questions = _questions_by_field(
-        proposal_id=proposal.id,
-        gaps=plan.gaps,
-        questions=plan.questions,
-    )
-
-    company_data, company_grounding = _prepare_company(plan=plan, grounding_lookup=grounding_lookup)
-    decision_data, decision_grounding = _prepare_decision(
-        proposal=proposal,
-        plan=plan,
-        grounding_lookup=grounding_lookup,
-    )
-    blocking_gaps = _compute_blocking_gaps(
-        proposal_id=proposal.id,
-        scope_status=scope_status,
-        action_type=action_type,
-        company_data=company_data,
-        decision_data=decision_data,
-        ai_gaps=ai_gaps,
-    )
-    question_map = _build_question_map(
-        proposal_id=proposal.id,
-        gaps=blocking_gaps,
-        ai_questions=ai_questions,
-    )
-
-    for question in question_map.values():
-        if question.id in {answer.question_id for answer in prepared_answers}:
-            continue
-        transcript.append(
+) -> ClarificationNeededOutcome:
+    outcome_transcript = list(transcript)
+    for question in questions:
+        outcome_transcript.append(
             Stage1TranscriptTurn(
                 speaker="assistant",
                 kind="question",
-                text=question.question,
+                text=question.prompt,
                 question_id=question.id,
             )
         )
-
-    if blocking_gaps:
-        return ClarificationNeededOutcome(
-            outcome="clarification_needed",
-            proposal_id=proposal.id,
-            proposal=proposal.text,
-            scope_status=scope_status,
-            action_type=action_type,
-            objective=decision_data.get("objective"),
-            blocking_fields=[gap.field for gap in blocking_gaps],
-            gaps=blocking_gaps,
-            questions=list(question_map.values()),
-            ignored_details=plan.ignored_details,
-            transcript=transcript,
-        )
-
-    battery_document, primary_decision_id = _build_battery_document(
-        proposal_id=proposal.id,
-        proposal_text=proposal.text,
-        company_data=company_data,
-        decision_data=decision_data,
+    return ClarificationNeededOutcome(
+        outcome="clarification_needed",
+        proposal_id=proposal_id,
+        proposal=proposal_text,
+        working_context=working_context,
+        questions=questions,
+        transcript=outcome_transcript,
     )
-    grounding_report = GroundingReport(entries=company_grounding + decision_grounding)
-    transcript.append(
+
+
+def _build_stage1_ready_outcome(
+    *,
+    proposal_id: str,
+    proposal_text: str,
+    working_context: Stage1WorkingContext,
+    readiness_summary: str,
+    unresolved_notes: list[str],
+    transcript: list[Stage1TranscriptTurn],
+    completion_reason: str,
+) -> Stage1ReadyOutcome:
+    outcome_transcript = list(transcript)
+    outcome_transcript.append(
         Stage1TranscriptTurn(
             speaker="assistant",
-            kind="formalization",
-            text=(
-                f"Formalized {proposal.id} into a battery-shaped document with primary decision"
-                f" '{primary_decision_id}'."
-            ),
+            kind="ready",
+            text=readiness_summary,
         )
     )
-    return FormalizedOutcome(
-        outcome="formalized",
-        proposal_id=proposal.id,
-        proposal=proposal.text,
-        battery_document=battery_document,
-        primary_decision_id=primary_decision_id,
-        grounding_report=grounding_report,
-        ignored_details=plan.ignored_details,
-        transcript=transcript,
+    return Stage1ReadyOutcome(
+        outcome="stage1_ready",
+        proposal_id=proposal_id,
+        proposal=proposal_text,
+        working_context=working_context,
+        readiness_summary=readiness_summary,
+        completion_reason=completion_reason,
+        unresolved_notes=_dedupe_strings(unresolved_notes),
+        transcript=outcome_transcript,
     )
 
 
-def _validated_grounding_lookup(
+def _workspace_payload(workspace_company: WorkspaceCompanyProfile | None) -> dict[str, str] | None:
+    if workspace_company is None:
+        return None
+    return {
+        "name": workspace_company.name,
+        "sector": workspace_company.sector,
+    }
+
+
+def _stabilize_working_context(
+    working_context: Stage1WorkingContext,
     *,
     proposal_text: str,
-    prepared_answers: list[_PreparedAnswer],
-    evidence: list[PlannerEvidence],
-) -> dict[str, GroundingReportEntry]:
-    answer_lookup = {answer.question_id: answer.answer for answer in prepared_answers}
-    grounding_lookup: dict[str, GroundingReportEntry] = {}
-    for item in evidence:
-        source_text: str | None = None
-        if item.source_type == "proposal":
-            if item.source_locator != "proposal":
-                continue
-            source_text = proposal_text
-        elif item.source_type == "answer":
-            source_text = answer_lookup.get(item.source_locator)
-        if source_text is None:
-            continue
-        if not _quote_matches_source(item.source_quote, source_text):
-            continue
-        grounding_lookup[item.field] = GroundingReportEntry(
-            field=item.field,
-            source_type=item.source_type,
-            source_quote=item.source_quote,
-            source_locator=item.source_locator,
-        )
-    return grounding_lookup
+    workspace_company: WorkspaceCompanyProfile | None,
+    prior_company: Stage1CompanyContext | None = None,
+) -> Stage1WorkingContext:
+    company_name = (
+        workspace_company.name
+        if workspace_company is not None
+        else (prior_company.name if prior_company and prior_company.name else working_context.company.name)
+    )
+    company_sector = (
+        workspace_company.sector
+        if workspace_company is not None
+        else (prior_company.sector if prior_company and prior_company.sector else working_context.company.sector)
+    )
+    return Stage1WorkingContext(
+        company=Stage1CompanyContext(name=company_name, sector=company_sector),
+        proposal=proposal_text,
+        decision=working_context.decision.strip(),
+        objective=working_context.objective.strip(),
+        what_we_know=_dedupe_strings(working_context.what_we_know),
+        what_still_matters=_dedupe_strings(working_context.what_still_matters),
+        constraints_mentioned=_dedupe_strings(working_context.constraints_mentioned),
+        success_criteria=_dedupe_strings(working_context.success_criteria),
+        notes=_dedupe_strings(working_context.notes),
+    )
 
 
-def _quote_matches_source(source_quote: str, source_text: str) -> bool:
-    return _normalize_text(source_quote) in _normalize_text(source_text)
-
-
-def _normalize_text(value: str) -> str:
-    normalized = unicodedata.normalize("NFKD", value).casefold()
-    normalized = normalized.replace("“", '"').replace("”", '"').replace("’", "'")
-    normalized = re.sub(r"\s+", " ", normalized)
-    return normalized.strip()
-
-
-def _normalized_scope_status(plan: Stage1PlannerOutput) -> Literal["supported_family", "unsupported_family", "ambiguous_family"]:
-    if plan.scope_status != "supported_family":
-        return plan.scope_status
-    if plan.action_family not in SUPPORTED_ACTIONS:
-        return "unsupported_family"
-    return "supported_family"
-
-
-def _prepare_company(
-    *,
-    plan: Stage1PlannerOutput,
-    grounding_lookup: dict[str, GroundingReportEntry],
-) -> tuple[dict[str, Any], list[GroundingReportEntry]]:
-    if not plan.companies:
-        return {"name": None, "sector": None, "facts": {}, "constraints": []}, []
-    company = plan.companies[0]
-    prepared: dict[str, Any] = {
-        "name": company.name if "companies[0].name" in grounding_lookup else None,
-        "sector": company.sector if "companies[0].sector" in grounding_lookup else None,
-        "facts": {},
-        "constraints": [],
-    }
-    entries: list[GroundingReportEntry] = []
-    for field_path in ["companies[0].name", "companies[0].sector"]:
-        entry = grounding_lookup.get(field_path)
-        if entry is not None:
-            entries.append(entry)
-
-    for fact_key, fact in company.facts.items():
-        field_path = f"companies[0].facts.{fact_key}"
-        entry = grounding_lookup.get(field_path)
-        if entry is None:
-            continue
-        prepared["facts"][fact_key] = fact
-        entries.append(entry)
-
-    for index, constraint in enumerate(company.constraints):
-        field_path = f"companies[0].constraints[{index}]"
-        entry = grounding_lookup.get(field_path)
-        if entry is None:
-            continue
-        prepared["constraints"].append(constraint)
-        entries.append(entry)
-    return prepared, entries
-
-
-def _prepare_decision(
-    *,
-    proposal: ProposalPrompt,
-    plan: Stage1PlannerOutput,
-    grounding_lookup: dict[str, GroundingReportEntry],
-) -> tuple[dict[str, Any], list[GroundingReportEntry]]:
-    if not plan.decisions:
-        return {"action": {}, "objective": None, "assumptions": []}, []
-    decision = plan.decisions[0]
-    prepared_action: dict[str, Any] = {}
-    entries: list[GroundingReportEntry] = []
-    for key, value in decision.action.items():
-        field_path = f"decisions[0].action.{key}"
-        entry = grounding_lookup.get(field_path)
-        if entry is None:
-            continue
-        prepared_action[key] = value
-        entries.append(entry)
-    objective = decision.objective if "decisions[0].objective" in grounding_lookup else None
-    objective_entry = grounding_lookup.get("decisions[0].objective")
-    if objective_entry is not None:
-        entries.append(objective_entry)
-
-    prepared_assumptions: list[StatedAssumption] = []
-    for index, assumption in enumerate(decision.stated_assumptions):
-        field_path = f"decisions[0].stated_assumptions[{index}]"
-        entry = grounding_lookup.get(field_path)
-        if entry is None:
-            continue
-        prepared_assumptions.append(assumption)
-        entries.append(entry)
-
-    return {
-        "proposal": decision.proposal or proposal.text,
-        "action": prepared_action,
-        "objective": objective,
-        "assumptions": prepared_assumptions,
-    }, entries
-
-
-def _compute_blocking_gaps(
-    *,
-    proposal_id: str,
-    scope_status: Literal["supported_family", "unsupported_family", "ambiguous_family"],
-    action_type: str | None,
-    company_data: dict[str, Any],
-    decision_data: dict[str, Any],
-    ai_gaps: list[Stage1Gap],
-) -> list[Stage1Gap]:
-    gap_map = {gap.field: gap for gap in ai_gaps}
-
-    def ensure_gap(
-        *,
-        field: str,
-        category: Literal[
-            "action_details",
-            "company_fact",
-            "company_metadata",
-            "hard_constraint",
-            "objective",
-            "scope",
-        ],
-        verification_check: str,
-        reason: str,
-    ) -> None:
-        if field in gap_map:
-            return
-        gap_map[field] = Stage1Gap(
-            id=_gap_id(proposal_id, field),
-            category=category,
-            field=field,
-            verification_check=verification_check,
-            reason=reason,
-        )
-
-    if scope_status == "unsupported_family":
-        ensure_gap(
-            field="scope",
-            category="scope",
-            verification_check="select_supported_action_family",
-            reason="The proposal does not yet map cleanly to a supported verifier action family.",
-        )
-    elif scope_status == "ambiguous_family":
-        ensure_gap(
-            field="scope",
-            category="scope",
-            verification_check="disambiguate_action_family",
-            reason="The proposal could map to multiple verifier action families and needs disambiguation.",
-        )
-
-    if company_data.get("name") is None:
-        ensure_gap(
-            field="company.name",
-            category="company_metadata",
-            verification_check="identify_company",
-            reason="The company name is required for a final battery-shaped formalization.",
-        )
-    if company_data.get("sector") is None:
-        ensure_gap(
-            field="company.sector",
-            category="company_metadata",
-            verification_check="identify_sector",
-            reason="The company sector is required for a final battery-shaped formalization.",
-        )
-    if decision_data.get("objective") is None:
-        ensure_gap(
-            field="objective",
-            category="objective",
-            verification_check="formalize_objective",
-            reason="The business objective is missing or not grounded explicitly enough to formalize.",
-        )
-
-    action = decision_data.get("action", {})
-    if not action_type:
-        ensure_gap(
-            field="action.type",
-            category="scope",
-            verification_check="formalize_action_family",
-            reason="The supported action family could not be grounded from the proposal.",
-        )
-    else:
-        if "type" not in action:
-            ensure_gap(
-                field="action.type",
-                category="action_details",
-                verification_check="formalize_action_family",
-                reason="The action type is missing from the formalized decision payload.",
-            )
-        for field_name in _required_action_fields(action_type, action):
-            if field_name not in action:
-                ensure_gap(
-                    field=f"action.{field_name}",
-                    category="action_details",
-                    verification_check="formalize_action_payload",
-                    reason=f"The action field '{field_name}' is required for action type '{action_type}'.",
-                )
-
-        for fact_key in SUPPORTED_ACTIONS.get(action_type, {}).get("required_fact_keys", []):
-            if fact_key not in company_data.get("facts", {}):
-                ensure_gap(
-                    field=f"company.facts.{fact_key}",
-                    category="company_fact",
-                    verification_check="ground_required_company_fact",
-                    reason=f"The fact '{fact_key}' is required for supported action type '{action_type}'.",
-                )
-        for constraint_family in SUPPORTED_ACTIONS.get(action_type, {}).get(
-            "required_constraint_families",
-            []
-        ):
-            if constraint_family not in _constraint_families(company_data.get("constraints", [])):
-                ensure_gap(
-                    field=f"company.constraints.{constraint_family}",
-                    category="hard_constraint",
-                    verification_check="ground_required_constraint",
-                    reason=(
-                        f"A grounded '{constraint_family}' hard constraint is required for"
-                        f" supported action type '{action_type}'."
-                    ),
-                )
-
-        if not gap_map.get("action.type"):
-            try:
-                validate_action_payload(action)
-            except (TypeError, ValueError, ValidationError) as exc:
-                if isinstance(exc, ValidationError):
-                    errors = exc.errors()
-                else:
-                    errors = [{"loc": ("action",), "msg": str(exc)}]
-                for error in errors:
-                    location = ".".join(str(part) for part in error["loc"] if part != "action")
-                    field = f"action.{location}" if location else "action"
-                    ensure_gap(
-                        field=field,
-                        category="action_details",
-                        verification_check="formalize_action_payload",
-                        reason=error["msg"],
-                    )
-
-    ordered = sorted(gap_map.values(), key=lambda gap: (_gap_priority(gap.field), gap.field))
-    return ordered
-
-
-def _required_action_fields(action_type: str, action: dict[str, Any]) -> list[str]:
-    if action_type != "price_change":
-        return list(SUPPORTED_ACTIONS[action_type]["required_action_fields"])
-    if "pct_increase" in action or "scope" in action:
-        return ["pct_increase", "scope"]
-    if "new_unit_price" in action or "assumed_volume_multiplier" in action:
-        return ["new_unit_price", "assumed_volume_multiplier"]
-    return ["pct_increase", "scope"]
-
-
-def _constraint_families(constraints: list[Constraint]) -> set[str]:
-    families: set[str] = set()
-    for constraint in constraints:
-        normalized = " ".join(constraint.semi_formal.split())
-        if normalized.startswith("cash_balance(t) >="):
-            families.add("cash_reserve_floor")
-        elif normalized.startswith("runway_months(t) = cash_balance(t)/net_burn(t) >="):
-            families.add("runway_floor")
-        elif normalized.startswith("initiative_budget <="):
-            families.add("initiative_budget_cap")
-        elif normalized.startswith("ltv_cac(channel) >="):
-            families.add("ltv_cac_minimum")
-        elif normalized.startswith("cumulative_units_built("):
-            families.add("capacity_backlog")
-        elif normalized.startswith("new_sku_contribution_margin >="):
-            families.add("new_sku_margin")
-        elif normalized.startswith("total_marketing_spend <="):
-            families.add("marketing_spend_cap")
-    return families
-
-
-def _normalize_planner_gaps(
-    *,
-    proposal_id: str,
-    gaps: list[PlannerGap],
-) -> list[Stage1Gap]:
-    normalized: list[Stage1Gap] = []
-    seen_fields: set[str] = set()
-    for gap in gaps:
-        if gap.field in seen_fields:
-            continue
-        seen_fields.add(gap.field)
-        normalized.append(
-            Stage1Gap(
-                id=_gap_id(proposal_id, gap.field),
-                category=gap.category,
-                field=gap.field,
-                verification_check=gap.verification_check,
-                reason=gap.reason,
-            )
-        )
+def _normalize_answer_map(answers: dict[str, str]) -> dict[str, str]:
+    normalized: dict[str, str] = {}
+    for key, value in answers.items():
+        cleaned = value.strip()
+        if cleaned:
+            normalized[key] = cleaned
     return normalized
 
 
-def _questions_by_id(
-    *,
-    proposal_id: str,
-    gaps: list[PlannerGap],
-    questions: list[PlannerQuestion],
-) -> dict[str, Stage1Question]:
-    return {question.id: question for question in _questions_by_field(proposal_id=proposal_id, gaps=gaps, questions=questions).values()}
+def _next_question_round(transcript: list[Stage1TranscriptTurn]) -> int:
+    prior_rounds = [
+        _question_round_from_id(turn.question_id)
+        for turn in transcript
+        if turn.question_id is not None
+    ]
+    return (max(prior_rounds) if prior_rounds else 0) + 1
 
 
-def _questions_by_field(
-    *,
-    proposal_id: str,
-    gaps: list[PlannerGap],
-    questions: list[PlannerQuestion],
-) -> dict[str, Stage1Question]:
-    question_map: dict[str, Stage1Question] = {}
-    gaps_by_field = {gap.field: gap for gap in gaps}
-    for question in questions:
-        question_map[question.field] = Stage1Question(
-            id=_question_id(proposal_id, question.field),
-            field=question.field,
-            question=question.question,
-            verification_check=question.verification_check,
-            rationale=question.rationale,
-        )
-    for field_name, gap in gaps_by_field.items():
-        if field_name in question_map:
+def _round_number_from_questions(questions: list[Stage1Question]) -> int:
+    if not questions:
+        return 0
+    return _question_round_from_id(questions[0].id)
+
+
+def _question_round_from_id(question_id: str | None) -> int:
+    if not question_id:
+        return 0
+    match = re.search(r"_Q(\d+)_", question_id)
+    if match is None:
+        return 0
+    return int(match.group(1))
+
+
+def _question_id(proposal_id: str, round_number: int, index: int) -> str:
+    return f"{proposal_id}_Q{round_number}_{index}"
+
+
+def _dedupe_strings(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        cleaned = value.strip()
+        if not cleaned or cleaned in seen:
             continue
-        question_map[field_name] = _fallback_question(proposal_id=proposal_id, gap=gap)
-    return question_map
-
-
-def _build_question_map(
-    *,
-    proposal_id: str,
-    gaps: list[Stage1Gap],
-    ai_questions: dict[str, Stage1Question],
-) -> dict[str, Stage1Question]:
-    result: dict[str, Stage1Question] = {}
-    for gap in gaps:
-        question = ai_questions.get(gap.field)
-        if question is None:
-            question = _fallback_question(proposal_id=proposal_id, gap=gap)
-        result[question.id] = question
+        seen.add(cleaned)
+        result.append(cleaned)
     return result
 
 
-def _fallback_question(*, proposal_id: str, gap: Stage1Gap) -> Stage1Question:
-    templates = {
-        "company.name": (
-            "What is the company name? I need it to emit a final battery-shaped formalization.",
-            "The battery document requires an explicit company name.",
-        ),
-        "company.sector": (
-            "What sector is the company in? I need it to emit a final battery-shaped formalization.",
-            "The battery document requires an explicit company sector.",
-        ),
-        "objective": (
-            "What exact business objective should this decision be evaluated against?",
-            "Stage 1 needs a grounded objective field before formalization can complete.",
-        ),
-        "scope": (
-            "Which supported action family best matches this proposal?",
-            "Stage 1 is verifier-scoped and needs a supported action family before it can formalize.",
-        ),
-    }
-    question_text, rationale = templates.get(
-        gap.field,
-        (
-            f"What is the value for '{gap.field}'? I need it to unlock {gap.verification_check}.",
-            gap.reason,
-        ),
-    )
-    return Stage1Question(
-        id=_question_id(proposal_id, gap.field),
-        field=gap.field,
-        question=question_text,
-        verification_check=gap.verification_check,
-        rationale=rationale,
-    )
+def _initial_context_system_prompt() -> str:
+    return """You are the Interviewer AI in Stage 1 of a business proposal clarification workflow.
+Return JSON only. Do not wrap it in markdown.
+
+Your job is to build a lightweight decision brief from the company context and proposal text.
+
+Rules:
+- Do not use Decision Battery structure.
+- Do not classify the proposal into any hard-coded action family.
+- Do not use any fixed business ontology like hire, launch_sku, price_change, or verifier field lists.
+- State the decision in one sentence.
+- State the objective in one sentence.
+- Summarize what is already known, what still matters, any constraints mentioned, and what success seems to mean.
+- Prefer measurable facts, thresholds, and exact stated constraints whenever the proposal already includes them.
+- Extract all exact literals already present in the proposal, including prices, dates, counts, percentages, rates, capacities, deadlines, and stated thresholds.
+- Preserve those exact literals verbatim in the working context.
+- Put exact observed or proposed business facts in what_we_know.
+- Put stated conditions, limits, and must-stay-under / must-not-exceed / must-not-drop-more-than thresholds in constraints_mentioned and success_criteria when appropriate.
+- If the proposal already supplies an exact value, threshold, date, price, count, rate, or deadline, treat it as known rather than leaving it unresolved.
+- Do not restate an exact threshold with a different number, stricter bound, looser bound, or normalized interpretation unless the user explicitly supplied that change.
+- Do not invent baseline metrics, projected metrics, target metrics, or other exact business numbers that were not explicitly stated.
+- Keep the working context concise, useful, and grounded in the user input.
+- If workspace company name and sector are provided, carry them into the working context.
+- The working context should be useful for future clarification rounds, not for deterministic verification.
+- Do not over-infer. If something is unclear, leave it in what_still_matters instead of pretending it is known.
+- Focus on the actual decision the user is making, not on general business planning.
+"""
 
 
-def _gap_id(proposal_id: str, field_name: str) -> str:
-    return f"{proposal_id}_G_{_slug(field_name)}"
+def _clarification_system_prompt() -> str:
+    return """You are the Interviewer AI in Stage 1 of a business proposal clarification workflow.
+Return JSON only. Do not wrap it in markdown.
+
+Your job is to ask 1 to 3 clarification questions based on the current working context.
+
+Rules:
+- Before asking anything, silently infer any obvious labels, categories, and structure from the proposal and working context.
+- Do not ask for internal labels, action types, schema fields, taxonomy, or any Decision Battery or verifier-specific structure.
+- Return 1 to 3 strong questions total. Return fewer if fewer strong proof-input questions exist. Return an empty questions list if no such question remains.
+- Ask only decision-critical questions whose answers are not already reasonably inferable and would supply an exact input for a later feasibility, threshold, constraint, or objective-impact check.
+- If the proposal or working context already states an exact value, threshold, date, count, price, rate, capacity, or deadline, treat that datum as known.
+- Do not ask the user to restate, confirm, refine, or choose among suggested answers for an exact datum that is already present in the proposal or working context.
+- Ask only for missing exact inputs that are still needed for a later feasibility, threshold, constraint, or objective-impact check.
+- Prefer decision-driving questions about concrete thresholds such as cost, budget, cash, burn, revenue, margin, churn, capacity, deadline, unit volume, price, reserve floor, or another exact threshold.
+- Do not ask exploratory, planning-detail, behavioral, background, marketing, positioning, demographic, location, or other flavor questions unless they are clearly decision-critical right now.
+- Each question must include exactly 3 suggested answers, and the user must still be free to type a custom answer.
+- Suggested answers must be concrete, directly responsive, and must be exact literal values with units, dates, counts, percentages, rates, capacities, thresholds, or another similarly exact measurable input.
+- Do not use generic suggestions like 'best estimate', 'specific answer', or 'unknown for now'.
+- Do not use approximate or inequality phrasing in suggested answers, including 'about', 'around', 'roughly', 'less than', 'more than', 'at least', or 'up to'.
+- Do not use ranges in suggested answers.
+- Do not use categorical suggested answers. If a potentially useful question cannot be expressed with exact-value suggested answers, skip that question instead of emitting categorical or approximate options.
+- Before returning, remove any question that is soft, redundant, schema-filling, or not directly usable in later reasoning.
+"""
 
 
-def _question_id(proposal_id: str, field_name: str) -> str:
-    return f"{proposal_id}_Q_{_slug(field_name)}"
+def _context_update_system_prompt() -> str:
+    return """You are the Context Updater AI in Stage 1 of a business proposal clarification workflow.
+Return JSON only. Do not wrap it in markdown.
 
+Your job is to update the current working context using the user's raw clarification answers.
 
-def _slug(value: str) -> str:
-    lowered = value.lower()
-    lowered = re.sub(r"[^a-z0-9]+", "_", lowered)
-    return lowered.strip("_") or "field"
-
-
-def _gap_priority(field_name: str) -> tuple[int, str]:
-    if field_name in QUESTION_PRIORITY:
-        return QUESTION_PRIORITY[field_name], field_name
-    if field_name.startswith("action."):
-        return 10, field_name
-    if field_name.startswith("company.facts."):
-        return 20, field_name
-    if field_name.startswith("company.constraints."):
-        return 30, field_name
-    return 40, field_name
-
-
-def _build_battery_document(
-    *,
-    proposal_id: str,
-    proposal_text: str,
-    company_data: dict[str, Any],
-    decision_data: dict[str, Any],
-) -> tuple[DecisionBattery, str]:
-    canonical = _canonical_battery_metadata()
-    company_id = _slug(str(company_data["name"]))
-    decision_id = proposal_id
-    company = Company(
-        id=company_id,
-        name=str(company_data["name"]),
-        sector=str(company_data["sector"]),
-        facts=company_data["facts"],
-        constraints=company_data["constraints"],
-    )
-    decision = Decision(
-        id=decision_id,
-        company=company_id,
-        proposal=proposal_text,
-        action=decision_data["action"],
-        objective=str(decision_data["objective"]),
-        stated_assumptions=decision_data["assumptions"],
-    )
-    battery_document = DecisionBattery(
-        battery_version=canonical.battery_version,
-        title=f"Stage 1 Formalization - {proposal_id}",
-        note_to_candidate=canonical.note_to_candidate,
-        verdict_definitions=canonical.verdict_definitions,
-        schema=canonical.schema_,
-        companies=[company],
-        decisions=[decision],
-    )
-    return battery_document, decision_id
-
-
-@lru_cache(maxsize=1)
-def _canonical_battery_metadata() -> DecisionBattery:
-    return load_battery_fixture(DEFAULT_BATTERY_PATH).fixture
+Rules:
+- Do not use Decision Battery structure.
+- Do not force the proposal into any hard-coded action taxonomy.
+- Preserve prior context unless the new answers clearly change or refine it.
+- You may refine the decision understanding, but do not replace the core decision unless the user clearly corrected it.
+- Treat the user's answer strings as the source of truth for what changed.
+- Update the decision, objective, what we know, what still matters, constraints mentioned, success criteria, and notes so the next AI step has a better context.
+- Keep the brief stable and compact.
+- Remove an item from what_still_matters only if the user answer actually resolves it.
+- Sharpen the brief with exact quantities, thresholds, and units when the user provides them.
+- Do not invent uplift assumptions, percentages, demand effects, or other projected impacts unless the user explicitly supplied them.
+"""

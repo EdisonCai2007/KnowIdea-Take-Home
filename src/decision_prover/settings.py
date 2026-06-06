@@ -5,8 +5,6 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .constants import PROJECT_ROOT
-
 try:
     from dotenv import load_dotenv
 except ModuleNotFoundError:  # pragma: no cover - exercised only when dependency is absent
@@ -28,6 +26,7 @@ except ModuleNotFoundError:  # pragma: no cover - exercised only when dependency
 
                 os.environ[key] = value.strip().strip("\"'")
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OPENROUTER_MODEL = "google/gemini-2.5-flash"
 DEFAULT_OPENROUTER_STAGE1_MODEL = "google/gemini-2.5-flash"
 DEFAULT_OPENROUTER_STAGE2_MODEL = "google/gemini-2.5-pro"

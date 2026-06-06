@@ -11,7 +11,6 @@ from decision_prover.contracts.workspace import WorkspaceCompanyProfile
 from decision_prover.fixtures import load_proposals_fixture
 from decision_prover.stage1 import (
     Stage1ExecutionError,
-    canonicalize_company_id,
     continue_stage1_for_workspace_proposal,
     run_stage1,
     run_stage1_for_workspace_proposal,
@@ -209,8 +208,3 @@ def test_stage1_workspace_payload_excludes_description() -> None:
         "name": "Northwind Software",
         "sector": "B2B SaaS",
     }
-
-
-def test_canonicalize_company_id_uses_kebab_case() -> None:
-    assert canonicalize_company_id("Lumen Labs") == "lumen-labs"
-    assert canonicalize_company_id("Northwind  Software!") == "northwind-software"

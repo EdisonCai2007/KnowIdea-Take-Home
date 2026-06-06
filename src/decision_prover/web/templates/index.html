@@ -2018,6 +2018,24 @@
         });
       }
 
+      function bindComposerEnterSubmit() {
+        document.querySelectorAll(".composer-textarea").forEach((textarea) => {
+          textarea.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter" || event.shiftKey || event.isComposing) {
+              return;
+            }
+
+            const form = textarea.closest("form");
+            if (!form) {
+              return;
+            }
+
+            event.preventDefault();
+            form.requestSubmit();
+          });
+        });
+      }
+
       function findNextUnansweredIndex(questions, draftAnswers, startIndex) {
         for (let offset = 1; offset <= questions.length; offset += 1) {
           const index = (startIndex + offset) % questions.length;
@@ -2302,6 +2320,7 @@
       bindWorkspaceForm("company-create-form", "company-create-message");
       bindProposalStartForm();
       bindAutoResizeTextareas();
+      bindComposerEnterSubmit();
       bindClarificationComposer();
       bindProposalSkip();
       bindProposalReset();

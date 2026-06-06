@@ -7,7 +7,6 @@ from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 
 from .. import __version__
-from ..constants import DEFAULT_BATTERY_PATH, DEFAULT_PROPOSALS_PATH
 from ..contracts.battery import DecisionBattery
 from ..contracts.context import DecisionContextList
 from ..contracts.output import (
@@ -36,6 +35,13 @@ from ..services import build_workspace_stage2_handoff, continue_workspace_stage1
 from ..services import skip_workspace_stage1_result
 from ..verifier import explain_verification, verify_decision
 
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_BATTERY_PATH = (
+    PROJECT_ROOT / "codex-resources" / "original-project-specs" / "decision_battery.json"
+)
+DEFAULT_PROPOSALS_PATH = (
+    PROJECT_ROOT / "codex-resources" / "original-project-specs" / "nl_proposals.md"
+)
 TEMPLATE_DIR = Path(__file__).resolve().parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATE_DIR))
 

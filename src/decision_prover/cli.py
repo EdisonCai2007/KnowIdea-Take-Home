@@ -8,13 +8,20 @@ import typer
 from pydantic import BaseModel
 from pydantic import ValidationError
 
-from .constants import DEFAULT_BATTERY_PATH, DEFAULT_PROPOSALS_PATH
 from .contracts.output import Stage1RunRequest, ValidationSummary
 from .fixtures import FixtureLoadError, get_decision_context, load_battery_fixture, load_proposals_fixture
 from .settings import ConfigurationError
 from .services import build_stage1_run_response
 from .stage1 import Stage1ExecutionError, Stage1InputError
 from .verifier import explain_verification, verify_decision
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_BATTERY_PATH = (
+    PROJECT_ROOT / "codex-resources" / "original-project-specs" / "decision_battery.json"
+)
+DEFAULT_PROPOSALS_PATH = (
+    PROJECT_ROOT / "codex-resources" / "original-project-specs" / "nl_proposals.md"
+)
 
 app = typer.Typer(help="Decision Prover Phase 1 tooling.", no_args_is_help=True)
 fixtures_app = typer.Typer(help="Validate and export fixture data.", no_args_is_help=True)

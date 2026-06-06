@@ -3,166 +3,798 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Decision Prover Phase 6 Workspace</title>
+    <title>KnowIdea DecisionAI</title>
     <style>
       :root {
-        --bg: #f8f1e5;
-        --paper: rgba(255, 252, 247, 0.95);
-        --paper-strong: rgba(255, 247, 238, 0.92);
-        --ink: #1f2730;
-        --muted: #606971;
-        --border: rgba(31, 39, 48, 0.14);
-        --accent: #b14d2e;
-        --accent-deep: #7f2d17;
-        --accent-soft: rgba(177, 77, 46, 0.14);
-        --success: #215f4c;
-        --success-soft: rgba(33, 95, 76, 0.12);
-        --warning: #8b5e16;
-        --warning-soft: rgba(139, 94, 22, 0.12);
-        --danger: #9a3528;
+        --knowidea-bg-deep: #f7f5f2;
+        --knowidea-bg-paper: #efebe6;
+        --knowidea-surface: #fdf9f1;
+        --knowidea-surface-strong: #ffffff;
+        --knowidea-accent: #6d28d9;
+        --knowidea-accent-2: #7c3aed;
+        --knowidea-accent-3: #c026d3;
+        --knowidea-accent-soft: #f3edff;
+        --knowidea-green: #047857;
+        --knowidea-gold: #b45309;
+        --knowidea-red: #be123c;
+        --knowidea-text: #1a1530;
+        --knowidea-text-2: #2e2845;
+        --knowidea-text-3: #5a5470;
+        --knowidea-text-4: #8b859d;
+        --knowidea-border: rgba(26, 21, 48, 0.1);
+        --knowidea-border-strong: rgba(109, 40, 217, 0.18);
+        --knowidea-shadow: 0 28px 80px rgba(26, 21, 48, 0.12);
+        --knowidea-shadow-soft: 0 16px 40px rgba(26, 21, 48, 0.08);
+        --knowidea-dark-0: #08060e;
+        --knowidea-dark-1: #0f0c22;
+        --knowidea-dark-2: #1a1232;
+        --knowidea-dark-3: #2a2050;
+        --knowidea-radius-card: 18px;
+        --knowidea-radius-panel: 28px;
+        --knowidea-radius-pill: 999px;
+        --composer-height: 16rem;
       }
 
       * {
         box-sizing: border-box;
       }
 
+      html {
+        scroll-behavior: smooth;
+        overscroll-behavior-y: none;
+        background: var(--knowidea-dark-0);
+      }
+
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: Georgia, "Times New Roman", serif;
-        color: var(--ink);
+        font-family: Poppins, Arial, system-ui, sans-serif;
+        overscroll-behavior-y: none;
+      }
+
+      body.landing-body {
+        height: 100vh;
+        overflow: hidden;
+        color: #ffffff;
         background:
-          radial-gradient(circle at top left, rgba(177, 77, 46, 0.18), transparent 26rem),
-          radial-gradient(circle at bottom right, rgba(33, 95, 76, 0.12), transparent 24rem),
-          linear-gradient(180deg, #fff9f2 0%, var(--bg) 100%);
+          linear-gradient(90deg, rgba(8, 6, 14, 0.86), rgba(12, 12, 48, 0.7) 42%, rgba(8, 6, 14, 0.78)),
+          radial-gradient(circle at 78% 34%, rgba(185, 20, 78, 0.38) 0, rgba(185, 20, 78, 0.18) 12rem, transparent 24rem),
+          radial-gradient(circle at 38% 72%, rgba(25, 142, 164, 0.24) 0, transparent 24rem),
+          linear-gradient(135deg, #100a35 0%, #14145a 38%, #103c61 72%, #29104d 100%);
+        position: relative;
       }
 
-      main {
-        width: min(76rem, calc(100vw - 2rem));
-        margin: 0 auto;
-        padding: 2rem 0 3.5rem;
+      body.landing-body::before,
+      body.landing-body::after {
+        content: "";
+        position: fixed;
+        pointer-events: none;
       }
 
-      h1, h2, h3, p {
-        margin: 0;
+      body.landing-body::before {
+        inset: 0;
+        background:
+          linear-gradient(90deg, transparent 0 7%, rgba(255, 255, 255, 0.08) 7.2%, transparent 7.6% 22%, rgba(255, 255, 255, 0.06) 22.2%, transparent 22.8% 47%, rgba(255, 255, 255, 0.07) 47.3%, transparent 48% 71%, rgba(255, 255, 255, 0.05) 71.4%, transparent 72%),
+          repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.09) 0 1px, transparent 1px 8px),
+          linear-gradient(180deg, rgba(12, 8, 44, 0.18), rgba(4, 6, 24, 0.4));
+        opacity: 0.72;
+        mix-blend-mode: screen;
+        mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.92) 24%, rgba(0, 0, 0, 0.86) 78%, rgba(0, 0, 0, 0.5));
       }
 
-      h1, h2, h3 {
-        font-weight: 600;
+      body.landing-body::after {
+        inset: 0;
+        background:
+          linear-gradient(90deg, transparent 0 11%, rgba(255, 255, 255, 0.12) 11.1% 11.35%, transparent 11.5% 34%, rgba(255, 255, 255, 0.1) 34.15% 34.42%, transparent 34.6% 61%, rgba(255, 255, 255, 0.11) 61.2% 61.45%, transparent 61.6%),
+          linear-gradient(0deg, transparent 0 28%, rgba(255, 255, 255, 0.1) 28.1% 28.35%, transparent 28.5% 55%, rgba(255, 255, 255, 0.08) 55.1% 55.32%, transparent 55.5%),
+          radial-gradient(circle at 62% 58%, rgba(225, 25, 94, 0.26), transparent 22rem);
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+          inset 0 -22rem 18rem rgba(6, 4, 22, 0.42);
+        opacity: 0.86;
       }
 
-      h1 {
-        font-size: clamp(2.4rem, 5vw, 4rem);
-        letter-spacing: -0.04em;
-        max-width: 11ch;
+      body.app-body {
+        min-height: 100vh;
+        color: var(--knowidea-text);
+        background:
+          radial-gradient(circle at 78% 18%, rgba(176, 169, 232, 0.34) 0, rgba(124, 58, 237, 0.16) 22rem, transparent 42rem),
+          radial-gradient(circle at 50% 94%, rgba(192, 160, 255, 0.22) 0, rgba(42, 32, 80, 0.42) 18rem, transparent 36rem),
+          linear-gradient(135deg, var(--knowidea-dark-0) 0%, var(--knowidea-dark-1) 28%, var(--knowidea-dark-2) 54%, var(--knowidea-dark-3) 100%);
+        overflow-x: hidden;
+        position: relative;
       }
 
-      p,
-      label,
+      body.app-body::before,
+      body.app-body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      body.app-body::before {
+        background:
+          radial-gradient(circle, rgba(218, 211, 255, 0.16) 1px, transparent 1.4px),
+          linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 14px 14px, 96px 96px, 96px 96px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.86), rgba(0, 0, 0, 0.22) 74%, transparent);
+      }
+
+      body.app-body::after {
+        top: auto;
+        left: 50%;
+        bottom: -23rem;
+        width: min(92rem, 128vw);
+        height: 38rem;
+        border: 1px solid rgba(220, 214, 255, 0.34);
+        border-radius: 50% 50% 0 0;
+        background:
+          radial-gradient(ellipse at 50% 0%, rgba(213, 205, 255, 0.28) 0, rgba(112, 96, 176, 0.12) 32%, transparent 70%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.015) 48%, transparent);
+        box-shadow:
+          0 -18px 76px rgba(182, 169, 255, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.32),
+          inset 0 36px 120px rgba(255, 255, 255, 0.06);
+        transform: translateX(-50%);
+      }
+
+      a {
+        color: inherit;
+      }
+
       button,
       input,
       textarea {
-        line-height: 1.45;
+        font: inherit;
       }
 
-      .hero,
-      .workspace-grid,
-      .summary-grid,
-      .preview-grid {
-        display: grid;
-        gap: 1rem;
+      button {
+        cursor: pointer;
       }
 
-      .hero {
-        gap: 1.5rem;
-        padding: 1.5rem 0 2rem;
-      }
-
-      .hero-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
-        gap: 1rem;
-        align-items: start;
-      }
-
-      .workspace-grid {
-        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-        align-items: start;
-      }
-
-      .summary-grid,
-      .preview-grid {
-        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
       }
 
       .eyebrow,
-      .pill {
+      .workspace-chip,
+      .message-chip {
         display: inline-flex;
+        align-items: center;
         width: fit-content;
-        padding: 0.35rem 0.7rem;
-        border-radius: 999px;
-        font-size: 0.78rem;
+        border-radius: var(--knowidea-radius-pill);
         letter-spacing: 0.08em;
         text-transform: uppercase;
+      }
+
+      .workspace-chip,
+      .message-chip {
+        padding: 0.42rem 0.8rem;
+        font-size: 0.74rem;
       }
 
       .eyebrow {
-        background: var(--accent-soft);
-        color: var(--accent-deep);
+        margin-bottom: 1rem;
+        padding: 0.42rem 0.82rem;
+        font-size: 0.76rem;
+        font-weight: 600;
       }
 
-      .pill {
-        background: var(--success-soft);
-        color: var(--success);
+      .panel {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--knowidea-border);
+        border-radius: var(--knowidea-radius-panel);
+        box-shadow: var(--knowidea-shadow-soft);
       }
 
-      .pill.warning {
-        background: var(--warning-soft);
-        color: var(--warning);
+      .panel-dark {
+        background: linear-gradient(180deg, rgba(21, 17, 38, 0.88), rgba(10, 8, 24, 0.88));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        box-shadow: var(--knowidea-shadow);
       }
 
-      .card {
-        padding: 1.2rem 1.25rem;
-        border: 1px solid var(--border);
-        border-radius: 1.15rem;
-        background: var(--paper);
-        box-shadow: 0 24px 60px rgba(31, 39, 48, 0.08);
-        backdrop-filter: blur(8px);
+      .landing-main {
+        width: min(72rem, calc(100vw - 3rem));
+        height: 100vh;
+        margin: 0 auto;
+        display: grid;
+        gap: 4rem;
+        align-items: center;
+        grid-template-columns: minmax(0, 1fr) minmax(20rem, 25rem);
+        position: relative;
+        z-index: 1;
       }
 
-      .card.feature {
-        background: var(--paper-strong);
+      .landing-title {
+        max-width: 12ch;
+        font-size: 4.35rem;
+        line-height: 1;
+        font-weight: 700;
+        color: #ffffff;
+        position: relative;
+        text-shadow: 0 22px 72px rgba(0, 0, 0, 0.36);
       }
 
-      .label {
-        margin-bottom: 0.35rem;
-        font-size: 0.85rem;
-        color: var(--muted);
+      .landing-title::after {
+        content: "";
+        display: block;
+        width: min(7.5ch, 100%);
+        height: 0.17rem;
+        margin-top: 0.65rem;
+        border-radius: var(--knowidea-radius-pill);
+        background: linear-gradient(90deg, #ffffff 0 72%, rgba(255, 255, 255, 0.08) 72% 100%);
+        box-shadow:
+          0 0.38rem 0 rgba(255, 255, 255, 0.58),
+          0 0 28px rgba(255, 255, 255, 0.24);
+      }
+
+      .landing-subtitle {
+        margin-top: 1.25rem;
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.68);
+        letter-spacing: 0.1em;
         text-transform: uppercase;
+      }
+
+      .landing-card {
+        padding: 1.35rem;
+        background: rgba(255, 255, 255, 0.93);
+        border: 1px solid rgba(255, 255, 255, 0.44);
+        border-radius: 18px;
+        box-shadow: 0 24px 84px rgba(4, 3, 12, 0.36);
+        backdrop-filter: blur(18px) saturate(150%);
+      }
+
+      .landing-card textarea {
+        min-height: 6.5rem;
+        max-height: 8.5rem;
+      }
+
+      .landing-card .button-primary {
+        width: 100%;
+      }
+
+      .setup-main {
+        width: min(78rem, calc(100vw - 2rem));
+        margin: 0 auto;
+        padding: 4rem 0 3rem;
+        display: grid;
+        gap: 2rem;
+        align-items: start;
+        grid-template-columns: minmax(0, 1.1fr) minmax(22rem, 0.9fr);
+      }
+
+      .setup-copy {
+        padding: 3rem 0 1rem;
+      }
+
+      .setup-copy .eyebrow {
+        background: rgba(94, 234, 212, 0.12);
+        color: #9ae6d8;
+      }
+
+      .setup-title {
+        max-width: 10ch;
+        font-size: 4rem;
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .setup-card {
+        padding: 1.4rem;
+      }
+
+      .setup-card .eyebrow {
+        background: rgba(124, 58, 237, 0.14);
+        color: #d8bcff;
+      }
+
+      .setup-card h2 {
+        font-size: 1.7rem;
+        letter-spacing: 0;
+      }
+
+      .setup-card p {
+        margin-top: 0.65rem;
+        color: rgba(255, 255, 255, 0.72);
+        line-height: 1.6;
+      }
+
+      .app-main {
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      .workspace-chip {
+        border: 1px solid var(--knowidea-border);
+        background: rgba(255, 255, 255, 0.8);
+        color: var(--knowidea-text-2);
+      }
+
+      .workspace-chip.success {
+        background: rgba(4, 120, 87, 0.08);
+        border-color: rgba(4, 120, 87, 0.14);
+        color: var(--knowidea-green);
+      }
+
+      .workspace-chip.warning {
+        background: rgba(180, 83, 9, 0.08);
+        border-color: rgba(180, 83, 9, 0.14);
+        color: var(--knowidea-gold);
+      }
+
+      .chat-shell {
+        min-height: 100vh;
+        margin-top: 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      .chat-shell.has-clarification-panel {
+        --clarification-panel-width: 13.5rem;
+        --clarification-panel-gap: 1.25rem;
+        width: min(72rem, calc(100vw - 2rem));
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: var(--clarification-panel-width) minmax(0, 1fr);
+        column-gap: var(--clarification-panel-gap);
+        align-items: start;
+      }
+
+      .clarification-side {
+        position: sticky;
+        top: 1.25rem;
+        padding-top: 2rem;
+        z-index: 2;
+      }
+
+      .clarification-side-card {
+        display: grid;
+        gap: 0.8rem;
+        padding: 0.85rem;
+        border: 1px solid rgba(216, 208, 255, 0.24);
+        border-radius: 18px;
+        background: rgba(247, 245, 252, 0.86);
+        box-shadow: 0 20px 56px rgba(4, 3, 12, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.46);
+        backdrop-filter: blur(18px);
+      }
+
+      .clarification-stage {
+        width: fit-content;
+        padding: 0.26rem 0.52rem;
+        border-radius: var(--knowidea-radius-pill);
+        background: rgba(109, 40, 217, 0.1);
+        color: var(--knowidea-accent);
+        font-size: 0.68rem;
+        font-weight: 700;
         letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
-      .lede,
-      .support-copy,
-      .muted {
-        color: var(--muted);
+      .clarification-proposal {
+        color: var(--knowidea-text);
+        font-size: 0.92rem;
+        font-weight: 600;
       }
 
-      .lede {
-        max-width: 40rem;
-        margin-top: 0.8rem;
-        font-size: 1.05rem;
+      .clarification-side-stats {
+        display: grid;
+        gap: 0.42rem;
       }
 
-      .support-copy {
-        font-size: 0.96rem;
+      .clarification-side-stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.7rem;
+        color: var(--knowidea-text-4);
+        font-size: 0.76rem;
       }
 
-      .stack,
+      .clarification-side-stat strong {
+        color: var(--knowidea-text-2);
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: right;
+      }
+
+      .thread-frame {
+        min-height: 100vh;
+        padding: 2rem 1rem calc(var(--composer-height) + 2.5rem);
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        position: relative;
+        z-index: 1;
+        overscroll-behavior-y: none;
+      }
+
+      .chat-shell.stage-complete .thread-frame {
+        padding-bottom: 3rem;
+      }
+
+      .thread-stack {
+        display: grid;
+        gap: 1rem;
+        width: min(100%, 46rem);
+        margin: 0 auto;
+      }
+
+      .chat-shell.stage-complete .thread-stack {
+        width: min(100%, 64rem);
+      }
+
+      .message {
+        display: flex;
+      }
+
+      .message.assistant {
+        justify-content: flex-start;
+      }
+
+      .message.user {
+        justify-content: flex-end;
+      }
+
+      .message-bubble {
+        width: min(100%, 40rem);
+        padding: 1rem 1.05rem;
+        border-radius: 22px;
+        border: 1px solid var(--knowidea-border);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 18px 40px rgba(26, 21, 48, 0.06);
+      }
+
+      body.app-body .message-bubble {
+        background: linear-gradient(180deg, rgba(247, 245, 252, 0.97), rgba(239, 236, 247, 0.94));
+        border-color: rgba(216, 208, 255, 0.42);
+        box-shadow: 0 22px 58px rgba(4, 3, 12, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.56);
+        backdrop-filter: blur(18px);
+      }
+
+      .message.assistant .message-bubble {
+        border-top-left-radius: 8px;
+      }
+
+      .message-cluster {
+        width: min(100%, 22rem);
+      }
+
+      .message.pending .message-meta {
+        margin: 0 0 0.38rem 0.28rem;
+      }
+
+      .message.pending .message-bubble {
+        width: 100%;
+      }
+
+      .message.pending .message-body {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--knowidea-text-3);
+      }
+
+      .message-pulse {
+        display: inline-flex;
+        gap: 0.22rem;
+        align-items: center;
+      }
+
+      .message-pulse span {
+        width: 0.32rem;
+        height: 0.32rem;
+        border-radius: 50%;
+        background: var(--knowidea-accent);
+        animation: pulse-dot 1s infinite ease-in-out;
+      }
+
+      .message-pulse span:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+
+      .message-pulse span:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes pulse-dot {
+        0%,
+        80%,
+        100% {
+          opacity: 0.32;
+          transform: translateY(0);
+        }
+        40% {
+          opacity: 1;
+          transform: translateY(-0.12rem);
+        }
+      }
+
+      .message.user .message-bubble {
+        border-top-right-radius: 8px;
+        background: linear-gradient(180deg, rgba(109, 40, 217, 0.98), rgba(124, 58, 237, 0.92));
+        border-color: rgba(109, 40, 217, 0.35);
+        color: #ffffff;
+      }
+
+      body.app-body .message.user .message-bubble {
+        background: linear-gradient(180deg, rgba(116, 60, 232, 0.98), rgba(93, 45, 196, 0.94));
+        border-color: rgba(229, 222, 255, 0.28);
+        box-shadow: 0 22px 64px rgba(20, 12, 52, 0.44);
+      }
+
+      .message-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.55rem;
+        font-size: 0.78rem;
+        color: var(--knowidea-text-4);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .message.user .message-meta {
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .message-body {
+        line-height: 1.7;
+        color: inherit;
+      }
+
+      .message-chip {
+        border: 1px solid rgba(109, 40, 217, 0.18);
+        background: rgba(109, 40, 217, 0.08);
+        color: var(--knowidea-accent);
+      }
+
+      .message.user .message-chip {
+        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
+      }
+
+      .list {
+        margin: 0.8rem 0 0;
+        padding-left: 1.2rem;
+        color: var(--knowidea-text-3);
+        line-height: 1.6;
+      }
+
+      .list li + li {
+        margin-top: 0.45rem;
+      }
+
+      .message.user .list {
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      .workspace-mini-grid,
+      .context-grid,
+      .result-grid {
+        display: grid;
+        gap: 0.85rem;
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+      }
+
+      .mini-card,
+      .context-card,
+      .result-card,
+      .detail-panel {
+        border: 1px solid var(--knowidea-border);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.88);
+      }
+
+      body.app-body .mini-card,
+      body.app-body .context-card,
+      body.app-body .result-card,
+      body.app-body .detail-panel,
+      body.app-body .question-block {
+        background: rgba(247, 245, 252, 0.82);
+        border-color: rgba(216, 208, 255, 0.46);
+      }
+
+      .mini-card,
+      .context-card,
+      .result-card {
+        padding: 0.95rem 1rem;
+      }
+
+      .mini-label,
+      .context-label,
+      .result-label {
+        display: block;
+        margin-bottom: 0.45rem;
+        font-size: 0.76rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--knowidea-text-4);
+      }
+
+      .panel-message .message-bubble {
+        width: min(100%, 64rem);
+      }
+
+      .panel-title {
+        font-size: 1.3rem;
+        letter-spacing: 0;
+      }
+
+      .panel-copy {
+        margin-top: 0.55rem;
+        color: var(--knowidea-text-3);
+        line-height: 1.65;
+      }
+
+      .decision-summary {
+        display: grid;
+        gap: 0.85rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid rgba(4, 120, 87, 0.16);
+        border-radius: 18px;
+        background: rgba(4, 120, 87, 0.07);
+      }
+
+      .decision-summary.needs-review {
+        border-color: rgba(180, 83, 9, 0.18);
+        background: rgba(180, 83, 9, 0.08);
+      }
+
+      .decision-verdict {
+        display: flex;
+        align-items: baseline;
+        gap: 0.55rem;
+        flex-wrap: wrap;
+      }
+
+      .decision-verdict strong {
+        color: var(--knowidea-text);
+        font-size: 1.45rem;
+        letter-spacing: 0;
+      }
+
+      .decision-summary p {
+        color: var(--knowidea-text-3);
+        line-height: 1.58;
+      }
+
+      .result-section {
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid var(--knowidea-border);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      body.app-body .result-section {
+        background: rgba(247, 245, 252, 0.74);
+        border-color: rgba(216, 208, 255, 0.42);
+      }
+
+      .result-section-title {
+        margin-bottom: 0.75rem;
+        color: var(--knowidea-text);
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0;
+      }
+
+      .audit-grid {
+        display: grid;
+        gap: 0.85rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .audit-grid.wide {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      }
+
+      .audit-grid + .audit-grid,
+      .audit-grid + .result-card,
+      .result-card + .audit-grid {
+        margin-top: 0.85rem;
+      }
+
+      .audit-stack {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .proof-list {
+        display: grid;
+        gap: 0.65rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .proof-item {
+        display: grid;
+        gap: 0.25rem;
+        padding: 0.72rem 0.78rem;
+        border: 1px solid rgba(109, 40, 217, 0.12);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .proof-item-title {
+        color: var(--knowidea-text);
+        font-weight: 600;
+      }
+
+      .proof-item-meta {
+        color: var(--knowidea-text-4);
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+
+      .proof-expression {
+        color: var(--knowidea-text-2);
+        font-family: "SFMono-Regular", Menlo, monospace;
+        font-size: 0.88rem;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+
+      .status-pill-row {
+        display: flex;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 0.32rem 0.58rem;
+        border: 1px solid rgba(109, 40, 217, 0.14);
+        border-radius: var(--knowidea-radius-pill);
+        background: rgba(109, 40, 217, 0.08);
+        color: var(--knowidea-text-2);
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+
+      .status-pill.success {
+        border-color: rgba(4, 120, 87, 0.16);
+        background: rgba(4, 120, 87, 0.08);
+        color: var(--knowidea-green);
+      }
+
+      .status-pill.warning {
+        border-color: rgba(180, 83, 9, 0.18);
+        background: rgba(180, 83, 9, 0.08);
+        color: var(--knowidea-gold);
+      }
+
+      .status-pill.danger {
+        border-color: rgba(190, 18, 60, 0.14);
+        background: rgba(190, 18, 60, 0.08);
+        color: var(--knowidea-red);
+      }
+
+      .inline-form,
       .field,
       form {
         display: grid;
-        gap: 0.9rem;
+        gap: 0.95rem;
       }
 
       .field-grid {
@@ -172,570 +804,1061 @@
       }
 
       .field span {
-        font-size: 0.88rem;
-        color: var(--muted);
+        font-size: 0.86rem;
+        font-weight: 500;
+        color: var(--knowidea-text-3);
+      }
+
+      .field small {
+        display: block;
+        margin-top: 0.35rem;
+        color: var(--knowidea-text-4);
+        line-height: 1.55;
       }
 
       input[type="text"],
       textarea {
         width: 100%;
-        padding: 0.8rem 0.9rem;
-        border-radius: 0.9rem;
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.95);
-        color: var(--ink);
-        font: inherit;
+        padding: 0.88rem 0.95rem;
+        border: 1px solid var(--knowidea-border);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.98);
+        color: var(--knowidea-text);
+        transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: rgba(90, 84, 112, 0.46);
+        opacity: 1;
       }
 
       textarea {
-        min-height: 9rem;
+        min-height: 8.5rem;
         resize: vertical;
       }
 
       input[type="text"]:focus,
       textarea:focus {
-        outline: 2px solid rgba(177, 77, 46, 0.22);
-        border-color: rgba(177, 77, 46, 0.5);
+        outline: none;
+        border-color: rgba(124, 58, 237, 0.42);
+        box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
       }
 
-      .button-row {
+      .button-row,
+      .inline-actions {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
         align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
       }
 
-      button {
-        padding: 0.72rem 1.05rem;
+      button,
+      .action-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.55rem;
+        padding: 0.58rem 0.86rem;
+        border-radius: var(--knowidea-radius-pill);
         border: 1px solid transparent;
-        border-radius: 999px;
-        background: var(--accent);
-        color: #fff;
-        cursor: pointer;
-        font: inherit;
-        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+        text-decoration: none;
+        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
       }
 
-      button:hover:not(:disabled) {
+      button:hover:not(:disabled),
+      .action-link:hover {
         transform: translateY(-1px);
-        background: var(--accent-deep);
       }
 
       button:disabled {
         cursor: not-allowed;
-        opacity: 0.56;
+        opacity: 0.55;
       }
 
-      .button-secondary {
-        background: transparent;
-        color: var(--accent-deep);
-        border-color: rgba(177, 77, 46, 0.28);
+      .button-primary {
+        background: linear-gradient(135deg, var(--knowidea-accent) 0%, var(--knowidea-accent-2) 100%);
+        color: #ffffff;
+      }
+
+      .button-primary:hover:not(:disabled) {
+        background: linear-gradient(135deg, var(--knowidea-accent-2) 0%, var(--knowidea-accent-3) 100%);
+      }
+
+      .button-secondary,
+      .action-link {
+        background: rgba(255, 255, 255, 0.76);
+        color: var(--knowidea-text-2);
+        border-color: rgba(109, 40, 217, 0.16);
+      }
+
+      body.app-body .button-secondary,
+      body.app-body .action-link,
+      body.app-body .icon-button,
+      body.app-body .suggestion-button {
+        background: rgba(255, 255, 255, 0.9);
+        border-color: rgba(124, 58, 237, 0.2);
       }
 
       .button-danger {
-        background: transparent;
-        color: var(--danger);
-        border-color: rgba(154, 53, 40, 0.28);
+        background: rgba(190, 18, 60, 0.08);
+        border-color: rgba(190, 18, 60, 0.14);
+        color: var(--knowidea-red);
       }
 
-      .list {
-        margin: 0;
-        padding-left: 1.1rem;
-        color: var(--muted);
+      .button-ghost {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
       }
 
-      .list li + li {
+      .question-block {
+        padding: 1rem;
+        border-radius: 20px;
+        border: 1px solid var(--knowidea-border);
+        background: rgba(247, 245, 252, 0.68);
+      }
+
+      .question-number {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 0.45rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: var(--knowidea-radius-pill);
+        background: rgba(109, 40, 217, 0.1);
+        color: var(--knowidea-accent);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .question-prompt {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--knowidea-text);
+      }
+
+      .suggestion-row {
+        display: grid;
+        gap: 0.34rem;
         margin-top: 0.45rem;
       }
 
-      .workspace-head {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        align-items: start;
+      .suggestion-button {
+        width: 100%;
+        justify-content: flex-start;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--knowidea-text-2);
+        border-color: rgba(109, 40, 217, 0.16);
+        min-height: 2.05rem;
+        padding: 0.36rem 0.58rem;
+        font-size: 0.8rem;
+        text-align: left;
+        line-height: 1.35;
       }
 
-      .workspace-title {
-        max-width: 18ch;
-      }
-
-      .locked-note,
-      .proposal-note {
-        margin-top: 0.75rem;
-        padding: 0.85rem 0.95rem;
-        border-radius: 0.9rem;
-        background: var(--accent-soft);
-        color: var(--accent-deep);
-      }
-
-      .locked-note {
-        background: var(--warning-soft);
-        color: var(--warning);
-      }
-
-      .status-card {
-        background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(255, 245, 236, 0.92));
-      }
-
-      .stage-card {
-        background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(252, 242, 234, 0.9));
-      }
-
-      .transcript-list {
-        display: grid;
-        gap: 0.75rem;
-        list-style: none;
-        margin: 1rem 0 0;
-        padding: 0;
-      }
-
-      .transcript-turn {
-        padding: 0.9rem 1rem;
-        border: 1px solid var(--border);
-        border-radius: 0.95rem;
-        background: rgba(255, 255, 255, 0.7);
-      }
-
-      .transcript-turn.assistant {
-        border-left: 4px solid rgba(177, 77, 46, 0.4);
-      }
-
-      .transcript-turn.user {
-        border-left: 4px solid rgba(33, 95, 76, 0.4);
-      }
-
-      .question-list {
-        display: grid;
-        gap: 0.85rem;
-        margin-top: 1rem;
-      }
-
-      .question-card {
-        padding: 0.9rem 1rem;
-        border: 1px solid var(--border);
-        border-radius: 0.95rem;
-        background: rgba(255, 255, 255, 0.7);
-      }
-
-      .helper {
-        font-size: 0.86rem;
-        color: var(--muted);
+      .suggestion-button.recommended {
+        background: rgba(109, 40, 217, 0.1);
+        color: var(--knowidea-accent);
+        border-color: rgba(109, 40, 217, 0.24);
+        box-shadow: inset 3px 0 0 rgba(109, 40, 217, 0.42);
       }
 
       .code-block {
         margin: 0;
-        padding: 0.9rem 1rem;
+        padding: 0.95rem 1rem 1rem;
         overflow-x: auto;
-        border-radius: 0.95rem;
-        border: 1px solid var(--border);
-        background: rgba(31, 39, 48, 0.04);
+        border-top: 1px solid var(--knowidea-border);
         white-space: pre-wrap;
         font-family: "SFMono-Regular", Menlo, monospace;
+        font-size: 0.88rem;
+        line-height: 1.55;
+        color: var(--knowidea-text-2);
+      }
+
+      .detail-panel {
+        overflow: hidden;
+      }
+
+      .detail-panel + .detail-panel {
+        margin-top: 0.85rem;
+      }
+
+      .detail-panel summary {
+        list-style: none;
+        padding: 0.95rem 1rem;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--knowidea-text-2);
+      }
+
+      .detail-panel summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .status-note,
+      .form-message {
+        min-height: 1.2rem;
         font-size: 0.9rem;
+      }
+
+      .status-note {
+        color: var(--knowidea-text-4);
+        line-height: 1.5;
       }
 
       .form-message {
-        min-height: 1.25rem;
-        color: var(--danger);
-        font-size: 0.9rem;
+        color: var(--knowidea-red);
       }
 
-      @media (max-width: 920px) {
-        .hero-grid,
-        .workspace-grid {
+      .composer-dock {
+        position: fixed;
+        left: 50%;
+        bottom: 0;
+        z-index: 40;
+        width: min(46rem, calc(100vw - 2rem));
+        margin: 0;
+        padding: 0 0 0.45rem;
+        transform: translateX(-50%);
+      }
+
+      .chat-shell.has-clarification-panel .composer-dock {
+        left: calc(50% + ((var(--clarification-panel-width) + var(--clarification-panel-gap)) / 2));
+        width: min(46rem, calc(100vw - var(--clarification-panel-width) - var(--clarification-panel-gap) - 2rem));
+      }
+
+      .composer-card {
+        padding: 0.58rem 0.65rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(109, 40, 217, 0.16);
+        border-radius: 24px;
+        box-shadow: 0 28px 70px rgba(26, 21, 48, 0.16);
+        backdrop-filter: blur(18px);
+      }
+
+      body.app-body .composer-card {
+        background: rgba(255, 255, 255, 0.96);
+        border-color: rgba(219, 211, 255, 0.34);
+        box-shadow:
+          0 28px 80px rgba(5, 4, 16, 0.38),
+          inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+
+      .composer-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 0.85rem;
+      }
+
+      .composer-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--knowidea-text);
+      }
+
+      .composer-copy {
+        margin-top: 0.25rem;
+        color: var(--knowidea-text-4);
+        font-size: 0.92rem;
+        line-height: 1.5;
+      }
+
+      .composer-card textarea {
+        min-height: 2.25rem;
+      }
+
+      .composer-form {
+        display: grid;
+        gap: 0.32rem;
+      }
+
+      .composer-input-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.48rem;
+        align-items: end;
+      }
+
+      .composer-textarea {
+        min-height: 2.25rem;
+        max-height: 9rem;
+        padding: 0.48rem 0.28rem;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+        resize: none;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        line-height: 1.4;
+      }
+
+      .composer-textarea:focus {
+        border-color: transparent;
+        box-shadow: none;
+      }
+
+      .composer-send-button {
+        width: 2.25rem;
+        min-width: 2.25rem;
+        min-height: 2.25rem;
+        padding: 0;
+        border-radius: 50%;
+      }
+
+      .composer-send-button svg,
+      .icon-button svg {
+        width: 1rem;
+        height: 1rem;
+        stroke-width: 2.1;
+      }
+
+      .active-question-zone {
+        display: grid;
+        gap: 0.48rem;
+        padding: 0.68rem 0.75rem;
+        border: 1px solid rgba(109, 40, 217, 0.12);
+        border-radius: 16px;
+        background: rgba(247, 245, 252, 0.74);
+      }
+
+      body.app-body .active-question-zone {
+        background: rgba(247, 245, 252, 0.9);
+        border-color: rgba(124, 58, 237, 0.18);
+      }
+
+      .active-question-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .active-question-top .question-number {
+        margin-bottom: 0;
+      }
+
+      .question-nav {
+        display: flex;
+        gap: 0.28rem;
+      }
+
+      .icon-button {
+        min-width: 2rem;
+        min-height: 2rem;
+        padding: 0;
+        border-color: rgba(109, 40, 217, 0.16);
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--knowidea-text-2);
+      }
+
+      .question-rationale {
+        display: none;
+        color: var(--knowidea-text-3);
+        font-size: 0.84rem;
+        line-height: 1.42;
+      }
+
+      .composer-under-actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .composer-subtle-action {
+        min-height: 1.35rem;
+        padding: 0.1rem 0.34rem;
+        background: transparent;
+        border-color: transparent;
+        color: var(--knowidea-text-4);
+        font-size: 0.72rem;
+      }
+
+      .composer-form .form-message:empty {
+        display: none;
+      }
+
+      .composer-subtle-action:hover:not(:disabled) {
+        background: rgba(109, 40, 217, 0.06);
+        color: var(--knowidea-text-2);
+      }
+
+      .local-answer-turns {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .small-actions {
+        display: flex;
+        gap: 0.65rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .muted {
+        color: var(--knowidea-text-4);
+      }
+
+      .hidden-panel {
+        display: none;
+        margin-top: 1rem;
+      }
+
+      .result-status {
+        display: inline-flex;
+        margin-top: 0.8rem;
+        padding: 0.4rem 0.7rem;
+        border-radius: var(--knowidea-radius-pill);
+        background: rgba(4, 120, 87, 0.08);
+        color: var(--knowidea-green);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 980px) {
+        body.app-body::after {
+          bottom: -19rem;
+          width: 130vw;
+          height: 32rem;
+          opacity: 0.72;
+        }
+
+        .landing-main {
+          gap: 2rem;
+          grid-template-columns: 1fr;
+          align-content: center;
+        }
+
+        .landing-title {
+          max-width: 14ch;
+          font-size: 3.25rem;
+        }
+
+        .setup-main {
+          grid-template-columns: 1fr;
+          padding-top: 2rem;
+        }
+
+        .setup-copy {
+          padding-top: 1rem;
+        }
+
+        .chat-shell.has-clarification-panel {
+          width: min(100vw - 1rem, 100%);
+          display: block;
+        }
+
+        .clarification-side {
+          position: sticky;
+          top: 0;
+          padding: 0.55rem 0.35rem 0;
+          z-index: 35;
+        }
+
+        .clarification-side-card {
+          grid-template-columns: auto minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 0.65rem;
+          padding: 0.5rem 0.65rem;
+          border-radius: var(--knowidea-radius-pill);
+        }
+
+        .clarification-proposal {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .clarification-side-stats {
+          display: flex;
+          gap: 0.45rem;
+          justify-content: flex-end;
+          flex-wrap: wrap;
+        }
+
+        .clarification-side-stat span {
+          display: none;
+        }
+
+        .chat-shell.has-clarification-panel .composer-dock {
+          left: 50%;
+          width: min(46rem, calc(100vw - 2rem));
+        }
+
+        .composer-head {
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 720px) {
+        body.app-body::after {
+          display: none;
+        }
+
+        body.app-body::before {
+          background-size: 16px 16px, 120px 120px, 120px 120px;
+        }
+
+        .landing-main,
+        .setup-main {
+          width: min(100vw - 1rem, 100%);
+        }
+
+        .landing-main {
+          gap: 1.2rem;
+        }
+
+        .landing-title {
+          font-size: 2.45rem;
+        }
+
+        .thread-frame {
+          padding-left: 0.85rem;
+          padding-right: 0.85rem;
+        }
+
+        .message-bubble {
+          width: 100%;
+        }
+
+        .audit-grid,
+        .audit-grid.wide {
           grid-template-columns: 1fr;
         }
 
-        .workspace-head {
-          flex-direction: column;
+        .composer-dock {
+          width: min(100vw - 0.7rem, 100%);
+          padding: 0 0 0.35rem;
+        }
+
+        .composer-card {
+          border-radius: 20px;
+        }
+
+        .active-question-zone {
+          padding: 0.8rem;
+        }
+
+        .composer-input-row {
+          grid-template-columns: minmax(0, 1fr) auto;
+        }
+
+        .composer-send-button {
+          width: 2.25rem;
         }
       }
     </style>
   </head>
-  <body>
+  <body class="{% if view == 'landing' %}landing-body{% else %}app-body{% endif %}">
     {% set active_session = proposal_session.active_session %}
-    <main>
-      <section class="hero">
-        <span class="eyebrow">Phase 6 | Current Phases Roadmap</span>
-        <div class="hero-grid">
-          <div>
-            <h1>Proposal intake now runs a live Stage 1 interview.</h1>
-            <p class="lede">
-              This phase attaches one proposal flow to one active company workspace. The UI sends
-              proposal text into the OpenRouter-backed Stage 1 engine, surfaces business-focused
-              clarification questions inline, and stops once the decision brief is ready to hand
-              off.
-            </p>
-          </div>
-          <article class="card feature">
-            <div class="label">This Phase Adds</div>
-            <ul class="list">
-              <li>One live proposal interview per active company workspace</li>
-              <li>AI reasoning over the proposal before asking follow-up questions</li>
-              <li>Inline clarification in plain business language</li>
-              <li>Locked workspace context until the active interview is reset</li>
-            </ul>
-          </article>
-        </div>
+    {% set has_workspace = workspace.active_company %}
+    {% if view == "landing" %}
+    <main class="landing-main">
+      <section>
+        <h1 class="landing-title">KnowIdea DecisionAI</h1>
+        <p class="landing-subtitle">Take-Home Assessment - Edison Cai 2026</p>
       </section>
 
-      {% if workspace.active_company %}
-      <section class="workspace-grid">
-        <article class="card status-card">
-          <div class="workspace-head">
-            <div>
-              <div class="label">Active Company Workspace</div>
-              <h2 class="workspace-title">{{ workspace.active_company.name }}</h2>
-            </div>
-            {% if active_session %}
-            <span class="pill warning">Interview Locked</span>
-            {% else %}
-            <span class="pill">Workspace Ready</span>
-            {% endif %}
-          </div>
-          <p class="support-copy">
-            Proposal intake is scoped to this company only. Workspace name and sector are treated
-            as pre-grounded identity during Stage 1.
-          </p>
-          <div class="summary-grid" style="margin-top: 1rem;">
-            <div>
-              <div class="label">Company Name</div>
-              <div>{{ workspace.active_company.name }}</div>
-            </div>
-            <div>
-              <div class="label">Sector</div>
-              <div>{{ workspace.active_company.sector }}</div>
-            </div>
-            <div>
-              <div class="label">Description</div>
-              <div>
-                {% if workspace.active_company.description %}
-                {{ workspace.active_company.description }}
-                {% else %}
-                <span class="muted">No short description yet.</span>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-
-          {% if active_session %}
-          <div class="locked-note">
-            The active proposal interview snapshots this company context. Reset the interview before
-            editing the workspace or starting a new proposal.
-          </div>
-          <div class="button-row" style="margin-top: 1rem;">
-            <button type="button" id="proposal-reset-button" class="button-danger">Reset proposal interview</button>
-          </div>
-          <div class="form-message" id="proposal-reset-message" aria-live="polite"></div>
-          {% else %}
-          <div class="button-row" style="margin-top: 1rem;">
-            <button type="button" id="edit-company-toggle" class="button-secondary">Edit company</button>
-          </div>
-          <div id="edit-company-panel" style="display: none; margin-top: 1rem;">
-            <form id="company-edit-form" novalidate>
-              <div class="field-grid">
-                <label class="field">
-                  <span>Company name</span>
-                  <input type="text" name="name" value="{{ workspace.active_company.name }}" autocomplete="organization">
-                </label>
-                <label class="field">
-                  <span>Sector</span>
-                  <input type="text" name="sector" value="{{ workspace.active_company.sector }}" autocomplete="organization-title">
-                </label>
-              </div>
-              <label class="field">
-                <span>Short description (optional)</span>
-                <textarea name="description" placeholder="Add a short description of the company.">{{ workspace.active_company.description or "" }}</textarea>
-              </label>
-              <div class="button-row">
-                <button type="submit">Save company</button>
-                <button type="button" id="edit-company-cancel" class="button-secondary">Cancel</button>
-              </div>
-              <div class="form-message" id="company-edit-message" aria-live="polite"></div>
-            </form>
-          </div>
-          {% endif %}
-        </article>
-
-        <article class="card stage-card">
-          {% if not active_session %}
-          <div class="label">Proposal Intake</div>
-          <h2>Start a Stage 1 interview for {{ workspace.active_company.name }}</h2>
-          <p class="support-copy">
-            Submit one proposal. Stage 1 will build a working understanding, ask up to three
-            proof-focused clarification questions at a time, and stop once no more strong proof-critical
-            questions remain or the 5-round clarification limit is reached.
-          </p>
-          <form id="proposal-start-form" novalidate style="margin-top: 1rem;">
+      <section class="landing-card">
+        <form id="company-create-form" data-success-path="/" novalidate>
+          <div class="field-grid">
             <label class="field">
-              <span>Proposal</span>
-              <textarea
-                name="proposal"
-                placeholder="Example: We want to open a second location this year if the cost and timeline are realistic for our budget."
-              ></textarea>
+              <span>Company name</span>
+              <input type="text" name="name" placeholder="Northwind Software" autocomplete="organization">
             </label>
-            <div class="button-row">
-              <button type="submit">Start Stage 1</button>
-            </div>
-            <div class="form-message" id="proposal-start-message" aria-live="polite"></div>
-          </form>
-          <div class="proposal-note">
-            The workspace description stays display-only in this phase. Only the workspace name,
-            sector, proposal text, and clarification answers shape the Stage 1 decision brief.
-          </div>
-          {% elif active_session.result.outcome == "clarification_needed" %}
-          <div class="label">Live Stage 1 Interview</div>
-          <h2>Clarifications for {{ active_session.proposal_id }}</h2>
-          <p class="support-copy">
-            The AI has already built a lightweight decision brief for this proposal. Answer the current
-            clarification questions, which can be up to three strong proof-input questions. You can choose one of the suggested answers or type your own.
-          </p>
-
-          <div class="question-list">
-            <article class="question-card">
-              <div class="label">Current Proposal</div>
-              <p>{{ active_session.proposal }}</p>
-            </article>
-            <article class="question-card">
-              <div class="label">Decision</div>
-              <p>{{ active_session.result.working_context.decision }}</p>
-            </article>
-            <article class="question-card">
-              <div class="label">Objective</div>
-              <p>{{ active_session.result.working_context.objective }}</p>
-            </article>
-            <article class="question-card">
-              <div class="label">What Still Matters</div>
-              <ul class="list">
-                {% for point in active_session.result.working_context.what_still_matters %}
-                <li>{{ point }}</li>
-                {% endfor %}
-              </ul>
-            </article>
-          </div>
-
-          <ol class="transcript-list">
-            {% for turn in active_session.result.transcript %}
-            <li class="transcript-turn {{ turn.speaker }}">
-              <div class="label">{{ turn.speaker }} | {{ turn.kind }}</div>
-              <p>{{ turn.text }}</p>
-            </li>
-            {% endfor %}
-          </ol>
-
-          <div class="stack" style="margin-top: 1rem;">
-            <div>
-              <div class="label">Current Decision Brief</div>
-              <pre class="code-block">{{ active_session.result.working_context.model_dump(mode='json') | tojson(indent=2) }}</pre>
-            </div>
-          </div>
-
-          <form id="proposal-answer-form" novalidate style="margin-top: 1rem;">
-            <div class="label">Current Clarification Batch</div>
-            {% for question in active_session.result.questions %}
-            <div class="question-card" style="margin-top: 1rem;">
-              <label class="field">
-                <span>{{ question.prompt }}</span>
-                <small>{{ question.rationale }}</small>
-                <textarea data-answer-input="{{ question.id }}" name="{{ question.id }}" placeholder="Type your answer here.">{{ active_session.answers.get(question.id, "") }}</textarea>
-              </label>
-              {% if question.suggested_answers %}
-              <div class="button-row">
-                {% for option in question.suggested_answers %}
-                <button
-                  type="button"
-                  class="button-secondary suggestion-button"
-                  data-answer-target="{{ question.id }}"
-                  data-answer-value="{{ option.value }}"
-                >
-                  {{ option.label }}{% if question.recommended_answer_index == loop.index0 %} (Recommended){% endif %}
-                </button>
-                {% endfor %}
-              </div>
-              {% endif %}
-            </div>
-            {% endfor %}
-            <div class="button-row">
-              <button type="submit">Submit clarification answers</button>
-              <button type="button" id="proposal-skip-button" class="button-secondary">Continue without more clarification</button>
-            </div>
-            <div class="form-message" id="proposal-answer-message" aria-live="polite"></div>
-          </form>
-          {% else %}
-          <div class="label">Stage 1 Ready</div>
-          <h2>{{ active_session.proposal_id }} is ready to hand off</h2>
-          <p class="support-copy">
-            Stage 1 has stopped asking clarification questions. The decision brief and transcript
-            stay attached to this workspace until you reset the proposal session.
-          </p>
-
-          <div class="question-list">
-            <article class="question-card">
-              <div class="label">Current Proposal</div>
-              <p>{{ active_session.proposal }}</p>
-            </article>
-            <article class="question-card">
-              <div class="label">Completion Reason</div>
-              <p>
-                {% if active_session.result.completion_reason == "no_more_questions" %}
-                No additional proof-critical clarification questions remained.
-                {% elif active_session.result.completion_reason == "max_rounds" %}
-                The 5-round clarification limit was reached.
-                {% else %}
-                The user chose to continue without more clarification.
-                {% endif %}
-              </p>
-            </article>
-            <article class="question-card">
-              <div class="label">Readiness Summary</div>
-              <p>{{ active_session.result.readiness_summary }}</p>
-            </article>
-            {% if active_session.result.unresolved_notes %}
-            <article class="question-card">
-              <div class="label">Unresolved Notes</div>
-              <ul class="list">
-                {% for note in active_session.result.unresolved_notes %}
-                <li>{{ note }}</li>
-                {% endfor %}
-              </ul>
-            </article>
-            {% endif %}
-          </div>
-
-          <ol class="transcript-list">
-            {% for turn in active_session.result.transcript %}
-            <li class="transcript-turn {{ turn.speaker }}">
-              <div class="label">{{ turn.speaker }} | {{ turn.kind }}</div>
-              <p>{{ turn.text }}</p>
-            </li>
-            {% endfor %}
-          </ol>
-
-          <div class="stack" style="margin-top: 1rem;">
-            <div>
-              <div class="label">Stage 1 Decision Brief</div>
-              <pre class="code-block">{{ active_session.result.working_context.model_dump(mode='json') | tojson(indent=2) }}</pre>
-            </div>
-          </div>
-          {% if active_session.formalization and active_session.formalization.status == "formalized" %}
-          <div class="stack" style="margin-top: 1rem;">
-            <div class="question-card">
-              <div class="label">Stage 2 Verdict</div>
-              {% if active_session.verification_result %}
-              <p><strong>{{ active_session.verification_result.classification }}</strong></p>
-              {% else %}
-              <p class="muted">Verification result is not available.</p>
-              {% endif %}
-            </div>
-            <div>
-              <div class="label">Stage 2 Proof Draft</div>
-              <pre class="code-block">{{ active_session.formalization.proof_draft.model_dump(mode='json') | tojson(indent=2) }}</pre>
-            </div>
-            <div>
-              <div class="label">Validation Report</div>
-              <pre class="code-block">{{ active_session.formalization.validation_report.model_dump(mode='json') | tojson(indent=2) }}</pre>
-            </div>
-            {% if active_session.formalization.notes %}
-            <article class="question-card">
-              <div class="label">Formalization Notes</div>
-              <ul class="list">
-                {% for note in active_session.formalization.notes %}
-                <li>{{ note }}</li>
-                {% endfor %}
-              </ul>
-            </article>
-            {% endif %}
-            {% if active_session.verification_result %}
-            <div>
-              <div class="label">Deterministic Verification Result</div>
-              <pre class="code-block">{{ active_session.verification_result.model_dump(mode='json', by_alias=True) | tojson(indent=2) }}</pre>
-            </div>
-            {% endif %}
-          </div>
-          {% elif active_session.formalization and active_session.formalization.status == "formalization_error" %}
-          <div class="stack" style="margin-top: 1rem;">
-            <article class="question-card">
-              <div class="label">Stage 2 Handoff Error</div>
-              <p>{{ active_session.formalization.message }}</p>
-            </article>
-            {% if active_session.formalization.proof_draft %}
-            <div>
-              <div class="label">Stage 2 Proof Draft</div>
-              <pre class="code-block">{{ active_session.formalization.proof_draft.model_dump(mode='json') | tojson(indent=2) }}</pre>
-            </div>
-            {% endif %}
-            {% if active_session.formalization.validation_report %}
-            <div>
-              <div class="label">Validation Report</div>
-              <pre class="code-block">{{ active_session.formalization.validation_report.model_dump(mode='json') | tojson(indent=2) }}</pre>
-            </div>
-            {% endif %}
-            {% if active_session.formalization.notes %}
-            <article class="question-card">
-              <div class="label">Formalization Notes</div>
-              <ul class="list">
-                {% for note in active_session.formalization.notes %}
-                <li>{{ note }}</li>
-                {% endfor %}
-              </ul>
-            </article>
-            {% endif %}
-            <div class="button-row">
-              <button type="button" id="proposal-formalize-button" class="button-secondary">Retry Stage 2 Handoff</button>
-            </div>
-            <div class="form-message" id="proposal-formalize-message" aria-live="polite"></div>
-          </div>
-          {% else %}
-          <div class="locked-note">
-            Stage 2 handoff has not produced a result yet.
-          </div>
-          {% endif %}
-          {% endif %}
-        </article>
-      </section>
-      {% else %}
-      <section class="workspace-grid">
-        <article class="card status-card">
-          <div class="label">Create Active Workspace</div>
-          <h2>Set up the company context before proposal intake.</h2>
-          <p class="support-copy">
-            The landing flow captures lightweight company identity only. Proposal submission stays
-            blocked until one active company workspace exists.
-          </p>
-          <form id="company-create-form" novalidate style="margin-top: 1rem;">
-            <div class="field-grid">
-              <label class="field">
-                <span>Company name</span>
-                <input type="text" name="name" placeholder="Northwind Software" autocomplete="organization">
-              </label>
-              <label class="field">
-                <span>Sector</span>
-                <input type="text" name="sector" placeholder="B2B SaaS" autocomplete="organization-title">
-              </label>
-            </div>
             <label class="field">
-              <span>Short description (optional)</span>
-              <textarea name="description" placeholder="Two to three sentences on what the company does."></textarea>
+              <span>Sector</span>
+              <input type="text" name="sector" placeholder="B2B SaaS" autocomplete="organization-title">
             </label>
-            <div class="button-row">
-              <button type="submit">Create company workspace</button>
-            </div>
-            <div class="form-message" id="company-create-message" aria-live="polite"></div>
-          </form>
-        </article>
-
-        <article class="card feature">
-          <div class="label">Why This Gate Exists</div>
-          <ul class="list">
-            <li>Stage 1 runs inside one active company workspace only.</li>
-            <li>Company name and sector are captured before the proposal loop starts.</li>
-            <li>Live proposal sessions are stored in app memory and survive page reloads.</li>
-            <li>No multi-company navigation or cross-workspace switching is introduced in v1.</li>
-          </ul>
-        </article>
+          </div>
+          <label class="field">
+            <span>Short description (optional)</span>
+            <textarea name="description" placeholder="Two to three sentences on what the company does."></textarea>
+          </label>
+          <div class="button-row">
+            <button type="submit" class="button-primary">Create Company website</button>
+          </div>
+          <div class="form-message" id="company-create-message" aria-live="polite"></div>
+        </form>
       </section>
-      {% endif %}
     </main>
+    {% else %}
+    <main class="app-main">
+      <section class="chat-shell{% if active_session and active_session.result.outcome == 'clarification_needed' %} has-clarification-panel{% elif active_session %} stage-complete{% endif %}">
+        {% if active_session and active_session.result.outcome == "clarification_needed" %}
+        <aside class="clarification-side" aria-label="Clarification status">
+          <div class="clarification-side-card">
+            <span class="clarification-stage">Clarifying</span>
+            <div class="clarification-proposal">{{ active_session.proposal_id }}</div>
+            <div class="clarification-side-stats">
+              <div class="clarification-side-stat">
+                <span>Progress</span>
+                <strong id="clarification-side-progress">Question 1 of {{ active_session.result.questions | length }}</strong>
+              </div>
+              <div class="clarification-side-stat">
+                <span>Answers</span>
+                <strong id="clarification-side-answered">0 answered</strong>
+              </div>
+            </div>
+          </div>
+        </aside>
+        {% endif %}
+        <div class="panel thread-frame">
+          <div class="thread-stack" id="thread-viewport">
+            <article class="message assistant">
+              <div class="message-bubble">
+                <div class="message-meta">
+                  <span class="message-chip">Assistant</span>
+                  <span>Workspace context grounded</span>
+                </div>
+                <div class="message-body">
+                  {% if not active_session %}
+                  {{ workspace.active_company.name }} is ready. Send one proposal to start the
+                  Stage 1 interview.
+                  {% else %}
+                  The proposal thread is live for {{ workspace.active_company.name }}.
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+
+            {% if active_session %}
+            <article class="message user">
+              <div class="message-bubble">
+                <div class="message-meta">
+                  <span class="message-chip">User</span>
+                  <span>{{ active_session.proposal_id }}</span>
+                </div>
+                <div class="message-body">{{ active_session.proposal }}</div>
+              </div>
+            </article>
+
+            {% for turn in active_session.result.transcript %}
+            {% if turn.kind != "proposal" %}
+            <article class="message {{ turn.speaker }}">
+              <div class="message-bubble">
+                <div class="message-meta">
+                  {% if turn.speaker == "assistant" %}
+                  <span class="message-chip">Assistant</span>
+                  {% else %}
+                  <span class="message-chip">User</span>
+                  {% endif %}
+                  <span>{{ turn.kind }}</span>
+                  {% if turn.question_id %}
+                  <span>{{ turn.question_id }}</span>
+                  {% endif %}
+                </div>
+                <div class="message-body">{{ turn.text }}</div>
+              </div>
+            </article>
+            {% endif %}
+            {% endfor %}
+
+            {% if active_session.result.outcome == "clarification_needed" %}
+            <div class="local-answer-turns" id="local-answer-turns"></div>
+            {% else %}
+            <article class="message assistant panel-message">
+              <div class="message-bubble">
+                <div class="message-meta">
+                  <span class="message-chip">Decision checked</span>
+                  <span>{{ active_session.proposal_id }}</span>
+                </div>
+                {% set working_context = active_session.result.working_context %}
+                {% set proof_draft = active_session.formalization.proof_draft if active_session.formalization and active_session.formalization.proof_draft else None %}
+                {% set validation_report = active_session.formalization.validation_report if active_session.formalization and active_session.formalization.validation_report else None %}
+                <h2 class="panel-title">{{ active_session.workspace_company.name }}</h2>
+                {% if active_session.verification_result %}
+                <div class="decision-summary{% if active_session.verification_result.classification.value == 'UNDECIDABLE' %} needs-review{% endif %}">
+                  <div class="decision-verdict">
+                    <span class="result-label">Verdict</span>
+                    <strong>{{ active_session.verification_result.classification.value }}</strong>
+                  </div>
+                  {% if active_session.verification_result.classification.value == "UNDECIDABLE" and active_session.verification_result.pivotal_assumption %}
+                  <p>{{ active_session.verification_result.pivotal_assumption }}</p>
+                  {% elif active_session.verification_result.refutation.failure_conditions %}
+                  <p>{{ active_session.verification_result.refutation.failure_conditions }}</p>
+                  {% elif proof_draft %}
+                  <p>{{ proof_draft.refutation_attempt }}</p>
+                  {% endif %}
+                </div>
+                {% elif active_session.formalization and active_session.formalization.status == "formalization_error" %}
+                <div class="decision-summary needs-review">
+                  <div class="decision-verdict">
+                    <span class="result-label">Decision check</span>
+                    <strong>Needs review</strong>
+                  </div>
+                  <p>{{ active_session.formalization.message }}</p>
+                </div>
+                {% else %}
+                <div class="decision-summary needs-review">
+                  <div class="decision-verdict">
+                    <span class="result-label">Decision check</span>
+                    <strong>Still running</strong>
+                  </div>
+                  <p>Stage 1 is complete. The decision check has not returned yet.</p>
+                </div>
+                {% endif %}
+
+                <div class="audit-grid wide">
+                  <section class="result-section">
+                    <h3 class="result-section-title">Understanding</h3>
+                    <div class="result-card">
+                      <span class="result-label">Decision</span>
+                      <div>{{ working_context.decision }}</div>
+                    </div>
+                    <div class="result-card" style="margin-top: 0.85rem;">
+                      <span class="result-label">Objective</span>
+                      <div>{{ working_context.objective }}</div>
+                    </div>
+                  </section>
+
+                  <section class="result-section">
+                    <h3 class="result-section-title">Evidence</h3>
+                    {% if proof_draft and proof_draft.premises %}
+                    <ul class="proof-list">
+                      {% for premise in proof_draft.premises[:3] %}
+                      <li class="proof-item">
+                        <span class="proof-item-title">{{ premise.statement }}</span>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% elif working_context.what_we_know %}
+                    <div class="result-card">
+                      <ul class="list" style="margin-top: 0;">
+                        {% for item in working_context.what_we_know[:3] %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    {% else %}
+                    <div class="muted">No explicit premises were captured.</div>
+                    {% endif %}
+                  </section>
+                </div>
+
+                <section class="result-section">
+                  <h3 class="result-section-title">Assumptions / constraints</h3>
+                  {% if working_context.constraints_mentioned or active_session.result.unresolved_notes or (proof_draft and proof_draft.unresolved_gaps) or (active_session.verification_result and active_session.verification_result.load_bearing_assumptions) %}
+                  <div class="audit-grid">
+                    <div class="result-card">
+                      <span class="result-label">Constraints</span>
+                      {% if working_context.constraints_mentioned %}
+                      <ul class="list" style="margin-top: 0;">
+                        {% for item in working_context.constraints_mentioned %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% else %}
+                      <div class="muted">No explicit constraints were captured.</div>
+                      {% endif %}
+                    </div>
+                    <div class="result-card">
+                      <span class="result-label">Assumptions</span>
+                      {% if active_session.verification_result and active_session.verification_result.load_bearing_assumptions %}
+                      <ul class="list" style="margin-top: 0;">
+                        {% for assumption in active_session.verification_result.load_bearing_assumptions %}
+                        <li>{{ assumption.statement }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% else %}
+                      <div class="muted">No load-bearing assumptions were accepted by verification.</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% if active_session.result.unresolved_notes or (proof_draft and proof_draft.unresolved_gaps) %}
+                  <div class="result-card" style="margin-top: 0.85rem;">
+                    <span class="result-label">Follow-up notes</span>
+                    <ul class="list" style="margin-top: 0;">
+                      {% for note in active_session.result.unresolved_notes %}
+                      <li>{{ note }}</li>
+                      {% endfor %}
+                      {% if proof_draft %}
+                      {% for gap in proof_draft.unresolved_gaps %}
+                      <li>{{ gap }}</li>
+                      {% endfor %}
+                      {% endif %}
+                    </ul>
+                  </div>
+                  {% endif %}
+                  {% else %}
+                  <div class="muted">No explicit assumptions, constraints, or unresolved gaps were carried forward.</div>
+                  {% endif %}
+                </section>
+
+                {% if proof_draft and active_session.verification_result and active_session.verification_result.classification.value == "UNDECIDABLE" %}
+                <details class="detail-panel" style="margin-top: 1rem;">
+                  <summary>Why this is undecidable</summary>
+                  <div class="result-section" style="margin: 0 1rem 1rem;">
+                    <div class="audit-grid">
+                      {% if active_session.verification_result.refutation.failure_conditions %}
+                      <div class="result-card">
+                        <span class="result-label">Blocking reason</span>
+                        <div>{{ active_session.verification_result.refutation.failure_conditions }}</div>
+                      </div>
+                      {% endif %}
+                      {% if active_session.verification_result.pivotal_assumption %}
+                      <div class="result-card">
+                        <span class="result-label">Pivotal assumption</span>
+                        <div>{{ active_session.verification_result.pivotal_assumption }}</div>
+                      </div>
+                      {% endif %}
+                      {% if active_session.verification_result.flip_threshold %}
+                      <div class="result-card">
+                        <span class="result-label">Flip threshold</span>
+                        <div>{{ active_session.verification_result.flip_threshold }}</div>
+                      </div>
+                      {% endif %}
+                    </div>
+                    {% if validation_report and validation_report.issues %}
+                    <ul class="proof-list" style="margin-top: 0.85rem;">
+                      {% for issue in validation_report.issues %}
+                      <li class="proof-item">
+                        <span class="proof-item-title">{{ issue.message }}</span>
+                        {% if issue.subject_id %}
+                        <span class="proof-item-meta">Related step: {{ issue.subject_id }}</span>
+                        {% endif %}
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+                  </div>
+                </details>
+                {% endif %}
+
+                {% if validation_report %}
+                <details class="detail-panel">
+                  <summary>Verification details</summary>
+                  <div class="result-section" style="margin: 0 1rem 1rem;">
+                    <div class="audit-grid">
+                      <div class="result-card">
+                        <span class="result-label">Final classification</span>
+                        <div>{{ validation_report.final_classification.value }}</div>
+                      </div>
+                      <div class="result-card">
+                        <span class="result-label">Proof accepted</span>
+                        <div>{{ "Yes" if validation_report.accepted else "No" }}</div>
+                      </div>
+                      {% if proof_draft %}
+                      <div class="result-card">
+                        <span class="result-label">Model verdict</span>
+                        <div>{{ proof_draft.proposed_verdict.value }}</div>
+                      </div>
+                      {% endif %}
+                    </div>
+                    {% if active_session.verification_result and active_session.verification_result.binding_constraints %}
+                    <h3 class="result-section-title" style="margin-top: 1rem;">Binding constraints</h3>
+                    <ul class="proof-list">
+                      {% for constraint in active_session.verification_result.binding_constraints %}
+                      <li class="proof-item">
+                        <span class="proof-item-title">{{ constraint.id }}</span>
+                        <span class="proof-item-meta">{{ constraint.why }}</span>
+                        <span class="status-pill{% if constraint.passed %} success{% else %} danger{% endif %}">
+                          {{ "Pass" if constraint.passed else "Fail" }}
+                        </span>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    {% if active_session.verification_result and active_session.verification_result.derivation %}
+                    <h3 class="result-section-title" style="margin-top: 1rem;">Derivation</h3>
+                    <ul class="proof-list">
+                      {% for step in active_session.verification_result.derivation %}
+                      <li class="proof-item">
+                        <span class="proof-item-title">{{ loop.index }}. {{ step.rule | replace("_", " ") }}</span>
+                        <span class="proof-expression">{{ step.result }}</span>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    {% if proof_draft and proof_draft.comparisons %}
+                    <h3 class="result-section-title" style="margin-top: 1rem;">Comparisons</h3>
+                    <ul class="proof-list">
+                      {% for comparison in proof_draft.comparisons %}
+                      <li class="proof-item">
+                        <span class="proof-item-title">{{ comparison.id }}</span>
+                        <span class="proof-expression">{{ comparison.lhs.value }} {{ comparison.operator }} {{ comparison.rhs.value }}</span>
+                        <span class="proof-item-meta">
+                          {% if comparison.id in validation_report.checked_comparison_ids %}
+                          Checked by verifier
+                          {% else %}
+                          Not accepted by verifier
+                          {% endif %}
+                        </span>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    {% if proof_draft and proof_draft.claim %}
+                    <div class="result-card" style="margin-top: 0.85rem;">
+                      <span class="result-label">Claim</span>
+                      <div>{{ proof_draft.claim }}</div>
+                    </div>
+                    {% endif %}
+
+                    {% if proof_draft and proof_draft.refutation_attempt %}
+                    <div class="result-card" style="margin-top: 0.85rem;">
+                      <span class="result-label">Refutation attempt</span>
+                      <div>{{ proof_draft.refutation_attempt }}</div>
+                    </div>
+                    {% endif %}
+
+                    {% if validation_report.downgraded_from_model_verdict %}
+                    <div class="status-pill-row" style="margin-top: 0.85rem;">
+                      <span class="status-pill warning">Verifier adjusted the model verdict</span>
+                    </div>
+                    {% endif %}
+                    {% if validation_report.issues %}
+                    <h3 class="result-section-title" style="margin-top: 1rem;">Issues</h3>
+                    <ul class="proof-list">
+                      {% for issue in validation_report.issues %}
+                      <li class="proof-item">
+                        <span class="proof-item-title">{{ issue.message }}</span>
+                        <span class="proof-item-meta">
+                          {{ issue.code | replace("_", " ") | title }}{% if issue.subject_id %} - {{ issue.subject_id }}{% endif %}
+                        </span>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="panel-copy">No validation issues were reported.</p>
+                    {% endif %}
+                  </div>
+                </details>
+                {% elif active_session.formalization and active_session.formalization.status == "formalization_error" %}
+                <div class="result-card" style="margin-top: 0.95rem;">
+                  <span class="result-label">What happened</span>
+                  <div>{{ active_session.formalization.message }}</div>
+                </div>
+                {% else %}
+                <div class="result-card" style="margin-top: 0.95rem;">
+                  <span class="result-label">Decision check</span>
+                  <div>The decision check has not returned yet.</div>
+                </div>
+                {% endif %}
+                <div class="inline-actions" style="margin-top: 1rem;">
+                  <button type="button" id="proposal-reset-button" class="button-secondary">Reset</button>
+                  {% if active_session.formalization and active_session.formalization.status == "formalization_error" %}
+                  <button type="button" id="proposal-formalize-button" class="button-secondary">Retry decision check</button>
+                  {% endif %}
+                </div>
+                {% if active_session.formalization and active_session.formalization.status == "formalization_error" %}
+                <div class="form-message" id="proposal-formalize-message" aria-live="polite"></div>
+                {% endif %}
+                <div class="form-message" id="proposal-reset-message" aria-live="polite"></div>
+              </div>
+            </article>
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+
+        {% if not active_session or active_session.result.outcome == "clarification_needed" %}
+        <div class="composer-dock">
+          <div class="composer-card">
+            {% if not active_session %}
+            <form id="proposal-start-form" class="composer-form" novalidate>
+              <div class="composer-input-row">
+                <textarea
+                  class="composer-textarea"
+                  name="proposal"
+                  rows="1"
+                  placeholder="Send a proposal for {{ workspace.active_company.name }}..."
+                ></textarea>
+                <button type="submit" class="button-primary composer-send-button" aria-label="Send proposal" title="Send proposal">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="m13 6 6 6-6 6"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="form-message" id="proposal-start-message" aria-live="polite"></div>
+            </form>
+            {% elif active_session.result.outcome == "clarification_needed" %}
+            <section class="active-question-zone" id="active-question-zone">
+              <div class="active-question-top">
+                <span class="question-number" id="active-question-progress">Question</span>
+                <div class="question-nav" aria-label="Clarification question navigation">
+                  <button type="button" class="icon-button" id="question-prev-button" aria-label="Previous question" title="Previous question">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m15 18-6-6 6-6"></path>
+                    </svg>
+                  </button>
+                  <button type="button" class="icon-button" id="question-next-button" aria-label="Next question" title="Next question">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m9 18 6-6-6-6"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <div class="question-prompt" id="active-question-prompt"></div>
+                <div class="question-rationale" id="active-question-rationale"></div>
+              </div>
+              <div class="suggestion-row" id="clarification-suggestions"></div>
+            </section>
+            <form id="clarification-composer-form" class="composer-form" novalidate>
+              <div class="composer-input-row">
+                <textarea
+                  class="composer-textarea"
+                  id="clarification-composer-input"
+                  rows="1"
+                  placeholder="Type an answer, or choose a suggestion..."
+                ></textarea>
+                <button type="submit" class="button-primary composer-send-button" id="clarification-submit-button" aria-label="Save answer" title="Save answer">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="m13 6 6 6-6 6"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="composer-under-actions">
+                <button type="button" id="proposal-skip-button" class="composer-subtle-action" aria-label="Skip remaining clarification">Skip</button>
+              </div>
+              <div class="form-message" id="proposal-answer-message" aria-live="polite"></div>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </section>
+    </main>
+    {% endif %}
+
+    {% if active_session and active_session.result.outcome == "clarification_needed" %}
+    <script id="clarification-data" type="application/json">
+      {
+        "questions": [
+          {% for question in active_session.result.questions %}
+          {
+            "id": {{ question.id | tojson }},
+            "prompt": {{ question.prompt | tojson }},
+            "rationale": {{ question.rationale | tojson }},
+            "recommendedAnswerIndex": {{ question.recommended_answer_index }},
+            "answer": {{ active_session.answers.get(question.id, "") | tojson }},
+            "suggestedAnswers": [
+              {% for option in question.suggested_answers %}
+              {
+                "label": {{ option.label | tojson }},
+                "value": {{ option.value | tojson }}
+              }{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ]
+          }{% if not loop.last %},{% endif %}
+          {% endfor %}
+        ]
+      }
+    </script>
+    {% endif %}
 
     <script>
       function extractErrorMessage(payload) {
@@ -748,8 +1871,60 @@
         return "Request failed.";
       }
 
-      async function sendJson(url, method, payload, messageElement) {
-        messageElement.textContent = "";
+      function createPendingChatMessage(pendingText) {
+        const viewport = document.getElementById("thread-viewport");
+        if (!viewport || !pendingText) {
+          return null;
+        }
+
+        const article = document.createElement("article");
+        article.className = "message assistant pending";
+        article.setAttribute("aria-live", "polite");
+
+        const cluster = document.createElement("div");
+        cluster.className = "message-cluster";
+
+        const bubble = document.createElement("div");
+        bubble.className = "message-bubble";
+
+        const meta = document.createElement("div");
+        meta.className = "message-meta";
+
+        const chip = document.createElement("span");
+        chip.className = "message-chip";
+        chip.textContent = "Assistant";
+
+        const label = document.createElement("span");
+        label.textContent = pendingText.replace(/\.+$/, "");
+
+        const body = document.createElement("div");
+        body.className = "message-body";
+
+        const text = document.createElement("span");
+        text.textContent = pendingText;
+
+        const pulse = document.createElement("span");
+        pulse.className = "message-pulse";
+        pulse.setAttribute("aria-hidden", "true");
+        for (let index = 0; index < 3; index += 1) {
+          pulse.append(document.createElement("span"));
+        }
+
+        meta.append(chip, label);
+        body.append(text, pulse);
+        bubble.append(body);
+        cluster.append(meta, bubble);
+        article.append(cluster);
+        viewport.append(article);
+        article.scrollIntoView({block: "end"});
+        return article;
+      }
+
+      async function sendJson(url, method, payload, messageElement, pendingText, successPath) {
+        const pendingMessage = createPendingChatMessage(pendingText);
+        if (messageElement) {
+          messageElement.textContent = pendingMessage ? "" : pendingText || "";
+        }
         try {
           const options = {
             method,
@@ -761,13 +1936,19 @@
           const response = await fetch(url, options);
           const data = await response.json();
           if (!response.ok) {
-            messageElement.textContent = extractErrorMessage(data);
+            pendingMessage?.remove();
+            if (messageElement) {
+              messageElement.textContent = extractErrorMessage(data);
+            }
             return false;
           }
-          window.location.reload();
+          window.location.assign(successPath || window.location.pathname);
           return true;
         } catch (error) {
-          messageElement.textContent = "Request failed.";
+          pendingMessage?.remove();
+          if (messageElement) {
+            messageElement.textContent = "Request failed.";
+          }
           return false;
         }
       }
@@ -781,7 +1962,7 @@
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
           const payload = Object.fromEntries(new FormData(form).entries());
-          await sendJson("/api/workspace", "PUT", payload, message);
+          await sendJson("/api/workspace", "PUT", payload, message, "Saving...", form.dataset.successPath);
         });
       }
 
@@ -794,38 +1975,286 @@
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
           const proposal = String(new FormData(form).get("proposal") || "");
-          await sendJson("/api/workspace/proposal", "POST", {proposal}, message);
+          if (!proposal.trim()) {
+            message.textContent = "Type a proposal first.";
+            return;
+          }
+          await sendJson("/api/workspace/proposal", "POST", {proposal}, message, "Planning...");
         });
       }
 
-      function bindProposalAnswerForm() {
-        const form = document.getElementById("proposal-answer-form");
-        if (!form) {
+      function autoResizeTextarea(textarea) {
+        if (!textarea) {
           return;
         }
-        const message = document.getElementById("proposal-answer-message");
-        form.addEventListener("submit", async (event) => {
-          event.preventDefault();
-          const answers = Object.fromEntries(new FormData(form).entries());
-          await sendJson("/api/workspace/proposal/answers", "POST", {answers}, message);
+        textarea.style.height = "auto";
+        textarea.style.height = `${textarea.scrollHeight}px`;
+        syncComposerHeight();
+      }
+
+      function syncComposerHeight() {
+        const dock = document.querySelector(".composer-dock");
+        if (!dock || dock.hidden) {
+          document.documentElement.style.setProperty("--composer-height", "0px");
+          return;
+        }
+        document.documentElement.style.setProperty("--composer-height", `${Math.ceil(dock.offsetHeight)}px`);
+      }
+
+      function setComposerDockHidden(hidden) {
+        const dock = document.querySelector(".composer-dock");
+        if (!dock) {
+          return;
+        }
+        dock.hidden = hidden;
+        dock.setAttribute("aria-hidden", String(hidden));
+        syncComposerHeight();
+      }
+
+      function bindAutoResizeTextareas() {
+        document.querySelectorAll(".composer-textarea").forEach((textarea) => {
+          autoResizeTextarea(textarea);
+          textarea.addEventListener("input", () => autoResizeTextarea(textarea));
         });
       }
 
-      function bindSuggestionButtons() {
-        document.querySelectorAll(".suggestion-button").forEach((button) => {
-          button.addEventListener("click", () => {
-            const target = button.getAttribute("data-answer-target");
-            const value = button.getAttribute("data-answer-value") || "";
-            if (!target) {
-              return;
-            }
-            const input = document.querySelector(`[data-answer-input="${target}"]`);
-            if (input) {
-              input.value = value;
-              input.focus();
-            }
-          });
+      function findNextUnansweredIndex(questions, draftAnswers, startIndex) {
+        for (let offset = 1; offset <= questions.length; offset += 1) {
+          const index = (startIndex + offset) % questions.length;
+          const answer = String(draftAnswers[questions[index].id] || "").trim();
+          if (!answer) {
+            return index;
+          }
+        }
+        return startIndex;
+      }
+
+      function bindClarificationComposer() {
+        const dataElement = document.getElementById("clarification-data");
+        const form = document.getElementById("clarification-composer-form");
+        if (!dataElement || !form) {
+          return;
+        }
+
+        const payload = JSON.parse(dataElement.textContent || "{}");
+        const questions = Array.isArray(payload.questions) ? payload.questions : [];
+        if (!questions.length) {
+          return;
+        }
+
+        const draftAnswers = {};
+        questions.forEach((question) => {
+          const answer = String(question.answer || "").trim();
+          if (answer) {
+            draftAnswers[question.id] = answer;
+          }
         });
+
+        const progress = document.getElementById("active-question-progress");
+        const prompt = document.getElementById("active-question-prompt");
+        const rationale = document.getElementById("active-question-rationale");
+        const suggestions = document.getElementById("clarification-suggestions");
+        const input = document.getElementById("clarification-composer-input");
+        const submit = document.getElementById("clarification-submit-button");
+        const message = document.getElementById("proposal-answer-message");
+        const prevButton = document.getElementById("question-prev-button");
+        const nextButton = document.getElementById("question-next-button");
+        const answerTurns = document.getElementById("local-answer-turns");
+        const sideProgress = document.getElementById("clarification-side-progress");
+        const sideAnswered = document.getElementById("clarification-side-answered");
+        let activeQuestionIndex = questions.findIndex((question) => !draftAnswers[question.id]);
+        let isSavingSuggestion = false;
+        if (activeQuestionIndex < 0) {
+          activeQuestionIndex = 0;
+        }
+
+        function answeredCount(includeInput) {
+          return questions.filter((question, index) => {
+            if (includeInput && index === activeQuestionIndex) {
+              return String(input.value || "").trim();
+            }
+            return String(draftAnswers[question.id] || "").trim();
+          }).length;
+        }
+
+        function allAnswered() {
+          return answeredCount(false) === questions.length;
+        }
+
+        function updateSidePanelStatus(includeInput) {
+          const progressLabel = questions.length > 1
+            ? `Question ${activeQuestionIndex + 1} of ${questions.length}`
+            : "Question 1 of 1";
+          const answerTotal = answeredCount(includeInput);
+          if (sideProgress) {
+            sideProgress.textContent = progressLabel;
+          }
+          if (sideAnswered) {
+            sideAnswered.textContent = `${answerTotal} answered`;
+          }
+        }
+
+        function cacheCurrentDraft() {
+          const question = questions[activeQuestionIndex];
+          const answer = String(input.value || "").trim();
+          if (answer) {
+            draftAnswers[question.id] = answer;
+          } else {
+            delete draftAnswers[question.id];
+          }
+        }
+
+        function renderLocalAnswerTurns() {
+          if (!answerTurns) {
+            return;
+          }
+          answerTurns.replaceChildren();
+        }
+
+        async function saveSuggestedAnswer(questionId, answer) {
+          if (isSavingSuggestion) {
+            return;
+          }
+
+          const questionIndex = questions.findIndex((question) => question.id === questionId);
+          if (questionIndex < 0) {
+            return;
+          }
+
+          isSavingSuggestion = true;
+          const normalizedAnswer = String(answer || "").trim();
+          if (!normalizedAnswer) {
+            message.textContent = "Choose a suggestion with an answer.";
+            isSavingSuggestion = false;
+            return;
+          }
+
+          draftAnswers[questionId] = normalizedAnswer;
+          input.value = "";
+          autoResizeTextarea(input);
+          message.textContent = "";
+          renderLocalAnswerTurns();
+
+          if (!allAnswered()) {
+            activeQuestionIndex = findNextUnansweredIndex(questions, draftAnswers, questionIndex);
+            renderQuestion();
+            isSavingSuggestion = false;
+            return;
+          }
+
+          setComposerDockHidden(true);
+          const submitted = await sendJson(
+            "/api/workspace/proposal/answers",
+            "POST",
+            {answers: draftAnswers},
+            message,
+            "Planning...",
+          );
+          if (!submitted) {
+            setComposerDockHidden(false);
+          }
+          isSavingSuggestion = false;
+        }
+
+        function renderQuestion() {
+          const question = questions[activeQuestionIndex];
+          progress.textContent = questions.length > 1
+            ? `Question ${activeQuestionIndex + 1} of ${questions.length}`
+            : "Question 1 of 1";
+          prompt.textContent = question.prompt;
+          rationale.textContent = question.rationale;
+          input.value = draftAnswers[question.id] || "";
+          input.placeholder = "Type an answer, or choose a suggestion...";
+          autoResizeTextarea(input);
+
+          suggestions.replaceChildren();
+          const orderedOptions = question.suggestedAnswers
+            .map((option, index) => ({
+              ...option,
+              isRecommended: index === question.recommendedAnswerIndex,
+            }))
+            .sort((left, right) => Number(right.isRecommended) - Number(left.isRecommended));
+          orderedOptions.forEach((option) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "button-secondary suggestion-button";
+            if (option.isRecommended) {
+              button.classList.add("recommended");
+            }
+            button.textContent = option.isRecommended ? `${option.label} (Recommended)` : option.label;
+            if (option.isRecommended) {
+              button.setAttribute("aria-label", `Recommended: ${option.label}`);
+              button.setAttribute("title", "Recommended");
+            }
+            button.addEventListener("click", async () => {
+              await saveSuggestedAnswer(question.id, option.value);
+            });
+            suggestions.append(button);
+          });
+
+          prevButton.disabled = activeQuestionIndex === 0;
+          nextButton.disabled = activeQuestionIndex === questions.length - 1;
+          const submitLabel = allAnswered() ? "Submit answers" : "Save answer";
+          submit.setAttribute("aria-label", submitLabel);
+          submit.setAttribute("title", submitLabel);
+          renderLocalAnswerTurns();
+          updateSidePanelStatus(false);
+          syncComposerHeight();
+        }
+
+        input.addEventListener("input", () => {
+          updateSidePanelStatus(true);
+        });
+
+        prevButton.addEventListener("click", () => {
+          cacheCurrentDraft();
+          activeQuestionIndex = Math.max(0, activeQuestionIndex - 1);
+          message.textContent = "";
+          renderQuestion();
+        });
+
+        nextButton.addEventListener("click", () => {
+          cacheCurrentDraft();
+          activeQuestionIndex = Math.min(questions.length - 1, activeQuestionIndex + 1);
+          message.textContent = "";
+          renderQuestion();
+        });
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          cacheCurrentDraft();
+          renderLocalAnswerTurns();
+
+          const question = questions[activeQuestionIndex];
+          if (!draftAnswers[question.id]) {
+            message.textContent = "Type an answer or choose a suggestion.";
+            renderQuestion();
+            input.focus();
+            return;
+          }
+
+          if (!allAnswered()) {
+            activeQuestionIndex = findNextUnansweredIndex(questions, draftAnswers, activeQuestionIndex);
+            message.textContent = "";
+            renderQuestion();
+            input.focus();
+            return;
+          }
+
+          setComposerDockHidden(true);
+          const submitted = await sendJson(
+            "/api/workspace/proposal/answers",
+            "POST",
+            {answers: draftAnswers},
+            message,
+            "Planning...",
+          );
+          if (!submitted) {
+            setComposerDockHidden(false);
+          }
+        });
+
+        renderQuestion();
       }
 
       function bindProposalSkip() {
@@ -835,7 +2264,7 @@
         }
         const message = document.getElementById("proposal-answer-message");
         button.addEventListener("click", async () => {
-          await sendJson("/api/workspace/proposal/skip", "POST", undefined, message);
+          await sendJson("/api/workspace/proposal/skip", "POST", undefined, message, "Thinking...");
         });
       }
 
@@ -846,7 +2275,7 @@
         }
         const message = document.getElementById("proposal-reset-message");
         button.addEventListener("click", async () => {
-          await sendJson("/api/workspace/proposal", "DELETE", undefined, message);
+          await sendJson("/api/workspace/proposal", "DELETE", undefined, message, "Resetting...");
         });
       }
 
@@ -857,38 +2286,29 @@
         }
         const message = document.getElementById("proposal-formalize-message");
         button.addEventListener("click", async () => {
-          await sendJson("/api/workspace/proposal/formalize", "POST", undefined, message);
+          await sendJson("/api/workspace/proposal/formalize", "POST", undefined, message, "Thinking...");
         });
       }
 
-      const editToggle = document.getElementById("edit-company-toggle");
-      const editPanel = document.getElementById("edit-company-panel");
-      const editCancel = document.getElementById("edit-company-cancel");
-
-      if (editToggle && editPanel) {
-        editToggle.addEventListener("click", () => {
-          editPanel.style.display = "block";
-        });
-      }
-
-      if (editCancel && editPanel) {
-        editCancel.addEventListener("click", () => {
-          editPanel.style.display = "none";
-          const message = document.getElementById("company-edit-message");
-          if (message) {
-            message.textContent = "";
-          }
-        });
+      function scrollThreadToBottom() {
+        const viewport = document.getElementById("thread-viewport");
+        const hasActiveConversation = document.querySelector(".message.user");
+        if (!viewport || !hasActiveConversation) {
+          return;
+        }
+        viewport.lastElementChild?.scrollIntoView({block: "end"});
       }
 
       bindWorkspaceForm("company-create-form", "company-create-message");
-      bindWorkspaceForm("company-edit-form", "company-edit-message");
       bindProposalStartForm();
-      bindProposalAnswerForm();
-      bindSuggestionButtons();
+      bindAutoResizeTextareas();
+      bindClarificationComposer();
       bindProposalSkip();
       bindProposalReset();
       bindProposalFormalize();
+      scrollThreadToBottom();
+      syncComposerHeight();
+      window.addEventListener("resize", syncComposerHeight);
     </script>
   </body>
 </html>

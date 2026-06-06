@@ -284,9 +284,10 @@ def test_web_workspace_auto_formalizes_after_answers_and_skip(
 
     ready_view = client.get("/")
     assert ready_view.status_code == 200
-    assert "Stage 2 Verdict" in ready_view.text
-    assert "Stage 2 Proof Draft" in ready_view.text
-    assert "Validation Report" in ready_view.text
+    assert "Northwind Software" in ready_view.text
+    assert "Why this is undecidable" in ready_view.text
+    assert "Verification details" in ready_view.text
+    assert "Decision result for" not in ready_view.text
 
     reset_response = client.delete("/api/workspace/proposal")
     assert reset_response.status_code == 200

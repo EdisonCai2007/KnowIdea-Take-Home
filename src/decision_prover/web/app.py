@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 
 from .. import __version__
@@ -303,12 +303,12 @@ def create_app(
         if active_session is None:
             raise HTTPException(
                 status_code=409,
-                detail="Start a proposal interview before running Stage 2 handoff.",
+                detail="Start a proposal interview before checking the decision.",
             )
         if active_session.result.outcome != "stage1_ready":
             raise HTTPException(
                 status_code=409,
-                detail="The active proposal must be Stage 1 ready before running Stage 2 handoff.",
+                detail="The active proposal must finish Stage 1 before checking the decision.",
             )
 
         app.state.proposal_session = WorkspaceProposalSessionState(
@@ -347,12 +347,27 @@ def create_app(
         except Stage1InputError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    @app.get("/", response_class=HTMLResponse)
-    def index(request: Request) -> HTMLResponse:
+    @app.get("/landing", response_class=HTMLResponse)
+    def landing(request: Request) -> HTMLResponse:
         return templates.TemplateResponse(
             request=request,
             name="index.html",
             context={
+                "view": "landing",
+                "workspace": app.state.workspace,
+                "proposal_session": app.state.proposal_session,
+            },
+        )
+
+    @app.get("/", response_class=HTMLResponse)
+    def index(request: Request) -> Response:
+        if app.state.workspace.active_company is None:
+            return RedirectResponse(url="/landing", status_code=303)
+        return templates.TemplateResponse(
+            request=request,
+            name="index.html",
+            context={
+                "view": "chat",
                 "workspace": app.state.workspace,
                 "proposal_session": app.state.proposal_session,
             },

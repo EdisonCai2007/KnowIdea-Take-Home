@@ -462,12 +462,49 @@ def _generate_clarifications(
             id=_question_id(proposal_id, round_number, index),
             prompt=question.prompt,
             rationale=question.rationale,
-            suggested_answers=question.suggested_answers,
+            suggested_answers=_normalize_suggested_answers(question.suggested_answers),
             recommended_answer_index=question.recommended_answer_index,
             allow_custom_answer=True,
         )
         for index, question in enumerate(output.questions, start=1)
     ]
+
+
+def _normalize_suggested_answers(
+    suggested_answers: list[Stage1SuggestedAnswer],
+) -> list[Stage1SuggestedAnswer]:
+    label_counts: dict[str, int] = {}
+    value_counts: dict[str, int] = {}
+    for answer in suggested_answers:
+        label_counts[_answer_display_key(answer.label)] = label_counts.get(
+            _answer_display_key(answer.label), 0
+        ) + 1
+        value_counts[_answer_display_key(answer.value)] = value_counts.get(
+            _answer_display_key(answer.value), 0
+        ) + 1
+
+    normalized_answers: list[Stage1SuggestedAnswer] = []
+    for index, answer in enumerate(suggested_answers, start=1):
+        label_key = _answer_display_key(answer.label)
+        value_key = _answer_display_key(answer.value)
+        if label_counts.get(label_key, 0) == 1:
+            normalized_answers.append(answer)
+            continue
+
+        if value_counts.get(value_key, 0) == 1:
+            normalized_answers.append(
+                Stage1SuggestedAnswer(label=answer.value, value=answer.value)
+            )
+            continue
+
+        normalized_answers.append(
+            Stage1SuggestedAnswer(label=f"{answer.value} (option {index})", value=answer.value)
+        )
+    return normalized_answers
+
+
+def _answer_display_key(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip().casefold())
 
 
 def _update_working_context(
@@ -751,6 +788,8 @@ Rules:
 - If only one strong exact-value question exists in the chosen family, return one question rather than branching to fill the batch.
 - Each question must include exactly 3 suggested answers, and the user must still be free to type a custom answer.
 - Suggested answers must be concrete, directly responsive, and must be exact literal values with units, dates, counts, percentages, rates, capacities, thresholds, or another similarly exact measurable input.
+- Each suggested answer label must be self-contained and visibly distinct from the other two labels; never reuse the same label with different hidden values.
+- When suggesting dates, prices, counts, percentages, rates, or other exact literals, include the literal in both the label and value.
 - Do not use generic suggestions like 'best estimate', 'specific answer', or 'unknown for now'.
 - Do not use approximate or inequality phrasing in suggested answers, including 'about', 'around', 'roughly', 'less than', 'more than', 'at least', or 'up to'.
 - Do not use ranges in suggested answers.

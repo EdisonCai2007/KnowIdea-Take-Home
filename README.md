@@ -33,7 +33,6 @@ Useful optional environment variables:
 ```bash
 OPENROUTER_STAGE1_MODEL=google/gemini-2.5-flash
 OPENROUTER_STAGE2_MODEL=google/gemini-2.5-pro
-OPENROUTER_MODEL=google/gemini-2.5-flash
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 OPENROUTER_TIMEOUT_SECONDS=30
 DECISION_PROVER_LOG_FILE=logs/decision_prover.log

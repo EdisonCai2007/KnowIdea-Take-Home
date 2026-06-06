@@ -70,6 +70,22 @@ def test_d1_is_undecidable_on_unquantified_hire_productivity(battery_path: Path)
     assert result.refuted_if is not None
 
 
+def test_partial_action_returns_undecidable_missing_verifier_inputs(battery_path: Path) -> None:
+    context = _context(battery_path, "D1")
+    context.action.count = None
+    context.action.fully_loaded_cost_per_year = None
+
+    result = verify_decision(context)
+
+    assert result.classification == Classification.UNDECIDABLE
+    assert result.derivation[-1].rule == "missing_verifier_inputs"
+    assert result.derivation[-1].inputs["missing_fields"] == [
+        "action.count",
+        "action.fully_loaded_cost_per_year",
+    ]
+    assert "missing proof input(s)" in result.refutation.failure_conditions
+
+
 def test_cash_reserve_floor_failure_is_refuted(battery_path: Path) -> None:
     context = _context(battery_path, "D3")
     context.action.cash_cost = 2_800_000

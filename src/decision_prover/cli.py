@@ -60,17 +60,21 @@ def _exit_with_stage1_input_error(error: Stage1InputError | ValidationError) -> 
 def _load_stage1_request(
     proposal_ids: list[str],
     answers_path: Path | None,
+    skip_remaining: bool,
 ) -> Stage1RunRequest:
     answers_payload: dict[str, Any] = {}
+    request_skip_remaining = skip_remaining
     if answers_path is not None:
         raw = json.loads(answers_path.read_text())
         if isinstance(raw, dict) and "answers" in raw:
             answers_payload = raw["answers"]
+            request_skip_remaining = bool(raw.get("skip_remaining", request_skip_remaining))
         else:
             answers_payload = raw
     return Stage1RunRequest(
         proposal_ids=proposal_ids,
         answers=answers_payload,
+        skip_remaining=request_skip_remaining,
     )
 
 
@@ -122,15 +126,19 @@ def run_proposals(
         dir_okay=False,
         help="Optional JSON file mapping proposal ids to question answers.",
     ),
+    skip_remaining: bool = typer.Option(
+        False,
+        help="If clarification questions remain after applying provided answers, mark Stage 1 ready with unresolved notes.",
+    ),
 ) -> None:
-    """Run Stage 1 planning and formalization on raw proposal markdown."""
+    """Run the Stage 1 AI clarification workflow on raw proposal markdown."""
     try:
         proposal_fixture = load_proposals_fixture(input)
     except FixtureLoadError as error:
         _exit_with_fixture_error(error)
 
     try:
-        stage1_request = _load_stage1_request(proposal_id or [], answers)
+        stage1_request = _load_stage1_request(proposal_id or [], answers, skip_remaining)
         _emit_json(build_stage1_run_response(proposal_fixture, stage1_request))
     except ConfigurationError as error:
         _exit_with_configuration_error(error)

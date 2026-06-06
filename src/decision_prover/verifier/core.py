@@ -41,6 +41,10 @@ def verify_decision(context: DecisionContext) -> VerificationResult:
     if result is not None:
         return result
 
+    result = _missing_objective_input_result(session)
+    if result is not None:
+        return result
+
     return _evaluate_objective(session)
 
 
@@ -49,6 +53,10 @@ def _evaluate_hard_constraints(session: VerificationSession) -> VerificationResu
         family = _classify_constraint(constraint.semi_formal)
         if not _constraint_applies(family, session.context.action.type):
             continue
+
+        missing_result = _missing_constraint_input_result(session, family, constraint.id)
+        if missing_result is not None:
+            return missing_result
 
         if family == _CASH_RESERVE_FLOOR:
             result = _check_cash_reserve_floor(session, constraint.id, constraint.semi_formal)
@@ -82,9 +90,172 @@ def _evaluate_hard_constraints(session: VerificationSession) -> VerificationResu
 
 def _evaluate_dominance(session: VerificationSession) -> VerificationResult | None:
     if session.context.action.type == "price_change":
+        missing_result = _missing_price_dominance_input_result(session)
+        if missing_result is not None:
+            return missing_result
         return _evaluate_price_change_dominance(session)
 
     return None
+
+
+def _missing_constraint_input_result(
+    session: VerificationSession,
+    family: ConstraintFamily,
+    constraint_id: str,
+) -> VerificationResult | None:
+    action_type = session.context.action.type
+    missing: list[str] = []
+    if family == _CASH_RESERVE_FLOOR:
+        missing.extend(_missing_fact_fields(session.context, ["cash_balance"]))
+        missing.extend(_missing_action_fields(session.context, _impact_action_fields(action_type)))
+    elif family == _RUNWAY_FLOOR:
+        missing.extend(_missing_fact_fields(session.context, ["cash_balance", "net_monthly_burn"]))
+        missing.extend(_missing_action_fields(session.context, _impact_action_fields(action_type)))
+    elif family == _INITIATIVE_BUDGET:
+        missing.extend(_missing_action_fields(session.context, _impact_action_fields(action_type)))
+    elif family == _LTV_CAC_MINIMUM:
+        missing.extend(_missing_fact_fields(session.context, ["gross_margin", "monthly_churn_rate"]))
+        missing.extend(_missing_action_fields(session.context, ["projected_cac", "projected_arpu_monthly"]))
+    elif family == _CAPACITY_BACKLOG:
+        missing.extend(_missing_fact_fields(session.context, ["production_capacity", "backlog_units"]))
+        if action_type == "accept_order":
+            missing.extend(_missing_action_fields(session.context, ["units", "due_months"]))
+        elif action_type == "capex_expansion":
+            missing.extend(
+                _missing_action_fields(
+                    session.context,
+                    ["capacity_from", "capacity_to", "ramp_months"],
+                )
+            )
+    elif family == _NEW_SKU_MARGIN:
+        missing.extend(_missing_action_fields(session.context, ["contribution_margin"]))
+    elif family == _MARKETING_SPEND_CAP:
+        missing.extend(_missing_fact_fields(session.context, ["current_marketing_spend", "monthly_revenue"]))
+        missing.extend(_missing_action_fields(session.context, ["added_monthly_spend"]))
+
+    if not missing:
+        return None
+    return _missing_input_result(
+        session,
+        stage="hard_constraints",
+        missing_fields=missing,
+        constraint_id=constraint_id,
+    )
+
+
+def _missing_price_dominance_input_result(session: VerificationSession) -> VerificationResult | None:
+    action = session.context.action
+    new_unit_price = getattr(action, "new_unit_price", None)
+    assumed_volume_multiplier = getattr(action, "assumed_volume_multiplier", None)
+    if new_unit_price is None and assumed_volume_multiplier is None:
+        return None
+    if new_unit_price is None or assumed_volume_multiplier is None:
+        return _missing_input_result(
+            session,
+            stage="dominance",
+            missing_fields=_missing_action_fields(
+                session.context,
+                ["new_unit_price", "assumed_volume_multiplier"],
+            ),
+        )
+
+    missing = _missing_fact_fields(
+        session.context,
+        [
+            "demand_status",
+            "unit_sale_price",
+            "production_capacity",
+            "unit_gross_margin",
+            "unit_bom_cost",
+        ],
+    )
+    if not missing:
+        return None
+    return _missing_input_result(
+        session,
+        stage="dominance",
+        missing_fields=missing,
+    )
+
+
+def _missing_objective_input_result(session: VerificationSession) -> VerificationResult | None:
+    action_type = session.context.action.type
+    missing: list[str] = []
+    if action_type == "acquisition":
+        missing.extend(_missing_action_fields(session.context, ["added_mrr"]))
+    elif action_type == "hire":
+        missing.extend(_missing_fact_fields(session.context, ["headcount"]))
+        missing.extend(
+            _missing_action_fields(
+                session.context,
+                ["count", "fully_loaded_cost_per_year"],
+            )
+        )
+    elif action_type == "price_change":
+        action = session.context.action
+        if getattr(action, "pct_increase", None) is not None or getattr(action, "scope", None) is not None:
+            missing.extend(_missing_action_fields(session.context, ["pct_increase", "scope"]))
+    elif action_type == "launch_sku":
+        missing.extend(_missing_action_fields(session.context, ["projected_monthly_revenue"]))
+    elif action_type == "discontinue_line":
+        missing.extend(_missing_fact_fields(session.context, ["line_B_revenue", "line_B_contribution_margin"]))
+    elif action_type == "retention_program":
+        missing.extend(_missing_fact_fields(session.context, ["gross_margin", "arpu_monthly"]))
+        missing.extend(_missing_action_fields(session.context, ["churn_from", "churn_to"]))
+    elif action_type == "supplier_renegotiation":
+        missing.extend(_missing_fact_fields(session.context, ["line_A_contribution_margin"]))
+        missing.extend(_missing_action_fields(session.context, ["line_A_cogs_reduction_pts"]))
+
+    if not missing:
+        return None
+    return _missing_input_result(
+        session,
+        stage="objective_satisfaction",
+        missing_fields=missing,
+    )
+
+
+def _missing_action_fields(context: DecisionContext, fields: list[str] | set[str]) -> list[str]:
+    missing = []
+    for field in sorted(fields):
+        if getattr(context.action, field, None) is None:
+            missing.append(f"action.{field}")
+    return missing
+
+
+def _missing_fact_fields(context: DecisionContext, fields: list[str]) -> list[str]:
+    missing = []
+    for field in fields:
+        fact = context.company.facts.get(field)
+        if fact is None or fact.value is None:
+            missing.append(f"company.facts.{field}")
+    return missing
+
+
+def _missing_input_result(
+    session: VerificationSession,
+    *,
+    stage: str,
+    missing_fields: list[str],
+    constraint_id: str | None = None,
+) -> VerificationResult:
+    ordered = sorted(dict.fromkeys(missing_fields))
+    inputs = {
+        "stage": stage,
+        "action_type": session.context.action.type,
+        "missing_fields": ordered,
+    }
+    if constraint_id is not None:
+        inputs["constraint_id"] = constraint_id
+    reason = "missing proof input(s): " + ", ".join(ordered)
+    session.add_step("missing_verifier_inputs", inputs, reason)
+    return session.undecidable_result(
+        pivotal_assumption="Required proof inputs are missing from the formalized decision.",
+        flip_threshold="Provide the missing input(s) so the verifier can compute the verdict boundary.",
+        supported_if="the missing inputs satisfy every applicable constraint and objective check",
+        refuted_if="the missing inputs violate an applicable constraint or objective check",
+        failure_conditions=reason,
+    )
 
 
 def _evaluate_objective(session: VerificationSession) -> VerificationResult:
@@ -814,6 +985,20 @@ def _get_action_impact(session: VerificationSession) -> ActionImpact | None:
         return None
 
     return session.store_action_impact(builder(session.context))
+
+
+def _impact_action_fields(action_type: str) -> set[str]:
+    return {
+        "hire": {"count", "fully_loaded_cost_per_year"},
+        "channel_test": {"budget"},
+        "acquisition": {"cash_cost"},
+        "one_time_spend": {"cash_cost"},
+        "capex_expansion": {"cost"},
+        "launch_sku": {"launch_cost"},
+        "retention_program": {"cost"},
+        "supplier_renegotiation": {"cost"},
+        "marketing_increase": {"added_monthly_spend"},
+    }.get(action_type, set())
 
 
 def _build_hire_impact(context: DecisionContext) -> ActionImpact:

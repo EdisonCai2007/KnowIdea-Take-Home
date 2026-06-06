@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from .output import Stage1Outcome
+
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -35,3 +37,33 @@ class WorkspaceCompanyProfile(StrictModel):
 
 class WorkspaceState(StrictModel):
     active_company: WorkspaceCompanyProfile | None = None
+
+
+class WorkspaceProposalSubmitRequest(StrictModel):
+    proposal: str = Field(min_length=1)
+
+    @field_validator("proposal", mode="before")
+    @classmethod
+    def normalize_proposal_text(cls, value: object) -> object:
+        if not isinstance(value, str):
+            return value
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("must not be blank")
+        return normalized
+
+
+class WorkspaceProposalAnswersRequest(StrictModel):
+    answers: dict[str, str] = Field(default_factory=dict)
+
+
+class WorkspaceProposalSession(StrictModel):
+    proposal_id: str = Field(min_length=1)
+    workspace_company: WorkspaceCompanyProfile
+    proposal: str = Field(min_length=1)
+    answers: dict[str, str] = Field(default_factory=dict)
+    result: Stage1Outcome
+
+
+class WorkspaceProposalSessionState(StrictModel):
+    active_session: WorkspaceProposalSession | None = None

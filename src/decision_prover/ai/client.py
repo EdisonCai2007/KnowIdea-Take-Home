@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from time import monotonic
 from typing import Any
 
 import httpx
 
+from ..runtime_logging import log_event
 from ..settings import OpenRouterSettings
 
 
@@ -83,6 +85,23 @@ class OpenRouterClient:
             "Authorization": f"Bearer {self._settings.api_key}",
             "Content-Type": "application/json",
         }
+        start_time = monotonic()
+
+        log_event(
+            settings=self._settings,
+            event="openrouter.request",
+            payload={
+                "base_url": self._settings.base_url,
+                "model": self._settings.model,
+                "response_format": response_format,
+                "messages": messages if self._settings.log_raw_openrouter else "[omitted]",
+                "timeout_seconds": self._settings.timeout_seconds,
+            },
+            console_message=(
+                f"openrouter.request model={self._settings.model} "
+                f"log_file={self._settings.log_file}"
+            ),
+        )
 
         try:
             response = httpx.post(
@@ -92,11 +111,57 @@ class OpenRouterClient:
                 timeout=self._settings.timeout_seconds,
             )
         except httpx.HTTPError as exc:
+            duration_ms = round((monotonic() - start_time) * 1000, 2)
+            log_event(
+                settings=self._settings,
+                event="openrouter.error",
+                payload={
+                    "base_url": self._settings.base_url,
+                    "duration_ms": duration_ms,
+                    "error": str(exc),
+                    "model": self._settings.model,
+                    "response_format": response_format,
+                },
+                console_message=(
+                    f"openrouter.error model={self._settings.model} "
+                    f"duration_ms={duration_ms}"
+                ),
+            )
             raise OpenRouterError(f"OpenRouter request failed: {exc}") from exc
 
+        duration_ms = round((monotonic() - start_time) * 1000, 2)
         raw_provider_response = response.text
         data = _try_parse_json(raw_provider_response)
         metadata = _extract_response_metadata(data)
+
+        log_event(
+            settings=self._settings,
+            event="openrouter.response",
+            payload={
+                "duration_ms": duration_ms,
+                "finish_reason": metadata["finish_reason"],
+                "http_status": response.status_code,
+                "native_finish_reason": metadata["native_finish_reason"],
+                "openrouter_metadata": metadata["openrouter_metadata"],
+                "provider": metadata["provider"],
+                "provider_response_json": data,
+                "raw_model_response": (
+                    metadata["raw_model_response"] if self._settings.log_raw_openrouter else "[omitted]"
+                ),
+                "raw_provider_response": (
+                    raw_provider_response if self._settings.log_raw_openrouter else "[omitted]"
+                ),
+                "response_id": metadata["response_id"],
+                "response_model": metadata["response_model"],
+                "system_fingerprint": metadata["system_fingerprint"],
+                "usage": metadata["usage"],
+            },
+            console_message=(
+                f"openrouter.response status={response.status_code} "
+                f"model={metadata['response_model'] or self._settings.model} "
+                f"duration_ms={duration_ms}"
+            ),
+        )
 
         if response.status_code >= 400:
             snippet = response.text.strip()

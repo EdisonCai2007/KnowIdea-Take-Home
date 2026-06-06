@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, TypeAlias
+from typing import Any, Literal, TypeAlias
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -80,3 +80,34 @@ class DecisionBattery(StrictModel):
     )
     companies: list[Company]
     decisions: list[Decision]
+
+
+class PartialCompany(StrictModel):
+    id: str | None = None
+    name: str | None = None
+    sector: str | None = None
+    facts: dict[str, CompanyFact] = Field(default_factory=dict)
+    constraints: list[Constraint] = Field(default_factory=list)
+
+
+class PartialDecision(StrictModel):
+    id: str | None = None
+    company: str | None = None
+    proposal: str | None = None
+    action: dict[str, Any] = Field(default_factory=dict)
+    objective: str | None = None
+    stated_assumptions: list[StatedAssumption] = Field(default_factory=list)
+
+
+class PartialDecisionBattery(StrictModel):
+    battery_version: str | None = None
+    title: str | None = None
+    note_to_candidate: str | None = None
+    verdict_definitions: VerdictDefinitions | None = None
+    schema_: BatterySchemaDescription | None = Field(
+        default=None,
+        validation_alias="schema",
+        serialization_alias="schema",
+    )
+    companies: list[PartialCompany] = Field(default_factory=list)
+    decisions: list[PartialDecision] = Field(default_factory=list)

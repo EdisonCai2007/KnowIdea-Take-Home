@@ -3,7 +3,7 @@ from pydantic import ValidationError
 
 from decision_prover.contracts.actions import GenericActionPayload, PriceChangeAction
 from decision_prover.contracts.battery import CompanyFact, Constraint, Decision, StatedAssumption
-from decision_prover.contracts.workspace import WorkspaceCompanyProfile
+from decision_prover.contracts.workspace import WorkspaceCompanyProfile, WorkspaceProposalSubmitRequest
 
 
 def _decision_payload(action: dict) -> dict:
@@ -74,6 +74,15 @@ def test_known_action_types_validate_explicitly() -> None:
     assert decision.action.count == 3
 
 
+def test_known_action_types_allow_partial_payloads() -> None:
+    decision = Decision.model_validate(_decision_payload({"type": "hire"}))
+
+    assert decision.action.type == "hire"
+    assert decision.action.count is None
+    assert decision.action.role is None
+    assert decision.action.fully_loaded_cost_per_year is None
+
+
 def test_channel_test_allows_missing_budget() -> None:
     decision = Decision.model_validate(
         _decision_payload(
@@ -128,6 +137,21 @@ def test_price_change_accepts_unit_price_shape() -> None:
     )
     assert isinstance(decision.action, PriceChangeAction)
     assert decision.action.new_unit_price == 95
+
+
+def test_price_change_accepts_partial_percentage_shape() -> None:
+    decision = Decision.model_validate(
+        _decision_payload(
+            {
+                "type": "price_change",
+                "pct_increase": 0.1,
+            }
+        )
+    )
+
+    assert isinstance(decision.action, PriceChangeAction)
+    assert decision.action.pct_increase == 0.1
+    assert decision.action.scope is None
 
 
 def test_price_change_rejects_mixed_shapes() -> None:
@@ -186,3 +210,11 @@ def test_workspace_company_profile_normalizes_and_validates_text() -> None:
                 "description": "Optional copy",
             }
         )
+
+
+def test_workspace_proposal_submit_request_trims_and_requires_text() -> None:
+    request = WorkspaceProposalSubmitRequest.model_validate({"proposal": "  Raise prices by 20%.  "})
+    assert request.proposal == "Raise prices by 20%."
+
+    with pytest.raises(ValidationError):
+        WorkspaceProposalSubmitRequest.model_validate({"proposal": "   "})

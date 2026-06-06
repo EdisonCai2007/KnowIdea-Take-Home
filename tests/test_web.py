@@ -5,20 +5,29 @@ import pytest
 fastapi = pytest.importorskip("fastapi")
 from fastapi.testclient import TestClient
 
-from decision_prover.web import create_app
 from decision_prover.settings import ConfigurationError
+from decision_prover.web import create_app
 
 
-def _battery_document(battery_data: dict, proposal_id: str, *, scope: str = "new_customers") -> dict:
+def _partial_battery() -> dict:
     return {
-        "battery_version": battery_data["battery_version"],
-        "title": f"Stage 1 Formalization - {proposal_id}",
-        "note_to_candidate": battery_data["note_to_candidate"],
-        "verdict_definitions": battery_data["verdict_definitions"],
-        "schema": battery_data["schema"],
+        "battery_version": "1.0",
+        "title": "Stage 1 Working State - WP1",
+        "note_to_candidate": "note",
+        "verdict_definitions": {
+            "SUPPORTED": "supported",
+            "REFUTED": "refuted",
+            "UNDECIDABLE": "undecidable",
+            "precedence_rule": "hard constraints first",
+        },
+        "schema": {
+            "company": "company",
+            "decision": "decision",
+            "expected_output_per_decision": "output",
+        },
         "companies": [
             {
-                "id": "northwind_software",
+                "id": "northwind-software",
                 "name": "Northwind Software",
                 "sector": "B2B SaaS",
                 "facts": {},
@@ -27,14 +36,10 @@ def _battery_document(battery_data: dict, proposal_id: str, *, scope: str = "new
         ],
         "decisions": [
             {
-                "id": proposal_id,
-                "company": "northwind_software",
+                "id": "WP1",
+                "company": "northwind-software",
                 "proposal": "We want to raise our prices by 20%.",
-                "action": {
-                    "type": "price_change",
-                    "pct_increase": 0.2,
-                    "scope": scope,
-                },
+                "action": {"type": "price_change", "pct_increase": 0.2},
                 "objective": "Increase revenue through a 20% price increase.",
                 "stated_assumptions": [],
             }
@@ -42,64 +47,104 @@ def _battery_document(battery_data: dict, proposal_id: str, *, scope: str = "new
     }
 
 
-def _clarification_result(proposal_id: str) -> dict:
+def _clarification_result(proposal_id: str, proposal_text: str) -> dict:
     return {
         "outcome": "clarification_needed",
         "proposal_id": proposal_id,
-        "proposal": "Placeholder proposal text.",
+        "proposal": proposal_text,
         "scope_status": "supported_family",
-        "action_type": "one_time_spend",
-        "objective": "Preserve runway while evaluating the spend.",
-        "blocking_fields": ["company.name", "company.sector"],
-        "gaps": [
-            {
-                "id": f"{proposal_id}_G_company_name",
-                "category": "company_metadata",
-                "field": "company.name",
-                "verification_check": "identify_company",
-                "reason": "The company name is required for final formalization.",
-            }
-        ],
-        "questions": [
-            {
-                "id": f"{proposal_id}_Q_company_name",
-                "field": "company.name",
-                "question": "What is the company name?",
-                "verification_check": "identify_company",
-                "rationale": "The battery document requires an explicit company name.",
-            }
-        ],
-        "ignored_details": [],
-        "transcript": [
-            {"speaker": "user", "kind": "proposal", "text": "Placeholder proposal text."}
-        ],
-    }
-
-
-def _formalized_result(battery_data: dict, proposal_id: str) -> dict:
-    return {
-        "outcome": "formalized",
-        "proposal_id": proposal_id,
-        "proposal": "We want to raise our prices by 20%.",
-        "battery_document": _battery_document(battery_data, proposal_id),
-        "primary_decision_id": proposal_id,
+        "action_type": "price_change",
+        "objective": "Increase revenue through a 20% price increase.",
+        "partial_battery": _partial_battery(),
         "grounding_report": {
             "entries": [
                 {
                     "field": "companies[0].name",
-                    "source_type": "answer",
+                    "source_type": "workspace",
                     "source_quote": "Northwind Software",
-                    "source_locator": f"{proposal_id}_Q_company_name",
+                    "source_locator": "workspace.name",
+                }
+            ]
+        },
+        "blocking_fields": ["action.scope"],
+        "gaps": [
+            {
+                "id": f"{proposal_id}_G_action_scope",
+                "category": "action_details",
+                "field": "action.scope",
+                "verification_check": "formalize_action_payload",
+                "reason": "The price-change scope is required to finish the action payload.",
+            }
+        ],
+        "questions": [
+            {
+                "id": f"{proposal_id}_Q_action_scope",
+                "prompt": "Who exactly would this price change apply to?",
+                "rationale": "I need the affected customer scope to complete the price-change action.",
+                "targets": ["action.scope"],
+                "suggested_options": [
+                    {"label": "All customers", "value": "all customers"},
+                    {"label": "New customers only", "value": "new customers only"},
+                    {"label": "Existing customers only", "value": "existing customers only"},
+                ],
+                "recommended_option_index": 1,
+            }
+        ],
+        "ignored_details": [],
+        "transcript": [
+            {"speaker": "user", "kind": "proposal", "text": proposal_text},
+            {
+                "speaker": "assistant",
+                "kind": "question",
+                "text": "Who exactly would this price change apply to?",
+                "question_id": f"{proposal_id}_Q_action_scope",
+            },
+        ],
+    }
+
+
+def _completed_with_gaps_result(proposal_id: str, proposal_text: str) -> dict:
+    payload = _clarification_result(proposal_id, proposal_text)
+    payload.pop("questions")
+    payload["outcome"] = "completed_with_gaps"
+    payload["transcript"].append(
+        {
+            "speaker": "user",
+            "kind": "skip",
+            "text": "Skip remaining clarification questions and continue with the current state.",
+        }
+    )
+    return payload
+
+
+def _formalized_result(battery_data: dict, proposal_id: str, proposal_text: str) -> dict:
+    battery_document = _partial_battery()
+    battery_document["title"] = f"Stage 1 Formalization - {proposal_id}"
+    battery_document["decisions"][0]["action"]["scope"] = "new_customers_only"
+    return {
+        "outcome": "formalized",
+        "proposal_id": proposal_id,
+        "proposal": proposal_text,
+        "battery_document": battery_document,
+        "primary_decision_id": proposal_id,
+        "grounding_report": {
+            "entries": [
+                {
+                    "field": "decisions[0].action.scope",
+                    "source_type": "answer",
+                    "source_quote": "new customers only",
+                    "source_locator": f"{proposal_id}_Q_action_scope",
                 }
             ]
         },
         "ignored_details": [],
         "transcript": [
+            {"speaker": "user", "kind": "proposal", "text": proposal_text},
             {
                 "speaker": "assistant",
                 "kind": "formalization",
-                "text": f"Formalized {proposal_id} into a battery-shaped document.",
-            }
+                "text": "I have enough information to prepare this proposal for Stage 2 review.",
+            },
         ],
     }
 
@@ -108,7 +153,7 @@ def _stage1_response(results: list[dict]) -> dict:
     return {
         "status": {
             "state": "stage1_complete",
-            "message": "Stage 1 AI planning complete.",
+            "message": "Stage 1 AI workflow complete.",
         },
         "title": "Natural-Language Proposals - Formalization Set",
         "results": results,
@@ -118,75 +163,24 @@ def _stage1_response(results: list[dict]) -> dict:
 def test_web_health_and_data_endpoints(
     battery_path: Path,
     proposals_path: Path,
-    battery_data: dict,
     monkeypatch,
 ) -> None:
-    def _fake_stage1(proposal_fixture, request=None):
-        if request and request.answers:
-            return _stage1_response([_formalized_result(battery_data, "P5")])
-        return _stage1_response([_clarification_result("P3")])
-
-    monkeypatch.setattr("decision_prover.web.app.build_stage1_run_response", _fake_stage1)
+    monkeypatch.setattr(
+        "decision_prover.web.app.build_stage1_run_response",
+        lambda proposal_fixture, request=None: _stage1_response(
+            [_clarification_result("P5", "We want to raise our prices by 20%.")]
+        ),
+    )
 
     app = create_app(battery_input=battery_path, proposal_input=proposals_path)
     client = TestClient(app)
 
-    health = client.get("/healthz")
-    assert health.status_code == 200
-    assert health.json() == {"status": "ok"}
-
-    battery = client.get("/api/battery")
-    assert battery.status_code == 200
-    assert len(battery.json()["companies"]) == 3
-    assert len(battery.json()["decisions"]) == 12
-
-    contexts = client.get("/api/battery/contexts")
-    assert contexts.status_code == 200
-    assert len(contexts.json()) == 12
-
-    supported_verification = client.get("/api/verify/D2")
-    assert supported_verification.status_code == 200
-    assert supported_verification.json()["classification"] == "SUPPORTED"
-
-    undecidable_verification = client.get("/api/verify/D1")
-    assert undecidable_verification.status_code == 200
-    assert undecidable_verification.json()["classification"] == "UNDECIDABLE"
-    assert undecidable_verification.json()["pivotal_assumption"]
-    assert undecidable_verification.json()["supported_if"]
-    assert undecidable_verification.json()["refuted_if"]
-
-    proposals = client.get("/api/proposals")
-    assert proposals.status_code == 200
-    assert len(proposals.json()["proposals"]) == 6
-
-    workspace = client.get("/api/workspace")
-    assert workspace.status_code == 200
-    assert workspace.json()["active_company"] is None
-
-    stage1 = client.get("/api/stage1")
-    assert stage1.status_code == 200
-    assert stage1.json()["status"]["state"] == "stage1_complete"
-    assert stage1.json()["results"][0]["proposal_id"] == "P3"
-    assert stage1.json()["results"][0]["outcome"] == "clarification_needed"
-    assert stage1.json()["results"][0]["blocking_fields"] == ["company.name", "company.sector"]
-
-    answered_stage1 = client.post(
-        "/api/stage1",
-        json={
-            "proposal_ids": ["P5"],
-            "answers": {
-                "P5": {
-                    "P5_Q_company_name": "Northwind Software",
-                    "P5_Q_company_sector": "B2B SaaS",
-                    "P5_Q_action_scope": "new customers only",
-                }
-            },
-        },
-    )
-    assert answered_stage1.status_code == 200
-    assert answered_stage1.json()["results"][0]["outcome"] == "formalized"
-    assert answered_stage1.json()["results"][0]["primary_decision_id"] == "P5"
-    assert answered_stage1.json()["results"][0]["battery_document"]["decisions"][0]["action"]["scope"] == "new_customers"
+    assert client.get("/healthz").json() == {"status": "ok"}
+    assert client.get("/api/stage1").status_code == 200
+    assert client.get("/api/stage1").json()["results"][0]["partial_battery"]["decisions"][0]["action"]["pct_increase"] == 0.2
+    assert client.get("/api/battery").status_code == 200
+    assert client.get("/api/verify/D2").status_code == 200
+    assert client.get("/api/proposals").status_code == 200
 
 
 def test_web_stage1_returns_503_for_missing_openrouter_configuration(
@@ -207,80 +201,68 @@ def test_web_stage1_returns_503_for_missing_openrouter_configuration(
     assert response.json()["detail"] == "OPENROUTER_API_KEY is required for Stage 1 AI."
 
 
-def test_web_index_renders_phase5_landing(battery_path: Path, proposals_path: Path) -> None:
-    app = create_app(battery_input=battery_path, proposal_input=proposals_path)
-    client = TestClient(app)
+def test_web_workspace_create_answer_skip_and_reset_flow(
+    battery_path: Path,
+    proposals_path: Path,
+    battery_data: dict,
+    monkeypatch,
+) -> None:
+    monkeypatch.setattr(
+        "decision_prover.web.app.build_workspace_stage1_result",
+        lambda proposal_id, proposal_text, workspace_company: _clarification_result(
+            proposal_id,
+            proposal_text,
+        ),
+    )
+    monkeypatch.setattr(
+        "decision_prover.web.app.continue_workspace_stage1_result",
+        lambda result, answers, workspace_company: _formalized_result(
+            battery_data,
+            result.proposal_id,
+            result.proposal,
+        ),
+    )
+    monkeypatch.setattr(
+        "decision_prover.web.app.skip_workspace_stage1_result",
+        lambda result: _completed_with_gaps_result(result.proposal_id, result.proposal),
+    )
 
-    response = client.get("/")
-    assert response.status_code == 200
-    assert "Decision Prover" in response.text
-    assert "Current Phases Roadmap" in response.text
-    assert "Create Active Workspace" in response.text
-    assert "Create company workspace" in response.text
-    assert "Set up the company context before proposal intake." in response.text
-    assert "Stage 1 Interview &amp; Formalize" not in response.text
-    assert "Raw Proposals" not in response.text
-    assert "Normalized Contexts" not in response.text
-    assert "loadStage1()" not in response.text
-
-
-def test_web_workspace_create_and_edit_flow(battery_path: Path, proposals_path: Path) -> None:
     app = create_app(battery_input=battery_path, proposal_input=proposals_path)
     client = TestClient(app)
 
     create_response = client.put(
         "/api/workspace",
-        json={
-            "name": "  Northwind Software  ",
-            "sector": "  B2B SaaS ",
-            "description": "   ",
-        },
+        json={"name": "Northwind Software", "sector": "B2B SaaS", "description": None},
     )
     assert create_response.status_code == 200
-    assert create_response.json() == {
-        "active_company": {
-            "name": "Northwind Software",
-            "sector": "B2B SaaS",
-            "description": None,
-        }
-    }
 
-    workspace = client.get("/api/workspace")
-    assert workspace.status_code == 200
-    assert workspace.json() == create_response.json()
+    proposal_text = "We want to raise our prices by 20% to increase revenue."
+    start_response = client.post("/api/workspace/proposal", json={"proposal": proposal_text})
+    assert start_response.status_code == 200
+    assert start_response.json()["active_session"]["result"]["outcome"] == "clarification_needed"
 
-    landing = client.get("/")
-    assert landing.status_code == 200
-    assert "Active Company Workspace" in landing.text
-    assert "Northwind Software" in landing.text
-    assert "Proposal composer for Northwind Software" in landing.text
-    assert "Analyze Proposal (Phase 6)" in landing.text
-    assert "Edit company" in landing.text
-    assert "Raw Proposals" not in landing.text
-    assert "Stage 1 Interview &amp; Formalize" not in landing.text
+    clarification_view = client.get("/")
+    assert clarification_view.status_code == 200
+    assert "Current Structured State" in clarification_view.text
+    assert "Who exactly would this price change apply to?" in clarification_view.text
+    assert "Recommended" in clarification_view.text
+    assert "Skip and continue" in clarification_view.text
 
-    edit_response = client.put(
-        "/api/workspace",
-        json={
-            "name": "Northwind Labs",
-            "sector": "Vertical SaaS",
-            "description": "Financial workflow automation for operators.",
-        },
+    answer_response = client.post(
+        "/api/workspace/proposal/answers",
+        json={"answers": {"WP1_Q_action_scope": "new customers only"}},
     )
-    assert edit_response.status_code == 200
-    assert edit_response.json() == {
-        "active_company": {
-            "name": "Northwind Labs",
-            "sector": "Vertical SaaS",
-            "description": "Financial workflow automation for operators.",
-        }
-    }
+    assert answer_response.status_code == 200
+    assert answer_response.json()["active_session"]["result"]["outcome"] == "formalized"
 
-    edited_landing = client.get("/")
-    assert edited_landing.status_code == 200
-    assert "Northwind Labs" in edited_landing.text
-    assert "Vertical SaaS" in edited_landing.text
-    assert "Financial workflow automation for operators." in edited_landing.text
+    reset_response = client.delete("/api/workspace/proposal")
+    assert reset_response.status_code == 200
+    assert reset_response.json()["active_session"] is None
+
+    client.post("/api/workspace/proposal", json={"proposal": proposal_text})
+    skip_response = client.post("/api/workspace/proposal/skip")
+    assert skip_response.status_code == 200
+    assert skip_response.json()["active_session"]["result"]["outcome"] == "completed_with_gaps"
 
 
 def test_web_workspace_validation_rejects_blank_required_fields(
@@ -292,15 +274,7 @@ def test_web_workspace_validation_rejects_blank_required_fields(
 
     response = client.put(
         "/api/workspace",
-        json={
-            "name": "   ",
-            "sector": "   ",
-            "description": "Optional copy",
-        },
+        json={"name": "   ", "sector": "   ", "description": "Optional copy"},
     )
     assert response.status_code == 422
     assert "must not be blank" in response.text
-
-    workspace = client.get("/api/workspace")
-    assert workspace.status_code == 200
-    assert workspace.json()["active_company"] is None

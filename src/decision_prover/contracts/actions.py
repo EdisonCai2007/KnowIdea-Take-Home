@@ -18,29 +18,29 @@ class ActionBase(BaseModel):
 
 class HireAction(ActionBase):
     type: Literal["hire"]
-    count: int = Field(gt=0)
-    role: str = Field(min_length=1)
-    fully_loaded_cost_per_year: PositiveNumber = Field(gt=0)
+    count: int | None = Field(default=None, gt=0)
+    role: str | None = Field(default=None, min_length=1)
+    fully_loaded_cost_per_year: PositiveNumber | None = Field(default=None, gt=0)
 
 
 class ChannelTestAction(ActionBase):
     type: Literal["channel_test"]
     budget: PositiveNumber | None = None
-    projected_cac: PositiveNumber = Field(gt=0)
-    projected_arpu_monthly: PositiveNumber = Field(gt=0)
+    projected_cac: PositiveNumber | None = Field(default=None, gt=0)
+    projected_arpu_monthly: PositiveNumber | None = Field(default=None, gt=0)
 
 
 class AcquisitionAction(ActionBase):
     type: Literal["acquisition"]
-    cash_cost: PositiveNumber = Field(gt=0)
-    added_mrr: PositiveNumber = Field(gt=0)
+    cash_cost: PositiveNumber | None = Field(default=None, gt=0)
+    added_mrr: PositiveNumber | None = Field(default=None, gt=0)
     target: str | None = None
 
 
 class OneTimeSpendAction(ActionBase):
     type: Literal["one_time_spend"]
-    cash_cost: PositiveNumber = Field(gt=0)
-    label: str = Field(min_length=1)
+    cash_cost: PositiveNumber | None = Field(default=None, gt=0)
+    label: str | None = Field(default=None, min_length=1)
 
 
 class PriceChangeAction(ActionBase):
@@ -57,31 +57,9 @@ class PriceChangeAction(ActionBase):
             self.new_unit_price is not None or self.assumed_volume_multiplier is not None
         )
 
-        if percent_shape:
-            if self.pct_increase is None or self.scope is None:
-                raise ValueError(
-                    "price_change percentage shape requires both 'pct_increase' and 'scope'"
-                )
-            if self.new_unit_price is not None or self.assumed_volume_multiplier is not None:
-                raise ValueError(
-                    "price_change must use either percentage fields or unit-price fields, not both"
-                )
-
-        if unit_price_shape:
-            if self.new_unit_price is None or self.assumed_volume_multiplier is None:
-                raise ValueError(
-                    "price_change unit-price shape requires both 'new_unit_price' and "
-                    "'assumed_volume_multiplier'"
-                )
-            if self.pct_increase is not None or self.scope is not None:
-                raise ValueError(
-                    "price_change must use either percentage fields or unit-price fields, not both"
-                )
-
-        if not percent_shape and not unit_price_shape:
+        if percent_shape and unit_price_shape:
             raise ValueError(
-                "price_change must provide either {pct_increase, scope} or "
-                "{new_unit_price, assumed_volume_multiplier}"
+                "price_change must use either percentage fields or unit-price fields, not both"
             )
 
         return self
@@ -89,61 +67,69 @@ class PriceChangeAction(ActionBase):
 
 class AcceptOrderAction(ActionBase):
     type: Literal["accept_order"]
-    units: int = Field(gt=0)
-    due_months: int = Field(gt=0)
-    unit_price: PositiveNumber = Field(gt=0)
+    units: int | None = Field(default=None, gt=0)
+    due_months: int | None = Field(default=None, gt=0)
+    unit_price: PositiveNumber | None = Field(default=None, gt=0)
 
 
 class CapexExpansionAction(ActionBase):
     type: Literal["capex_expansion"]
-    cost: PositiveNumber = Field(gt=0)
-    capacity_from: int = Field(gt=0)
-    capacity_to: int = Field(gt=0)
-    ramp_months: int = Field(gt=0)
+    cost: PositiveNumber | None = Field(default=None, gt=0)
+    capacity_from: int | None = Field(default=None, gt=0)
+    capacity_to: int | None = Field(default=None, gt=0)
+    ramp_months: int | None = Field(default=None, gt=0)
 
     @model_validator(mode="after")
     def validate_capacity_growth(self) -> "CapexExpansionAction":
-        if self.capacity_to <= self.capacity_from:
+        if (
+            self.capacity_from is not None
+            and self.capacity_to is not None
+            and self.capacity_to <= self.capacity_from
+        ):
             raise ValueError("'capacity_to' must be greater than 'capacity_from'")
         return self
 
 
 class LaunchSkuAction(ActionBase):
     type: Literal["launch_sku"]
-    launch_cost: PositiveNumber = Field(gt=0)
-    projected_monthly_revenue: PositiveNumber = Field(gt=0)
-    contribution_margin: PositiveNumber = Field(gt=0)
+    launch_cost: PositiveNumber | None = Field(default=None, gt=0)
+    projected_monthly_revenue: PositiveNumber | None = Field(default=None, gt=0)
+    contribution_margin: PositiveNumber | None = Field(default=None, gt=0)
 
 
 class MarketingIncreaseAction(ActionBase):
     type: Literal["marketing_increase"]
-    added_monthly_spend: PositiveNumber = Field(gt=0)
-    target: str = Field(min_length=1)
+    added_monthly_spend: PositiveNumber | None = Field(default=None, gt=0)
+    target: str | None = Field(default=None, min_length=1)
 
 
 class DiscontinueLineAction(ActionBase):
     type: Literal["discontinue_line"]
-    line: str = Field(min_length=1)
-    reallocate_to: str = Field(min_length=1)
+    line: str | None = Field(default=None, min_length=1)
+    reallocate_to: str | None = Field(default=None, min_length=1)
 
 
 class RetentionProgramAction(ActionBase):
     type: Literal["retention_program"]
-    churn_from: float = Field(ge=0)
-    churn_to: float = Field(ge=0)
-    cost: PositiveNumber = Field(gt=0)
+    churn_from: float | None = Field(default=None, ge=0)
+    churn_to: float | None = Field(default=None, ge=0)
+    cost: PositiveNumber | None = Field(default=None, gt=0)
 
     @model_validator(mode="after")
     def validate_churn_improvement(self) -> "RetentionProgramAction":
-        if self.churn_to >= self.churn_from:
+        if (
+            self.churn_from is not None
+            and self.churn_to is not None
+            and self.churn_to >= self.churn_from
+        ):
             raise ValueError("'churn_to' must be lower than 'churn_from'")
         return self
 
 
 class SupplierRenegotiationAction(ActionBase):
     type: Literal["supplier_renegotiation"]
-    cost: float = Field(ge=0)
-    line_A_cogs_reduction_pts: float = Field(gt=0)
+    cost: float | None = Field(default=None, ge=0)
+    line_A_cogs_reduction_pts: float | None = Field(default=None, gt=0)
 
 
 def _is_json_compatible(value: Any) -> bool:

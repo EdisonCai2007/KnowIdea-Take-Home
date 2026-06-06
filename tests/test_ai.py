@@ -16,9 +16,9 @@ from decision_prover.settings import (
     OpenRouterSettings,
 )
 from decision_prover.verifier import verify_decision
-from decision_prover.web import create_app
 
 fastapi = pytest.importorskip("fastapi")
+from decision_prover.web import create_app
 from fastapi.testclient import TestClient
 
 runner = CliRunner()

@@ -617,6 +617,83 @@
               <pre class="code-block">{{ active_session.result.working_context.model_dump(mode='json') | tojson(indent=2) }}</pre>
             </div>
           </div>
+          {% if active_session.formalization and active_session.formalization.status == "formalized" %}
+          <div class="stack" style="margin-top: 1rem;">
+            <div class="question-card">
+              <div class="label">Stage 2 Verdict</div>
+              {% if active_session.verification_result %}
+              <p><strong>{{ active_session.verification_result.classification }}</strong></p>
+              {% else %}
+              <p class="muted">Verification result is not available.</p>
+              {% endif %}
+            </div>
+            <div>
+              <div class="label">Normalized Feasibility Bundle</div>
+              <pre class="code-block">{{ active_session.formalization.normalized_bundle.model_dump(mode='json') | tojson(indent=2) }}</pre>
+            </div>
+            <div>
+              <div class="label">Formalized Battery Document</div>
+              <pre class="code-block">{{ active_session.formalization.battery_document.model_dump(mode='json', by_alias=True) | tojson(indent=2) }}</pre>
+            </div>
+            <div>
+              <div class="label">Grounding Report</div>
+              <pre class="code-block">{{ active_session.formalization.grounding_report.model_dump(mode='json') | tojson(indent=2) }}</pre>
+            </div>
+            {% if active_session.formalization.notes %}
+            <article class="question-card">
+              <div class="label">Formalization Notes</div>
+              <ul class="list">
+                {% for note in active_session.formalization.notes %}
+                <li>{{ note }}</li>
+                {% endfor %}
+              </ul>
+            </article>
+            {% endif %}
+            {% if active_session.verification_result %}
+            <div>
+              <div class="label">Deterministic Verification Result</div>
+              <pre class="code-block">{{ active_session.verification_result.model_dump(mode='json', by_alias=True) | tojson(indent=2) }}</pre>
+            </div>
+            {% endif %}
+          </div>
+          {% elif active_session.formalization and active_session.formalization.status == "formalization_error" %}
+          <div class="stack" style="margin-top: 1rem;">
+            <article class="question-card">
+              <div class="label">Stage 2 Handoff Error</div>
+              <p>{{ active_session.formalization.message }}</p>
+            </article>
+            {% if active_session.formalization.normalized_bundle %}
+            <div>
+              <div class="label">Normalized Feasibility Bundle</div>
+              <pre class="code-block">{{ active_session.formalization.normalized_bundle.model_dump(mode='json') | tojson(indent=2) }}</pre>
+            </div>
+            {% endif %}
+            {% if active_session.formalization.grounding_report %}
+            <div>
+              <div class="label">Grounding Report</div>
+              <pre class="code-block">{{ active_session.formalization.grounding_report.model_dump(mode='json') | tojson(indent=2) }}</pre>
+            </div>
+            {% endif %}
+            {% if active_session.formalization.notes %}
+            <article class="question-card">
+              <div class="label">Formalization Notes</div>
+              <ul class="list">
+                {% for note in active_session.formalization.notes %}
+                <li>{{ note }}</li>
+                {% endfor %}
+              </ul>
+            </article>
+            {% endif %}
+            <div class="button-row">
+              <button type="button" id="proposal-formalize-button" class="button-secondary">Retry Stage 2 Handoff</button>
+            </div>
+            <div class="form-message" id="proposal-formalize-message" aria-live="polite"></div>
+          </div>
+          {% else %}
+          <div class="locked-note">
+            Stage 2 handoff has not produced a result yet.
+          </div>
+          {% endif %}
           {% endif %}
         </article>
       </section>
@@ -777,6 +854,17 @@
         });
       }
 
+      function bindProposalFormalize() {
+        const button = document.getElementById("proposal-formalize-button");
+        if (!button) {
+          return;
+        }
+        const message = document.getElementById("proposal-formalize-message");
+        button.addEventListener("click", async () => {
+          await sendJson("/api/workspace/proposal/formalize", "POST", undefined, message);
+        });
+      }
+
       const editToggle = document.getElementById("edit-company-toggle");
       const editPanel = document.getElementById("edit-company-panel");
       const editCancel = document.getElementById("edit-company-cancel");
@@ -804,6 +892,7 @@
       bindSuggestionButtons();
       bindProposalSkip();
       bindProposalReset();
+      bindProposalFormalize();
     </script>
   </body>
 </html>

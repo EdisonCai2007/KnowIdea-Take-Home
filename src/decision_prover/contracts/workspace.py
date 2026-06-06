@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from .output import Stage1Outcome
+from .output import Stage1Outcome, Stage2FormalizationOutcome, VerificationResult
 
 
 class StrictModel(BaseModel):
@@ -63,6 +63,8 @@ class WorkspaceProposalSession(StrictModel):
     proposal: str = Field(min_length=1)
     answers: dict[str, str] = Field(default_factory=dict)
     result: Stage1Outcome
+    formalization: Stage2FormalizationOutcome | None = None
+    verification_result: VerificationResult | None = None
 
 
 class WorkspaceProposalSessionState(StrictModel):

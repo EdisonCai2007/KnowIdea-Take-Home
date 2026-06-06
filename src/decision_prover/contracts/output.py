@@ -5,7 +5,7 @@ from typing import Annotated, Any, Literal
 
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 
-from .battery import StatedAssumption
+from .battery import DecisionBattery, StatedAssumption
 from .context import DecisionContext
 
 
@@ -174,6 +174,78 @@ ProposalRunResponse = Stage1RunResponse
 class Stage2PendingResponse(StrictModel):
     status: OperationStatus
     decision_context: DecisionContext
+
+
+class GroundingEntry(StrictModel):
+    field: str = Field(min_length=1)
+    source_type: Literal["workspace", "proposal", "answer", "stage1_summary"]
+    source_quote: str = Field(min_length=1)
+    source_locator: str = Field(min_length=1)
+
+
+class GroundingReport(StrictModel):
+    entries: list[GroundingEntry] = Field(default_factory=list)
+
+
+class NormalizedAction(StrictModel):
+    statement: str = Field(min_length=1)
+    type: str | None = None
+    parameters: dict[str, Any] = Field(default_factory=dict)
+
+
+class NormalizedFact(StrictModel):
+    key: str = Field(min_length=1)
+    value: str | int | float | bool
+    unit: str = Field(min_length=1)
+    statement: str = Field(min_length=1)
+
+
+class NormalizedGatingCondition(StrictModel):
+    statement: str = Field(min_length=1)
+    kind: Literal["hard_constraint", "gating_threshold"]
+    semi_formal: str | None = None
+    metric_key: str | None = None
+    operator: str | None = None
+    value: str | int | float | bool | None = None
+    unit: str | None = None
+    action_field_hint: str | None = None
+
+
+class NormalizedAssumption(StrictModel):
+    statement: str = Field(min_length=1)
+    status: Literal["given", "projected"]
+
+
+class NormalizedFeasibilityBundle(StrictModel):
+    action: NormalizedAction
+    facts: list[NormalizedFact] = Field(default_factory=list)
+    gating_conditions: list[NormalizedGatingCondition] = Field(default_factory=list)
+    assumptions: list[NormalizedAssumption] = Field(default_factory=list)
+    unknowns: list[str] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+
+class Stage2FormalizationSuccess(StrictModel):
+    status: Literal["formalized"]
+    normalized_bundle: NormalizedFeasibilityBundle
+    battery_document: DecisionBattery
+    primary_decision_id: str = Field(min_length=1)
+    grounding_report: GroundingReport
+    notes: list[str] = Field(default_factory=list)
+
+
+class Stage2FormalizationError(StrictModel):
+    status: Literal["formalization_error"]
+    message: str = Field(min_length=1)
+    normalized_bundle: NormalizedFeasibilityBundle | None = None
+    grounding_report: GroundingReport | None = None
+    notes: list[str] = Field(default_factory=list)
+
+
+Stage2FormalizationOutcome = Annotated[
+    Stage2FormalizationSuccess | Stage2FormalizationError,
+    Field(discriminator="status"),
+]
 
 
 class ValidationSummary(StrictModel):

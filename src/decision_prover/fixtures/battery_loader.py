@@ -83,15 +83,7 @@ def _collect_integrity_problems(source_path: Path, fixture: DecisionBattery) -> 
     return problems
 
 
-def load_battery_fixture(input_path: str | Path) -> LoadedBattery:
-    source_path = Path(input_path)
-    raw_data = _read_json_file(source_path)
-
-    try:
-        fixture = DecisionBattery.model_validate(raw_data)
-    except ValidationError as exc:
-        raise FixtureLoadError(source_path, format_validation_errors(source_path, exc)) from exc
-
+def _build_loaded_battery(source_path: Path, fixture: DecisionBattery) -> LoadedBattery:
     integrity_problems = _collect_integrity_problems(source_path, fixture)
     if integrity_problems:
         raise FixtureLoadError(source_path, integrity_problems)
@@ -109,6 +101,27 @@ def load_battery_fixture(input_path: str | Path) -> LoadedBattery:
     )
 
 
+def load_battery_document(
+    document: object,
+    *,
+    source_label: str | Path = "<memory-battery>",
+) -> LoadedBattery:
+    source_path = Path(source_label)
+
+    try:
+        fixture = DecisionBattery.model_validate(document)
+    except ValidationError as exc:
+        raise FixtureLoadError(source_path, format_validation_errors(source_path, exc)) from exc
+
+    return _build_loaded_battery(source_path, fixture)
+
+
+def load_battery_fixture(input_path: str | Path) -> LoadedBattery:
+    source_path = Path(input_path)
+    raw_data = _read_json_file(source_path)
+    return load_battery_document(raw_data, source_label=source_path)
+
+
 def get_decision_context(loaded_battery: LoadedBattery, decision_id: str) -> DecisionContext:
     for context in loaded_battery.decision_contexts:
         if context.id == decision_id:
@@ -119,4 +132,3 @@ def get_decision_context(loaded_battery: LoadedBattery, decision_id: str) -> Dec
         source_path,
         [f"{source_path}: decision '{decision_id}' not found in normalized contexts"],
     )
-

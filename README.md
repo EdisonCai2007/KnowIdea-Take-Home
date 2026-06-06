@@ -2,6 +2,8 @@
 
 Phase 4 adds an optional OpenRouter-backed second-opinion layer on top of the deterministic Stage 2 verifier. The verifier still owns the authoritative verdict, derivation, constraint checks, assumptions, and refutation output. The model now produces its own independent advisory classification from the normalized decision context.
 
+Workspace proposals also use an OpenRouter-backed Stage 2 formalization step after `stage1_ready`. That handoff converts the Stage 1 brief, transcript, and answers into a single-company, single-decision `DecisionBattery` document before the deterministic verifier runs.
+
 ## Setup
 
 1. Install the project dependencies.
@@ -10,12 +12,23 @@ Phase 4 adds an optional OpenRouter-backed second-opinion layer on top of the de
 
 Environment variables:
 
-- `OPENROUTER_API_KEY`: required only for AI explanation surfaces
+- `OPENROUTER_API_KEY`: required for Stage 2 workspace formalization and AI explanation surfaces
 - `OPENROUTER_MODEL`: defaults to `google/gemini-2.5-flash-lite`
 - `OPENROUTER_BASE_URL`: defaults to `https://openrouter.ai/api/v1`
 - `OPENROUTER_TIMEOUT_SECONDS`: request timeout in seconds, defaults to `30`
 
 ## Code vs Model Boundary
+
+### Workspace Stage 2 formalization
+
+- The model converts a `stage1_ready` workspace proposal into one valid `DecisionBattery` document with exactly one company and one decision.
+- The formalizer is omission-first: if a proof-bearing field is not grounded in the proposal, answers, or Stage 1 summary, it should be omitted rather than invented.
+- Sparse but valid outputs are acceptable. Empty `facts`, empty `constraints`, partial typed actions, and generic action payloads are allowed when they are the most faithful representation.
+- The formalizer should preserve unresolved load-bearing unknowns as explicit assumptions when grounded, instead of faking complete numeric inputs.
+- Code validates the formalized battery, checks one-company/one-decision identity rules, and then runs a non-blocking grounding audit over emitted proof fields.
+- Missing grounding entries do not fail Stage 2 by themselves. They are surfaced back through `formalization.notes` as warnings so the UI can expose what remains weakly grounded.
+
+### Deterministic verifier and AI explanation
 
 - Code decides `SUPPORTED`, `REFUTED`, or `UNDECIDABLE`.
 - Code produces the canonical `derivation`, `binding_constraints`, `load_bearing_assumptions`, and `refutation`.

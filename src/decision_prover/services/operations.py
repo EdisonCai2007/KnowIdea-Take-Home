@@ -1,19 +1,28 @@
+from typing import Any
+
+from ..ai import WorkspaceFormalizationExecutionError, generate_workspace_formalization
 from ..contracts.context import DecisionContext
 from ..contracts.output import (
     OperationStatus,
     Stage1Outcome,
     Stage1RunRequest,
     Stage1RunResponse,
+    Stage2FormalizationError,
+    Stage2FormalizationOutcome,
     Stage2PendingResponse,
+    VerificationResult,
 )
 from ..contracts.workspace import WorkspaceCompanyProfile
+from ..fixtures import FixtureLoadError, get_decision_context, load_battery_document
 from ..proposals import ProposalFixture
+from ..settings import ConfigurationError
 from ..stage1 import (
     continue_stage1_for_workspace_proposal,
     run_stage1,
     run_stage1_for_workspace_proposal,
     skip_stage1_for_workspace_proposal,
 )
+from ..verifier import verify_decision
 
 
 def build_stage1_run_response(
@@ -58,6 +67,54 @@ def skip_workspace_stage1_result(result: Stage1Outcome) -> Stage1Outcome:
     if result.outcome != "clarification_needed":
         return result
     return skip_stage1_for_workspace_proposal(result)
+
+
+def build_workspace_stage2_handoff(
+    result: Stage1Outcome,
+    *,
+    workspace_company: WorkspaceCompanyProfile,
+    answers: dict[str, str],
+    settings: Any | None = None,
+    client: Any | None = None,
+) -> tuple[Stage2FormalizationOutcome | None, VerificationResult | None]:
+    if result.outcome != "stage1_ready":
+        return None, None
+
+    formalization: Stage2FormalizationOutcome
+    try:
+        success = generate_workspace_formalization(
+            proposal_id=result.proposal_id,
+            proposal_text=result.proposal,
+            workspace_company=workspace_company,
+            ready_result=result,
+            answers=answers,
+            settings=settings,
+            client=client,
+        )
+        loaded_battery = load_battery_document(
+            success.battery_document.model_dump(mode="json", by_alias=True),
+            source_label=f"workspace-formalization-{result.proposal_id}.json",
+        )
+        decision_context = get_decision_context(loaded_battery, success.primary_decision_id)
+        verification_result = verify_decision(decision_context)
+        return success, verification_result
+    except (ConfigurationError, WorkspaceFormalizationExecutionError, FixtureLoadError) as exc:
+        if "success" in locals():
+            normalized_bundle = success.normalized_bundle
+            grounding_report = success.grounding_report
+            notes = success.notes
+        else:
+            normalized_bundle = None
+            grounding_report = None
+            notes = []
+        formalization = Stage2FormalizationError(
+            status="formalization_error",
+            message=str(exc),
+            normalized_bundle=normalized_bundle,
+            grounding_report=grounding_report,
+            notes=notes,
+        )
+        return formalization, None
 
 
 def build_stage2_pending_response(decision_context: DecisionContext) -> Stage2PendingResponse:

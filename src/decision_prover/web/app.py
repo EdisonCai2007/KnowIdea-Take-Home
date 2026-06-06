@@ -11,8 +11,10 @@ from ..constants import DEFAULT_BATTERY_PATH, DEFAULT_PROPOSALS_PATH
 from ..contracts.battery import DecisionBattery
 from ..contracts.context import DecisionContextList
 from ..contracts.output import (
+    Stage1Outcome,
     Stage1RunRequest,
     Stage1RunResponse,
+    Stage2FormalizationOutcome,
     VerificationExplainResponse,
     VerificationResult,
 )
@@ -30,7 +32,8 @@ from ..runtime_logging import log_event
 from ..settings import ConfigurationError, get_openrouter_settings
 from ..stage1 import Stage1ExecutionError, Stage1InputError
 from ..services import build_stage1_run_response, build_workspace_stage1_result
-from ..services import continue_workspace_stage1_result, skip_workspace_stage1_result
+from ..services import build_workspace_stage2_handoff, continue_workspace_stage1_result
+from ..services import skip_workspace_stage1_result
 from ..verifier import explain_verification, verify_decision
 
 TEMPLATE_DIR = Path(__file__).resolve().parent / "templates"
@@ -64,6 +67,32 @@ def create_app(
             if cleaned:
                 normalized[key] = cleaned
         return normalized
+
+    def _workspace_session_with_handoff(
+        *,
+        proposal_id: str,
+        workspace_company: WorkspaceCompanyProfile,
+        proposal: str,
+        answers: dict[str, str],
+        result: Stage1Outcome,
+    ) -> WorkspaceProposalSession:
+        formalization: Stage2FormalizationOutcome | None = None
+        verification_result: VerificationResult | None = None
+        if result.outcome == "stage1_ready":
+            formalization, verification_result = build_workspace_stage2_handoff(
+                result,
+                workspace_company=workspace_company,
+                answers=answers,
+            )
+        return WorkspaceProposalSession(
+            proposal_id=proposal_id,
+            workspace_company=workspace_company,
+            proposal=proposal,
+            answers=answers,
+            result=result,
+            formalization=formalization,
+            verification_result=verification_result,
+        )
 
     def _log_app_event(
         event: str,
@@ -177,7 +206,7 @@ def create_app(
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
         app.state.proposal_session = WorkspaceProposalSessionState(
-            active_session=WorkspaceProposalSession(
+            active_session=_workspace_session_with_handoff(
                 proposal_id=proposal_id,
                 workspace_company=workspace_company,
                 proposal=request_body.proposal,
@@ -232,7 +261,7 @@ def create_app(
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
         app.state.proposal_session = WorkspaceProposalSessionState(
-            active_session=WorkspaceProposalSession(
+            active_session=_workspace_session_with_handoff(
                 proposal_id=active_session.proposal_id,
                 workspace_company=active_session.workspace_company,
                 proposal=active_session.proposal,
@@ -258,12 +287,37 @@ def create_app(
 
         result = skip_workspace_stage1_result(active_session.result)
         app.state.proposal_session = WorkspaceProposalSessionState(
-            active_session=WorkspaceProposalSession(
+            active_session=_workspace_session_with_handoff(
                 proposal_id=active_session.proposal_id,
                 workspace_company=active_session.workspace_company,
                 proposal=active_session.proposal,
                 answers=active_session.answers,
                 result=result,
+            )
+        )
+        return app.state.proposal_session
+
+    @app.post("/api/workspace/proposal/formalize", response_model=WorkspaceProposalSessionState)
+    def formalize_workspace_proposal() -> WorkspaceProposalSessionState:
+        active_session = app.state.proposal_session.active_session
+        if active_session is None:
+            raise HTTPException(
+                status_code=409,
+                detail="Start a proposal interview before running Stage 2 handoff.",
+            )
+        if active_session.result.outcome != "stage1_ready":
+            raise HTTPException(
+                status_code=409,
+                detail="The active proposal must be Stage 1 ready before running Stage 2 handoff.",
+            )
+
+        app.state.proposal_session = WorkspaceProposalSessionState(
+            active_session=_workspace_session_with_handoff(
+                proposal_id=active_session.proposal_id,
+                workspace_company=active_session.workspace_company,
+                proposal=active_session.proposal,
+                answers=active_session.answers,
+                result=active_session.result,
             )
         )
         return app.state.proposal_session

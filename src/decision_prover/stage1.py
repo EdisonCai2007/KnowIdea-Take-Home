@@ -65,6 +65,12 @@ class _PreparedAnswer:
     answer: str
 
 
+def canonicalize_company_id(name: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", name.strip().lower())
+    slug = re.sub(r"-{2,}", "-", slug).strip("-")
+    return slug or "company"
+
+
 def run_stage1(
     proposal_fixture: ProposalFixture,
     request: Stage1RunRequest | None = None,

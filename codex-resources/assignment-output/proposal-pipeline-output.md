@@ -4,8 +4,6 @@ This file captures the pipeline output requested in the assignment for `P1` thro
 
 ## P1
 
-**Source Log:** [decision_prover-20260606T120413Z.log](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/logs/decision_prover-20260606T120413Z.log)
-
 **Original Proposal**
 
 > We're thinking about hiring some more salespeople to hit our growth targets next year. Can you tell us whether that's a sound move?
@@ -72,8 +70,6 @@ Stage 2 proof draft:
 `UNDECIDABLE`
 
 ## P2
-
-**Source Log:** [decision_prover-20260606T120700Z.log](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/logs/decision_prover-20260606T120700Z.log)
 
 **Original Proposal**
 
@@ -167,8 +163,6 @@ Stage 2 proof draft:
 
 ## P3
 
-**Source Log:** [decision_prover-20260606T121049Z.log](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/logs/decision_prover-20260606T121049Z.log)
-
 **Original Proposal**
 
 > We've got $2M in the bank and we're burning $250k a month. Our board requires us to keep at least six months of runway at all times, no exceptions. I want to put $1M upfront into a brand-marketing campaign. Good idea?
@@ -223,8 +217,6 @@ Stage 2 proof draft:
 
 ## P4
 
-**Source Log:** [decision_prover-20260606T121205Z.log](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/logs/decision_prover-20260606T121205Z.log)
-
 **Original Proposal**
 
 > We sell a subscription product — ARPU is $80 a month, gross margin is 75%, monthly churn is 4%. We found a new acquisition channel with a CAC of $400. Our standing policy is that we only scale a channel if its LTV/CAC is at least 3. Should we scale this one? (Also, we just redesigned our logo and the team loves it.)
@@ -276,8 +268,6 @@ Stage 2 proof draft:
 `UNDECIDABLE`
 
 ## P5
-
-**Source Log:** [decision_prover-20260606T121742Z.log](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/logs/decision_prover-20260606T121742Z.log)
 
 **Original Proposal**
 
@@ -343,8 +333,6 @@ Stage 2 proof draft:
 `UNDECIDABLE`
 
 ## P6
-
-**Source Log:** [decision_prover-20260606T122301Z.log](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/logs/decision_prover-20260606T122301Z.log)
 
 **Original Proposal**
 

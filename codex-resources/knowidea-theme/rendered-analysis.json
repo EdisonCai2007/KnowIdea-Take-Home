@@ -2,7 +2,7 @@
   {
     "slug": "home",
     "url": "https://www.knowidea.dev/",
-    "screenshotPath": "/Users/edisoncai/Documents/GitHub/KnowIdeaAssessment/codex-resources/knowidea-theme/screenshots/home-desktop-full.jpg",
+    "screenshotPath": "screenshots/home-desktop-full.jpg",
     "analysis": {
       "body": {
         "bg": null,
@@ -2037,7 +2037,7 @@
   {
     "slug": "about",
     "url": "https://www.knowidea.dev/about",
-    "screenshotPath": "/Users/edisoncai/Documents/GitHub/KnowIdeaAssessment/codex-resources/knowidea-theme/screenshots/about-desktop-full.jpg",
+    "screenshotPath": "screenshots/about-desktop-full.jpg",
     "analysis": {
       "body": {
         "bg": null,
@@ -3361,7 +3361,7 @@
   {
     "slug": "product",
     "url": "https://www.knowidea.dev/product",
-    "screenshotPath": "/Users/edisoncai/Documents/GitHub/KnowIdeaAssessment/codex-resources/knowidea-theme/screenshots/product-desktop-full.jpg",
+    "screenshotPath": "screenshots/product-desktop-full.jpg",
     "analysis": {
       "body": {
         "bg": null,
@@ -4836,7 +4836,7 @@
   {
     "slug": "press-releases",
     "url": "https://www.knowidea.dev/press-releases",
-    "screenshotPath": "/Users/edisoncai/Documents/GitHub/KnowIdeaAssessment/codex-resources/knowidea-theme/screenshots/press-releases-desktop-full.jpg",
+    "screenshotPath": "screenshots/press-releases-desktop-full.jpg",
     "analysis": {
       "body": {
         "bg": null,

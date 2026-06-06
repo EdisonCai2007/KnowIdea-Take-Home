@@ -3,7 +3,7 @@
 Status: Follow-on roadmap from current Phase 4 state  
 Date: June 5, 2026
 
-This document continues from the repo's current Phase 4 implementation state described in [README.md](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/README.md) and narrows the remaining work around the approved single-company product workflow in [finalized-roadmap.md](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/codex-resources/additional-resources/finalized-roadmap.md).
+This document continues from the repo's current Phase 4 implementation state described in [README.md](README.md) and narrows the remaining work around the approved single-company product workflow in [finalized-roadmap.md](codex-resources/additional-resources/finalized-roadmap.md).
 
 Phases 1 through 4 remain as already planned and implemented. This roadmap covers the next phases only.
 

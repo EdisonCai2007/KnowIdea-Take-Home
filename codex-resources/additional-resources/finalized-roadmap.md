@@ -3,7 +3,7 @@
 Status: Final
 Date: June 5, 2026
 
-This roadmap supersedes [architecture-roadmap.md](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/architecture-roadmap.md) where the two documents differ.
+This roadmap supersedes [architecture-roadmap.md](architecture-roadmap.md) where the two documents differ.
 
 ## Goal
 
@@ -32,7 +32,7 @@ Important boundary:
 - company name and sector may be collected before the proposal, even when they are not yet part of the verifier input
 - once a proposal is entered, Stage 1 questioning must still stay verifier-driven and may only ask for information that unlocks a concrete check
 
-This means the user works inside one active company context at a time. V1 should not support multiple simultaneous company contexts in one live workflow, even though fixture files such as [decision_battery.json](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/codex-resources/original-project-specs/decision_battery.json) can contain multiple companies for evaluation purposes.
+This means the user works inside one active company context at a time. V1 should not support multiple simultaneous company contexts in one live workflow, even though fixture files such as [decision_battery.json](codex-resources/original-project-specs/decision_battery.json) can contain multiple companies for evaluation purposes.
 
 If we later want multi-company support, the preferred extension is multiple separate company workspaces or chats, not one mixed shared context.
 
@@ -53,7 +53,7 @@ If we later want multi-company support, the preferred extension is multiple sepa
    - binding constraints
    - load-bearing assumptions
    - refutation attempt
-7. Stage 1 output must normalize to the schema shape used by [decision_battery.json](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/decision_battery.json).
+7. Stage 1 output must normalize to the schema shape used by [decision_battery.json](decision_battery.json).
 
 ## Final Architecture
 
@@ -222,8 +222,8 @@ For `UNDECIDABLE`, it must also return:
 
 We should keep the original spec artifacts in the test loop:
 
-- [nl_proposals.md](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/codex-resources/original-project-specs/nl_proposals.md) is the Stage 1 evaluation set for interview quality, gap detection, and translation from raw user language into the normalized schema.
-- [decision_battery.json](/Users/edisoncai/Documents/GitHub/KnowIdea-Take-Home/codex-resources/original-project-specs/decision_battery.json) is the Stage 2 evaluation set for derivation validity, verdict correctness, and output-contract compliance on already-structured inputs.
+- [nl_proposals.md](codex-resources/original-project-specs/nl_proposals.md) is the Stage 1 evaluation set for interview quality, gap detection, and translation from raw user language into the normalized schema.
+- [decision_battery.json](codex-resources/original-project-specs/decision_battery.json) is the Stage 2 evaluation set for derivation validity, verdict correctness, and output-contract compliance on already-structured inputs.
 - End-to-end testing should cover both paths: formalize proposals from `nl_proposals.md`, then pass the resulting structured object into Stage 2.
 
 ## UI Scope

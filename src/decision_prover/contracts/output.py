@@ -3,7 +3,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Annotated, Any, Literal
 
-from pydantic import AliasChoices, BaseModel, ConfigDict, Field
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
 
 from .battery import DecisionBattery, StatedAssumption
 from .context import DecisionContext
@@ -187,6 +187,95 @@ class GroundingReport(StrictModel):
     entries: list[GroundingEntry] = Field(default_factory=list)
 
 
+class Stage2ProofPremise(StrictModel):
+    id: str = Field(min_length=1)
+    statement: str = Field(min_length=1)
+    kind: Literal["fact", "assumption", "target"]
+    source_locator: str = Field(min_length=1)
+
+
+class Stage2ProofRefOperand(StrictModel):
+    kind: Literal["ref"]
+    value: str = Field(min_length=1)
+
+
+class Stage2ProofLiteralOperand(StrictModel):
+    kind: Literal["literal"]
+    value: int | float
+
+    @field_validator("value", mode="before")
+    @classmethod
+    def reject_bool_literal(cls, value: object) -> object:
+        if isinstance(value, bool):
+            raise ValueError("literal operands must be numeric")
+        return value
+
+
+Stage2ProofOperand = Annotated[
+    Stage2ProofRefOperand | Stage2ProofLiteralOperand,
+    Field(discriminator="kind"),
+]
+
+
+class Stage2ProofComputation(StrictModel):
+    id: str = Field(min_length=1)
+    op: Literal["add", "sub", "mul", "div"]
+    args: list[Stage2ProofOperand] = Field(min_length=2)
+    result: int | float
+
+    @field_validator("result", mode="before")
+    @classmethod
+    def reject_bool_result(cls, value: object) -> object:
+        if isinstance(value, bool):
+            raise ValueError("computation results must be numeric")
+        return value
+
+
+class Stage2ProofComparison(StrictModel):
+    id: str = Field(min_length=1)
+    lhs: Stage2ProofOperand
+    operator: Literal["<", "<=", ">", ">=", "=="]
+    rhs: Stage2ProofOperand
+
+
+class Stage2ProofDraft(StrictModel):
+    claim: str = Field(min_length=1)
+    premises: list[Stage2ProofPremise] = Field(default_factory=list)
+    computations: list[Stage2ProofComputation] = Field(default_factory=list)
+    comparisons: list[Stage2ProofComparison] = Field(default_factory=list)
+    proposed_verdict: Classification
+    refutation_attempt: str = Field(min_length=1)
+    unresolved_gaps: list[str] = Field(default_factory=list)
+
+
+class Stage2ProofValidationIssue(StrictModel):
+    code: Literal[
+        "unknown_reference",
+        "duplicate_id",
+        "invalid_source_locator",
+        "unsupported_operation",
+        "invalid_operand_type",
+        "division_by_zero",
+        "result_mismatch",
+        "comparison_failed",
+        "ambiguous_target",
+        "ungrounded_premise",
+        "load_bearing_gap",
+    ]
+    message: str = Field(min_length=1)
+    subject_id: str | None = None
+
+
+class Stage2ProofValidationReport(StrictModel):
+    accepted: bool
+    issues: list[Stage2ProofValidationIssue] = Field(default_factory=list)
+    checked_premise_ids: list[str] = Field(default_factory=list)
+    checked_computation_ids: list[str] = Field(default_factory=list)
+    checked_comparison_ids: list[str] = Field(default_factory=list)
+    final_classification: Classification
+    downgraded_from_model_verdict: bool
+
+
 class NormalizedAction(StrictModel):
     statement: str = Field(min_length=1)
     type: str | None = None
@@ -227,18 +316,16 @@ class NormalizedFeasibilityBundle(StrictModel):
 
 class Stage2FormalizationSuccess(StrictModel):
     status: Literal["formalized"]
-    normalized_bundle: NormalizedFeasibilityBundle
-    battery_document: DecisionBattery
-    primary_decision_id: str = Field(min_length=1)
-    grounding_report: GroundingReport
+    proof_draft: Stage2ProofDraft
+    validation_report: Stage2ProofValidationReport
     notes: list[str] = Field(default_factory=list)
 
 
 class Stage2FormalizationError(StrictModel):
     status: Literal["formalization_error"]
     message: str = Field(min_length=1)
-    normalized_bundle: NormalizedFeasibilityBundle | None = None
-    grounding_report: GroundingReport | None = None
+    proof_draft: Stage2ProofDraft | None = None
+    validation_report: Stage2ProofValidationReport | None = None
     notes: list[str] = Field(default_factory=list)
 
 

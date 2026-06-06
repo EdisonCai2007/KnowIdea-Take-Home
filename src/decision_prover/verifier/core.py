@@ -130,7 +130,9 @@ def _missing_constraint_input_result(
     elif family == _NEW_SKU_MARGIN:
         missing.extend(_missing_action_fields(session.context, ["contribution_margin"]))
     elif family == _MARKETING_SPEND_CAP:
-        missing.extend(_missing_fact_fields(session.context, ["current_marketing_spend", "monthly_revenue"]))
+        missing.extend(
+            _missing_fact_fields(session.context, ["current_marketing_spend", "monthly_revenue"])
+        )
         missing.extend(_missing_action_fields(session.context, ["added_monthly_spend"]))
 
     if not missing:

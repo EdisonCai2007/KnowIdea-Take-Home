@@ -4,7 +4,12 @@ from ..ai.service import generate_ai_explanation
 from ..contracts.context import DecisionContext
 from ..contracts.output import VerificationExplainResponse
 from ..runtime_logging import log_event
-from ..settings import ConfigurationError, OpenRouterSettings, get_openrouter_settings
+from ..settings import (
+    ConfigurationError,
+    DEFAULT_OPENROUTER_STAGE2_MODEL,
+    OpenRouterSettings,
+    get_openrouter_settings,
+)
 from .core import verify_decision
 
 
@@ -14,7 +19,11 @@ def explain_verification(
     settings: OpenRouterSettings | None = None,
 ) -> VerificationExplainResponse:
     result = verify_decision(context)
-    resolved_settings = settings or get_openrouter_settings(require_api_key=False)
+    resolved_settings = settings or get_openrouter_settings(
+        require_api_key=False,
+        model_env_var="OPENROUTER_STAGE2_MODEL",
+        default_model=DEFAULT_OPENROUTER_STAGE2_MODEL,
+    )
     log_event(
         settings=resolved_settings,
         event="explain.start",

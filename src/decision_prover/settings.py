@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 
 from .constants import PROJECT_ROOT
@@ -27,13 +28,16 @@ except ModuleNotFoundError:  # pragma: no cover - exercised only when dependency
 
                 os.environ[key] = value.strip().strip("\"'")
 
-DEFAULT_OPENROUTER_MODEL = "google/gemini-2.5-flash-lite"
+DEFAULT_OPENROUTER_MODEL = "google/gemini-2.5-flash"
+DEFAULT_OPENROUTER_STAGE1_MODEL = "google/gemini-2.5-flash"
+DEFAULT_OPENROUTER_STAGE2_MODEL = "google/gemini-2.5-pro"
 DEFAULT_OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_OPENROUTER_TIMEOUT_SECONDS = 30.0
 DEFAULT_DECISION_PROVER_LOG_ENABLED = True
 DEFAULT_DECISION_PROVER_LOG_FILE = Path("logs/decision_prover.log")
 DEFAULT_DECISION_PROVER_LOG_CONSOLE = True
 DEFAULT_DECISION_PROVER_LOG_RAW_OPENROUTER = True
+LOG_RUN_TIMESTAMP = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
 class ConfigurationError(RuntimeError):
@@ -72,11 +76,27 @@ def _parse_bool_env(name: str, default: bool) -> bool:
     )
 
 
-def get_openrouter_settings(*, require_api_key: bool = False) -> OpenRouterSettings:
+def _resolve_run_log_file(base_path: Path) -> Path:
+    suffix = base_path.suffix or ".log"
+    stem = base_path.stem if base_path.suffix else base_path.name
+    filename = f"{stem}-{LOG_RUN_TIMESTAMP}{suffix}"
+    return base_path.with_name(filename)
+
+
+def get_openrouter_settings(
+    *,
+    require_api_key: bool = False,
+    model_env_var: str = "OPENROUTER_MODEL",
+    default_model: str = DEFAULT_OPENROUTER_MODEL,
+) -> OpenRouterSettings:
     load_environment()
 
     api_key = os.getenv("OPENROUTER_API_KEY", "").strip() or None
-    model = os.getenv("OPENROUTER_MODEL", DEFAULT_OPENROUTER_MODEL).strip() or DEFAULT_OPENROUTER_MODEL
+    model = (
+        os.getenv(model_env_var)
+        or os.getenv("OPENROUTER_MODEL")
+        or default_model
+    ).strip() or default_model
     base_url = (
         os.getenv("OPENROUTER_BASE_URL", DEFAULT_OPENROUTER_BASE_URL).strip()
         or DEFAULT_OPENROUTER_BASE_URL
@@ -117,6 +137,7 @@ def get_openrouter_settings(*, require_api_key: bool = False) -> OpenRouterSetti
     log_file = Path(log_file_raw)
     if not log_file.is_absolute():
         log_file = PROJECT_ROOT / log_file
+    log_file = _resolve_run_log_file(log_file)
 
     if require_api_key and api_key is None:
         raise ConfigurationError(

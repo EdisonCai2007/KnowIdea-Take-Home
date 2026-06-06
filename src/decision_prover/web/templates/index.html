@@ -464,7 +464,7 @@
           <p class="support-copy">
             Submit one proposal. Stage 1 will build a working understanding, ask up to three
             proof-focused clarification questions at a time, and stop once no more strong proof-critical
-            questions remain or the 3-round clarification limit is reached.
+            questions remain or the 5-round clarification limit is reached.
           </p>
           <form id="proposal-start-form" novalidate style="margin-top: 1rem;">
             <label class="field">
@@ -580,7 +580,7 @@
                 {% if active_session.result.completion_reason == "no_more_questions" %}
                 No additional proof-critical clarification questions remained.
                 {% elif active_session.result.completion_reason == "max_rounds" %}
-                The 3-round clarification limit was reached.
+                The 5-round clarification limit was reached.
                 {% else %}
                 The user chose to continue without more clarification.
                 {% endif %}
@@ -628,16 +628,12 @@
               {% endif %}
             </div>
             <div>
-              <div class="label">Normalized Feasibility Bundle</div>
-              <pre class="code-block">{{ active_session.formalization.normalized_bundle.model_dump(mode='json') | tojson(indent=2) }}</pre>
+              <div class="label">Stage 2 Proof Draft</div>
+              <pre class="code-block">{{ active_session.formalization.proof_draft.model_dump(mode='json') | tojson(indent=2) }}</pre>
             </div>
             <div>
-              <div class="label">Formalized Battery Document</div>
-              <pre class="code-block">{{ active_session.formalization.battery_document.model_dump(mode='json', by_alias=True) | tojson(indent=2) }}</pre>
-            </div>
-            <div>
-              <div class="label">Grounding Report</div>
-              <pre class="code-block">{{ active_session.formalization.grounding_report.model_dump(mode='json') | tojson(indent=2) }}</pre>
+              <div class="label">Validation Report</div>
+              <pre class="code-block">{{ active_session.formalization.validation_report.model_dump(mode='json') | tojson(indent=2) }}</pre>
             </div>
             {% if active_session.formalization.notes %}
             <article class="question-card">
@@ -662,16 +658,16 @@
               <div class="label">Stage 2 Handoff Error</div>
               <p>{{ active_session.formalization.message }}</p>
             </article>
-            {% if active_session.formalization.normalized_bundle %}
+            {% if active_session.formalization.proof_draft %}
             <div>
-              <div class="label">Normalized Feasibility Bundle</div>
-              <pre class="code-block">{{ active_session.formalization.normalized_bundle.model_dump(mode='json') | tojson(indent=2) }}</pre>
+              <div class="label">Stage 2 Proof Draft</div>
+              <pre class="code-block">{{ active_session.formalization.proof_draft.model_dump(mode='json') | tojson(indent=2) }}</pre>
             </div>
             {% endif %}
-            {% if active_session.formalization.grounding_report %}
+            {% if active_session.formalization.validation_report %}
             <div>
-              <div class="label">Grounding Report</div>
-              <pre class="code-block">{{ active_session.formalization.grounding_report.model_dump(mode='json') | tojson(indent=2) }}</pre>
+              <div class="label">Validation Report</div>
+              <pre class="code-block">{{ active_session.formalization.validation_report.model_dump(mode='json') | tojson(indent=2) }}</pre>
             </div>
             {% endif %}
             {% if active_session.formalization.notes %}

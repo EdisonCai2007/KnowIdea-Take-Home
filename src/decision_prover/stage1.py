@@ -22,9 +22,14 @@ from .contracts.output import (
 from .contracts.workspace import WorkspaceCompanyProfile
 from .proposals import ProposalFixture
 from .runtime_logging import log_event
-from .settings import ConfigurationError, OpenRouterSettings, get_openrouter_settings
+from .settings import (
+    ConfigurationError,
+    DEFAULT_OPENROUTER_STAGE1_MODEL,
+    OpenRouterSettings,
+    get_openrouter_settings,
+)
 
-MAX_CLARIFICATION_ROUNDS = 3
+MAX_CLARIFICATION_ROUNDS = 5
 
 
 class Stage1InputError(ValueError):
@@ -200,7 +205,11 @@ def _resolve_client(
     if client is not None:
         return settings, client
 
-    settings = settings or get_openrouter_settings(require_api_key=True)
+    settings = settings or get_openrouter_settings(
+        require_api_key=True,
+        model_env_var="OPENROUTER_STAGE1_MODEL",
+        default_model=DEFAULT_OPENROUTER_STAGE1_MODEL,
+    )
     try:
         from .ai.client import OpenRouterClient
     except ModuleNotFoundError as exc:  # pragma: no cover
@@ -361,7 +370,7 @@ def _continue_stage1_proposal(
             proposal_text=result.proposal,
             working_context=working_context,
             readiness_summary=(
-                "Stage 1 stopped after the 3-round clarification limit. "
+                f"Stage 1 stopped after the {MAX_CLARIFICATION_ROUNDS}-round clarification limit. "
                 "Use the current decision brief with the unresolved notes below."
             ),
             unresolved_notes=working_context.what_still_matters,
@@ -697,7 +706,7 @@ Your job is to build a lightweight decision brief from the company context and p
 Rules:
 - Do not use Decision Battery structure.
 - Do not classify the proposal into any hard-coded action family.
-- Do not use any fixed business ontology like hire, launch_sku, price_change, or verifier field lists.
+- Do not use any fixed business ontology or verifier field lists.
 - State the decision in one sentence.
 - State the objective in one sentence.
 - Summarize what is already known, what still matters, any constraints mentioned, and what success seems to mean.
@@ -727,12 +736,19 @@ Rules:
 - Before asking anything, silently infer any obvious labels, categories, and structure from the proposal and working context.
 - Do not ask for internal labels, action types, schema fields, taxonomy, or any Decision Battery or verifier-specific structure.
 - Return 1 to 3 strong questions total. Return fewer if fewer strong proof-input questions exist. Return an empty questions list if no such question remains.
+- Before drafting questions, choose exactly one highest-priority proof variable family for this round and keep every question inside that family.
+- A proof variable family is one tightly related proof path such as cost feasibility, revenue threshold, capacity feasibility, deadline feasibility, churn impact, margin impact, or one specific hard-constraint threshold.
+- Later rounds may switch to a different variable family only after the current family is resolved, exhausted, or no longer has a strong unanswered proof-critical question.
 - Ask only decision-critical questions whose answers are not already reasonably inferable and would supply an exact input for a later feasibility, threshold, constraint, or objective-impact check.
 - If the proposal or working context already states an exact value, threshold, date, count, price, rate, capacity, or deadline, treat that datum as known.
 - Do not ask the user to restate, confirm, refine, or choose among suggested answers for an exact datum that is already present in the proposal or working context.
 - Ask only for missing exact inputs that are still needed for a later feasibility, threshold, constraint, or objective-impact check.
+- Prefer the variable family that is most directly tied to the proposal's stated condition, threshold, explicit success criterion, or claimed outcome.
+- Within that chosen family, prefer the exact baseline, comparison value, threshold, or pivotal missing input that would most directly determine support, refutation, or a verdict-flipping assumption.
 - Prefer decision-driving questions about concrete thresholds such as cost, budget, cash, burn, revenue, margin, churn, capacity, deadline, unit volume, price, reserve floor, or another exact threshold.
 - Do not ask exploratory, planning-detail, behavioral, background, marketing, positioning, demographic, location, or other flavor questions unless they are clearly decision-critical right now.
+- Do not branch across multiple business areas in the same round. Do not mix cost, staffing, demand, margin, timeline, operating-model, or adjacent metric questions in one batch unless they are all part of the same single proof variable family.
+- If only one strong exact-value question exists in the chosen family, return one question rather than branching to fill the batch.
 - Each question must include exactly 3 suggested answers, and the user must still be free to type a custom answer.
 - Suggested answers must be concrete, directly responsive, and must be exact literal values with units, dates, counts, percentages, rates, capacities, thresholds, or another similarly exact measurable input.
 - Do not use generic suggestions like 'best estimate', 'specific answer', or 'unknown for now'.
@@ -757,6 +773,7 @@ Rules:
 - Treat the user's answer strings as the source of truth for what changed.
 - Update the decision, objective, what we know, what still matters, constraints mentioned, success criteria, and notes so the next AI step has a better context.
 - Keep the brief stable and compact.
+- Preserve the current proof path focus unless the new answer clearly resolves it or makes a different unresolved variable family more important.
 - Remove an item from what_still_matters only if the user answer actually resolves it.
 - Sharpen the brief with exact quantities, thresholds, and units when the user provides them.
 - Do not invent uplift assumptions, percentages, demand effects, or other projected impacts unless the user explicitly supplied them.

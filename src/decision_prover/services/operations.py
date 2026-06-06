@@ -13,7 +13,6 @@ from ..contracts.output import (
     VerificationResult,
 )
 from ..contracts.workspace import WorkspaceCompanyProfile
-from ..fixtures import FixtureLoadError, get_decision_context, load_battery_document
 from ..proposals import ProposalFixture
 from ..settings import ConfigurationError
 from ..stage1 import (
@@ -22,7 +21,7 @@ from ..stage1 import (
     run_stage1_for_workspace_proposal,
     skip_stage1_for_workspace_proposal,
 )
-from ..verifier import verify_decision
+from ..verifier.proof_draft import build_proof_verification_result
 
 
 def build_stage1_run_response(
@@ -91,27 +90,25 @@ def build_workspace_stage2_handoff(
             settings=settings,
             client=client,
         )
-        loaded_battery = load_battery_document(
-            success.battery_document.model_dump(mode="json", by_alias=True),
-            source_label=f"workspace-formalization-{result.proposal_id}.json",
+        verification_result = build_proof_verification_result(
+            success.proof_draft,
+            success.validation_report,
         )
-        decision_context = get_decision_context(loaded_battery, success.primary_decision_id)
-        verification_result = verify_decision(decision_context)
         return success, verification_result
-    except (ConfigurationError, WorkspaceFormalizationExecutionError, FixtureLoadError) as exc:
+    except (ConfigurationError, WorkspaceFormalizationExecutionError) as exc:
         if "success" in locals():
-            normalized_bundle = success.normalized_bundle
-            grounding_report = success.grounding_report
+            proof_draft = success.proof_draft
+            validation_report = success.validation_report
             notes = success.notes
         else:
-            normalized_bundle = None
-            grounding_report = None
+            proof_draft = None
+            validation_report = None
             notes = []
         formalization = Stage2FormalizationError(
             status="formalization_error",
             message=str(exc),
-            normalized_bundle=normalized_bundle,
-            grounding_report=grounding_report,
+            proof_draft=proof_draft,
+            validation_report=validation_report,
             notes=notes,
         )
         return formalization, None

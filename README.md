@@ -13,9 +13,12 @@ Workspace proposals also use an OpenRouter-backed Stage 2 formalization step aft
 Environment variables:
 
 - `OPENROUTER_API_KEY`: required for Stage 2 workspace formalization and AI explanation surfaces
-- `OPENROUTER_MODEL`: defaults to `google/gemini-2.5-flash-lite`
+- `OPENROUTER_STAGE1_MODEL`: defaults to `google/gemini-2.5-flash`
+- `OPENROUTER_STAGE2_MODEL`: defaults to `google/gemini-2.5-pro`
+- `OPENROUTER_MODEL`: legacy fallback used only when a stage-specific model env var is unset
 - `OPENROUTER_BASE_URL`: defaults to `https://openrouter.ai/api/v1`
 - `OPENROUTER_TIMEOUT_SECONDS`: request timeout in seconds, defaults to `30`
+- `DECISION_PROVER_LOG_FILE`: base path for JSONL logs, default `logs/decision_prover.log`; each app startup writes to a new timestamped file such as `logs/decision_prover-20260606T092500Z.log`
 
 ## Code vs Model Boundary
 
@@ -97,4 +100,8 @@ decision-prover verify explain --input codex-resources/original-project-specs/de
 
 ## OpenRouter Model
 
-The default explanation model is `google/gemini-2.5-flash-lite`, pinned through `OPENROUTER_MODEL` unless explicitly overridden.
+Stage 1 reads `OPENROUTER_STAGE1_MODEL` and defaults to `google/gemini-2.5-flash`.
+
+Stage 2 AI surfaces read `OPENROUTER_STAGE2_MODEL` and default to `google/gemini-2.5-pro`.
+
+If either stage-specific env var is unset, the app falls back to `OPENROUTER_MODEL` before using the stage default.

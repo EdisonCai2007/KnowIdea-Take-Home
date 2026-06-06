@@ -1,0 +1,73 @@
+/*
+  KnowIdea observed theme tokens.
+  Source: rendered site capture and .landing-v2 CSS from knowidea.dev.
+*/
+
+:root {
+  --knowidea-bg-deep: #f7f5f2;
+  --knowidea-bg-mid: #ffffff;
+  --knowidea-bg-up: #ffffff;
+  --knowidea-bg-paper: #efebe6;
+  --knowidea-bg-ink: #16122b;
+
+  --knowidea-surface: #fdf9f1;
+  --knowidea-accent: #6d28d9;
+  --knowidea-accent-2: #7c3aed;
+  --knowidea-accent-3: #c026d3;
+  --knowidea-accent-soft: #f3edff;
+  --knowidea-ink-accent: #c9a84c;
+  --knowidea-ink-accent-2: #d8bc68;
+  --knowidea-ink-accent-3: #e0c770;
+  --knowidea-ink-data: #5eead4;
+  --knowidea-green: #047857;
+  --knowidea-gold: #b45309;
+
+  --knowidea-text: #1a1530;
+  --knowidea-text-2: #2e2845;
+  --knowidea-text-3: #5a5470;
+  --knowidea-text-4: #8b859d;
+  --knowidea-border: #1a15301a;
+  --knowidea-border-soft: #1a15300f;
+
+  --knowidea-dark-0: #08060e;
+  --knowidea-dark-1: #0a0818;
+  --knowidea-dark-2: #0f0c22;
+  --knowidea-dark-3: #14102c;
+  --knowidea-dark-4: #1a1232;
+  --knowidea-dark-card-from: rgba(28, 24, 42, 0.9);
+  --knowidea-dark-card-to: rgba(20, 17, 32, 0.95);
+
+  --knowidea-font-sans: Poppins, sans-serif, Arial, system-ui, sans-serif;
+  --knowidea-font-secondary: googleSans, "googleSans Fallback", sans-serif, Arial, sans-serif;
+
+  --knowidea-radius-card: 16px;
+  --knowidea-radius-panel: 24px;
+  --knowidea-radius-pill: 999px;
+
+  --knowidea-header-bg: rgba(8, 6, 14, 0.72);
+  --knowidea-header-border: rgba(255, 255, 255, 0.08);
+  --knowidea-header-shadow: 0 8px 32px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.knowidea-glass-header {
+  background: var(--knowidea-header-bg);
+  border: 1px solid var(--knowidea-header-border);
+  border-radius: var(--knowidea-radius-pill);
+  box-shadow: var(--knowidea-header-shadow);
+  backdrop-filter: blur(22px) saturate(160%);
+}
+
+.knowidea-dark-page {
+  color: #ffffff;
+  background:
+    radial-gradient(circle, rgba(200, 195, 235, 0.13) 1.2px, transparent 1.2px),
+    radial-gradient(circle at 60% 35%, rgba(100, 90, 160, 0.25) 0%, transparent 40%),
+    linear-gradient(135deg, #0a0818 0%, #0f0c22 15%, #14102c 30%, #1a1232 48%, #2a2050 65%, #5a5088 78%, #8a84b8 88%, #b0aed0 100%);
+  background-size: 11px 11px, 100% 100%, 100% 100%;
+}
+
+.knowidea-light-page {
+  color: var(--knowidea-text);
+  background: var(--knowidea-bg-deep);
+  font-family: var(--knowidea-font-sans);
+}

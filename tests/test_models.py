@@ -3,6 +3,11 @@ from pydantic import ValidationError
 
 from decision_prover.contracts.actions import GenericActionPayload, PriceChangeAction
 from decision_prover.contracts.battery import CompanyFact, Constraint, Decision, StatedAssumption
+from decision_prover.contracts.output import (
+    Stage2ProofComputation,
+    Stage2ProofDraft,
+    Stage2ProofValidationIssue,
+)
 from decision_prover.contracts.workspace import WorkspaceCompanyProfile, WorkspaceProposalSubmitRequest
 
 
@@ -218,3 +223,78 @@ def test_workspace_proposal_submit_request_trims_and_requires_text() -> None:
 
     with pytest.raises(ValidationError):
         WorkspaceProposalSubmitRequest.model_validate({"proposal": "   "})
+
+
+def test_stage2_proof_draft_accepts_ast_only_shapes() -> None:
+    draft = Stage2ProofDraft.model_validate(
+        {
+            "claim": "The proposal satisfies the target threshold.",
+            "premises": [
+                {
+                    "id": "P1",
+                    "statement": "Projected monthly revenue is $40,000.",
+                    "kind": "fact",
+                    "source_locator": "working_context.what_we_know[0]",
+                }
+            ],
+            "computations": [
+                {
+                    "id": "C1",
+                    "op": "mul",
+                    "args": [
+                        {"kind": "ref", "value": "P1"},
+                        {"kind": "literal", "value": 0.5},
+                    ],
+                    "result": 20000,
+                }
+            ],
+            "comparisons": [
+                {
+                    "id": "K1",
+                    "lhs": {"kind": "ref", "value": "C1"},
+                    "operator": ">=",
+                    "rhs": {"kind": "literal", "value": 15000},
+                }
+            ],
+            "proposed_verdict": "SUPPORTED",
+            "refutation_attempt": "The claim fails if the projected revenue is materially lower.",
+            "unresolved_gaps": [],
+        }
+    )
+
+    assert draft.computations[0].op == "mul"
+    assert draft.comparisons[0].lhs.kind == "ref"
+
+
+def test_stage2_proof_draft_rejects_non_numeric_literals() -> None:
+    with pytest.raises(ValidationError):
+        Stage2ProofComputation.model_validate(
+            {
+                "id": "C1",
+                "op": "add",
+                "args": [
+                    {"kind": "literal", "value": True},
+                    {"kind": "literal", "value": 1},
+                ],
+                "result": 2,
+            }
+        )
+
+
+def test_stage2_validation_issue_code_is_restricted() -> None:
+    Stage2ProofValidationIssue.model_validate(
+        {
+            "code": "load_bearing_gap",
+            "message": "A required proof input is still unresolved.",
+            "subject_id": "K1",
+        }
+    )
+
+    with pytest.raises(ValidationError):
+        Stage2ProofValidationIssue.model_validate(
+            {
+                "code": "made_up_issue",
+                "message": "Unsupported issue code.",
+                "subject_id": "K1",
+            }
+        )

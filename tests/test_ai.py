@@ -13,6 +13,7 @@ from decision_prover.fixtures import get_decision_context, load_battery_fixture
 from decision_prover.settings import (
     DEFAULT_OPENROUTER_BASE_URL,
     DEFAULT_OPENROUTER_MODEL,
+    DEFAULT_OPENROUTER_STAGE2_MODEL,
     OpenRouterSettings,
 )
 from decision_prover.verifier import verify_decision
@@ -172,6 +173,8 @@ def test_settings_load_dotenv_and_default_model(tmp_path: Path, monkeypatch: pyt
     )
     monkeypatch.setattr(settings_module, "PROJECT_ROOT", tmp_path)
     monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    monkeypatch.delenv("OPENROUTER_STAGE1_MODEL", raising=False)
+    monkeypatch.delenv("OPENROUTER_STAGE2_MODEL", raising=False)
     monkeypatch.delenv("OPENROUTER_MODEL", raising=False)
     monkeypatch.delenv("OPENROUTER_BASE_URL", raising=False)
     monkeypatch.delenv("OPENROUTER_TIMEOUT_SECONDS", raising=False)
@@ -182,6 +185,9 @@ def test_settings_load_dotenv_and_default_model(tmp_path: Path, monkeypatch: pyt
     assert resolved.model == DEFAULT_OPENROUTER_MODEL
     assert resolved.base_url == "https://example.com/api/v1"
     assert resolved.timeout_seconds == 12.5
+    assert resolved.log_file.parent == tmp_path / "logs"
+    assert resolved.log_file.name.startswith("decision_prover-")
+    assert resolved.log_file.suffix == ".log"
 
 
 def test_verify_explain_cli_requires_api_key(
@@ -217,7 +223,7 @@ def test_verify_explain_cli_returns_generated_payload(
     payload = json.loads(result.stdout)
     assert payload["ai_status"] == "generated"
     assert payload["comparison"] == "match"
-    assert payload["model"] == DEFAULT_OPENROUTER_MODEL
+    assert payload["model"] == DEFAULT_OPENROUTER_STAGE2_MODEL
     assert payload["result"]["classification"] == "UNDECIDABLE"
     assert payload["ai_result"]["classification"] == "UNDECIDABLE"
     assert payload["diagnostics"]["finish_reason"] == "stop"

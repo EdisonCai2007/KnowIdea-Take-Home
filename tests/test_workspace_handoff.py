@@ -4,10 +4,15 @@ import json
 from types import SimpleNamespace
 
 from decision_prover.ai.formalization import generate_workspace_formalization
-from decision_prover.constants import canonical_battery_metadata
-from decision_prover.contracts.output import Stage1CompanyContext, Stage1ReadyOutcome, Stage1WorkingContext
+from decision_prover.contracts.output import (
+    Stage1CompanyContext,
+    Stage1ReadyOutcome,
+    Stage1WorkingContext,
+    Stage2ProofDraft,
+)
 from decision_prover.contracts.workspace import WorkspaceCompanyProfile
 from decision_prover.services.operations import build_workspace_stage2_handoff
+from decision_prover.verifier.proof_draft import validate_stage2_proof_draft
 
 
 class FakeClient:
@@ -44,10 +49,11 @@ def _ready_result() -> Stage1ReadyOutcome:
             what_we_know=[
                 "The proposal mentions a 20% price increase.",
                 "The price change applies to new customers only.",
+                "Projected revenue from the new customer cohort is $40,000.",
             ],
             what_still_matters=[],
-            constraints_mentioned=[],
-            success_criteria=["Higher revenue from new customers."],
+            constraints_mentioned=["The initiative only works if projected revenue stays above $30,000."],
+            success_criteria=["Increase revenue from the new customer cohort."],
             notes=[],
         ),
         readiness_summary="Stage 1 is ready because no additional proof-critical clarification questions remain.",
@@ -57,47 +63,39 @@ def _ready_result() -> Stage1ReadyOutcome:
     )
 
 
-def _formalization_payload() -> dict[str, object]:
+def _proof_payload() -> dict[str, object]:
     return {
-        "normalized_bundle": {
-            "action": {
-                "statement": "Raise prices by 20% for new customers only.",
-                "type": "price_change",
-                "parameters": {
-                    "pct_increase": 0.2,
-                    "scope": "new customers only",
-                },
-            },
-            "facts": [],
-            "gating_conditions": [],
-            "assumptions": [
+        "proof_draft": {
+            "claim": "Raising prices by 20% for new customers only keeps projected revenue above the required floor.",
+            "premises": [
                 {
-                    "statement": "Conversion impact is not yet measured for the price change.",
-                    "status": "given",
+                    "id": "P1",
+                    "statement": "Projected revenue from the new customer cohort is $40,000.",
+                    "kind": "fact",
+                    "source_locator": "working_context.what_we_know[2]",
                 }
             ],
-            "unknowns": [],
-            "notes": [],
-        },
-        "grounding_report": {
-            "entries": [
+            "computations": [],
+            "comparisons": [
                 {
-                    "field": "decisions[0].action.scope",
-                    "source_type": "answer",
-                    "source_quote": "new customers only",
-                    "source_locator": "WP1_Q1_1",
+                    "id": "K1",
+                    "lhs": {"kind": "ref", "value": "P1"},
+                    "operator": ">=",
+                    "rhs": {"kind": "literal", "value": 30000},
                 }
-            ]
+            ],
+            "proposed_verdict": "SUPPORTED",
+            "refutation_attempt": "The proposal would fail if projected revenue dropped below the stated floor.",
+            "unresolved_gaps": [],
         },
         "notes": [],
     }
 
 
-def test_generate_workspace_formalization_uses_canonical_metadata_and_answers(
-) -> None:
+def test_generate_workspace_formalization_returns_validated_proof_draft() -> None:
     workspace_company = WorkspaceCompanyProfile(name="Northwind Software", sector="B2B SaaS")
     ready_result = _ready_result()
-    client = FakeClient([_formalization_payload()])
+    client = FakeClient([_proof_payload()])
 
     result = generate_workspace_formalization(
         proposal_id="WP1",
@@ -109,20 +107,18 @@ def test_generate_workspace_formalization_uses_canonical_metadata_and_answers(
     )
 
     assert result.status == "formalized"
-    assert result.battery_document.model_dump(mode="json", by_alias=True)["note_to_candidate"] == canonical_battery_metadata()["note_to_candidate"]
+    assert result.proof_draft.proposed_verdict == "SUPPORTED"
+    assert result.validation_report.final_classification == "SUPPORTED"
     payload = json.loads(client.calls[0]["messages"][1]["content"])
-    assert payload["workspace_company"]["id"] == "northwind-software"
     assert payload["decision_kernel"]["decision"] == ready_result.working_context.decision
     assert payload["answers"] == [{"question_id": "WP1_Q1_1", "answer": "new customers only"}]
-    assert result.battery_document.decisions[0].id == "WP1"
-    assert result.battery_document.decisions[0].proposal == ready_result.proposal
+    assert "answer.WP1_Q1_1" in payload["allowed_source_locators"]
 
 
-def test_build_workspace_stage2_handoff_returns_formalization_error_for_invalid_json(
-) -> None:
+def test_build_workspace_stage2_handoff_returns_formalization_error_for_invalid_json() -> None:
     workspace_company = WorkspaceCompanyProfile(name="Northwind Software", sector="B2B SaaS")
     ready_result = _ready_result()
-    client = FakeClient(['{"normalized_bundle": 123}'])
+    client = FakeClient(['{"proof_draft": 123}'])
 
     formalization, verification = build_workspace_stage2_handoff(
         ready_result,
@@ -136,40 +132,260 @@ def test_build_workspace_stage2_handoff_returns_formalization_error_for_invalid_
     assert verification is None
 
 
-def test_generate_workspace_formalization_uses_generic_fallback_action_when_missing() -> None:
+def test_invalid_source_locator_downgrades_workspace_proof_to_undecidable() -> None:
     workspace_company = WorkspaceCompanyProfile(name="Northwind Software", sector="B2B SaaS")
     ready_result = _ready_result()
     client = FakeClient(
         [
             {
-                "normalized_bundle": {
-                    "action": {
-                        "statement": ready_result.working_context.decision,
-                        "type": "generic_weekend_shift",
-                        "parameters": {},
-                    },
-                    "facts": [],
-                    "gating_conditions": [],
-                    "assumptions": [],
-                    "unknowns": [],
-                    "notes": [],
+                "proof_draft": {
+                    "claim": "Projected revenue clears the floor.",
+                    "premises": [
+                        {
+                            "id": "P1",
+                            "statement": "Projected revenue from the new customer cohort is $40,000.",
+                            "kind": "fact",
+                            "source_locator": "working_context.what_we_know[99]",
+                        }
+                    ],
+                    "computations": [],
+                    "comparisons": [
+                        {
+                            "id": "K1",
+                            "lhs": {"kind": "ref", "value": "P1"},
+                            "operator": ">=",
+                            "rhs": {"kind": "literal", "value": 30000},
+                        }
+                    ],
+                    "proposed_verdict": "SUPPORTED",
+                    "refutation_attempt": "The claim fails if the floor is higher than expected.",
+                    "unresolved_gaps": [],
                 },
-                "grounding_report": {"entries": []},
                 "notes": [],
             }
         ]
     )
 
-    result = generate_workspace_formalization(
-        proposal_id="WP1",
-        proposal_text=ready_result.proposal,
+    formalization, verification = build_workspace_stage2_handoff(
+        ready_result,
         workspace_company=workspace_company,
-        ready_result=ready_result,
         answers={},
         client=client,
     )
 
-    action = result.battery_document.decisions[0].action.model_dump(mode="json")
-    assert action["type"] == "generic_decision"
-    assert action["summary"] == ready_result.working_context.decision
-    assert any("generic fallback action" in note for note in result.notes)
+    assert formalization is not None
+    assert formalization.status == "formalized"
+    assert any(issue.code == "invalid_source_locator" for issue in formalization.validation_report.issues)
+    assert verification is not None
+    assert verification.classification == "UNDECIDABLE"
+
+
+def test_result_mismatch_downgrades_supported_model_verdict() -> None:
+    workspace_company = WorkspaceCompanyProfile(name="Northwind Software", sector="B2B SaaS")
+    ready_result = _ready_result()
+    client = FakeClient(
+        [
+            {
+                "proof_draft": {
+                    "claim": "Projected revenue clears the floor after discounting half the cohort.",
+                    "premises": [
+                        {
+                            "id": "P1",
+                            "statement": "Projected revenue from the new customer cohort is $40,000.",
+                            "kind": "fact",
+                            "source_locator": "working_context.what_we_know[2]",
+                        }
+                    ],
+                    "computations": [
+                        {
+                            "id": "C1",
+                            "op": "mul",
+                            "args": [
+                                {"kind": "ref", "value": "P1"},
+                                {"kind": "literal", "value": 0.5},
+                            ],
+                            "result": 15000,
+                        }
+                    ],
+                    "comparisons": [
+                        {
+                            "id": "K1",
+                            "lhs": {"kind": "ref", "value": "C1"},
+                            "operator": ">=",
+                            "rhs": {"kind": "literal", "value": 10000},
+                        }
+                    ],
+                    "proposed_verdict": "SUPPORTED",
+                    "refutation_attempt": "The claim fails if the discounted revenue does not exceed the floor.",
+                    "unresolved_gaps": [],
+                },
+                "notes": [],
+            }
+        ]
+    )
+
+    formalization, verification = build_workspace_stage2_handoff(
+        ready_result,
+        workspace_company=workspace_company,
+        answers={},
+        client=client,
+    )
+
+    assert formalization is not None
+    assert formalization.status == "formalized"
+    assert any(issue.code == "result_mismatch" for issue in formalization.validation_report.issues)
+    assert formalization.validation_report.downgraded_from_model_verdict is True
+    assert verification is not None
+    assert verification.classification == "UNDECIDABLE"
+
+
+def test_duplicate_ids_are_flagged() -> None:
+    report = validate_stage2_proof_draft(
+        Stage2ProofDraft.model_validate(
+            {
+                "claim": "Projected revenue clears the floor.",
+                "premises": [
+                    {
+                        "id": "P1",
+                        "statement": "Projected revenue from the new customer cohort is $40,000.",
+                        "kind": "fact",
+                        "source_locator": "working_context.what_we_know[2]",
+                    }
+                ],
+                "computations": [
+                    {
+                        "id": "P1",
+                        "op": "add",
+                        "args": [
+                            {"kind": "literal", "value": 1},
+                            {"kind": "literal", "value": 2},
+                        ],
+                        "result": 3,
+                    }
+                ],
+                "comparisons": [],
+                "proposed_verdict": "UNDECIDABLE",
+                "refutation_attempt": "The proof is incomplete.",
+                "unresolved_gaps": [],
+            }
+        ),
+        ready_result=_ready_result(),
+        answers={},
+    )
+
+    assert any(issue.code == "duplicate_id" for issue in report.issues)
+    assert report.final_classification == "UNDECIDABLE"
+
+
+def test_division_by_zero_is_flagged() -> None:
+    report = validate_stage2_proof_draft(
+        Stage2ProofDraft.model_validate(
+            {
+                "claim": "Revenue-per-customer ratio remains defined.",
+                "premises": [
+                    {
+                        "id": "P1",
+                        "statement": "Projected revenue from the new customer cohort is $40,000.",
+                        "kind": "fact",
+                        "source_locator": "working_context.what_we_know[2]",
+                    }
+                ],
+                "computations": [
+                    {
+                        "id": "C1",
+                        "op": "div",
+                        "args": [
+                            {"kind": "ref", "value": "P1"},
+                            {"kind": "literal", "value": 0},
+                        ],
+                        "result": 0,
+                    }
+                ],
+                "comparisons": [],
+                "proposed_verdict": "SUPPORTED",
+                "refutation_attempt": "The proof fails if the denominator is zero.",
+                "unresolved_gaps": [],
+            }
+        ),
+        ready_result=_ready_result(),
+        answers={},
+    )
+
+    assert any(issue.code == "division_by_zero" for issue in report.issues)
+    assert report.final_classification == "UNDECIDABLE"
+
+
+def test_failed_comparison_yields_refuted_when_no_blocking_issues_remain() -> None:
+    report = validate_stage2_proof_draft(
+        Stage2ProofDraft.model_validate(
+            {
+                "claim": "Projected revenue meets the hard floor.",
+                "premises": [
+                    {
+                        "id": "P1",
+                        "statement": "Projected revenue from the new customer cohort is $40,000.",
+                        "kind": "fact",
+                        "source_locator": "working_context.what_we_know[2]",
+                    }
+                ],
+                "computations": [],
+                "comparisons": [
+                    {
+                        "id": "K1",
+                        "lhs": {"kind": "ref", "value": "P1"},
+                        "operator": "<",
+                        "rhs": {"kind": "literal", "value": 30000},
+                    }
+                ],
+                "proposed_verdict": "REFUTED",
+                "refutation_attempt": "The floor is violated.",
+                "unresolved_gaps": [],
+            }
+        ),
+        ready_result=_ready_result(),
+        answers={},
+    )
+
+    assert any(issue.code == "comparison_failed" for issue in report.issues)
+    assert report.final_classification == "REFUTED"
+
+
+def test_ambiguous_target_downgrades_otherwise_valid_proof() -> None:
+    report = validate_stage2_proof_draft(
+        Stage2ProofDraft.model_validate(
+            {
+                "claim": "The proposal satisfies the stated success criterion.",
+                "premises": [
+                    {
+                        "id": "P1",
+                        "statement": "The proposal mentions a 20% price increase.",
+                        "kind": "fact",
+                        "source_locator": "working_context.what_we_know[0]",
+                    },
+                    {
+                        "id": "T1",
+                        "statement": "Higher revenue from new customers.",
+                        "kind": "target",
+                        "source_locator": "working_context.success_criteria[0]",
+                    }
+                ],
+                "computations": [],
+                "comparisons": [
+                    {
+                        "id": "K1",
+                        "lhs": {"kind": "ref", "value": "P1"},
+                        "operator": ">=",
+                        "rhs": {"kind": "literal", "value": 0.2},
+                    }
+                ],
+                "proposed_verdict": "SUPPORTED",
+                "refutation_attempt": "The claim fails if the threshold is not actually binding.",
+                "unresolved_gaps": [],
+            }
+        ),
+        ready_result=_ready_result(),
+        answers={},
+    )
+
+    assert any(issue.code == "ambiguous_target" for issue in report.issues)
+    assert report.final_classification == "UNDECIDABLE"

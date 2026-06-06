@@ -1,135 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, Literal, TypeAlias
+from typing import Any, TypeAlias
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 JsonPrimitive: TypeAlias = str | int | float | bool | None
 JsonValue: TypeAlias = JsonPrimitive | list["JsonValue"] | dict[str, "JsonValue"]
-PositiveNumber: TypeAlias = float
-
-
-class ActionBase(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    type: str = Field(min_length=1)
-
-
-class HireAction(ActionBase):
-    type: Literal["hire"]
-    count: int | None = Field(default=None, gt=0)
-    role: str | None = Field(default=None, min_length=1)
-    fully_loaded_cost_per_year: PositiveNumber | None = Field(default=None, gt=0)
-
-
-class ChannelTestAction(ActionBase):
-    type: Literal["channel_test"]
-    budget: PositiveNumber | None = None
-    projected_cac: PositiveNumber | None = Field(default=None, gt=0)
-    projected_arpu_monthly: PositiveNumber | None = Field(default=None, gt=0)
-
-
-class AcquisitionAction(ActionBase):
-    type: Literal["acquisition"]
-    cash_cost: PositiveNumber | None = Field(default=None, gt=0)
-    added_mrr: PositiveNumber | None = Field(default=None, gt=0)
-    target: str | None = None
-
-
-class OneTimeSpendAction(ActionBase):
-    type: Literal["one_time_spend"]
-    cash_cost: PositiveNumber | None = Field(default=None, gt=0)
-    label: str | None = Field(default=None, min_length=1)
-
-
-class PriceChangeAction(ActionBase):
-    type: Literal["price_change"]
-    pct_increase: float | None = None
-    scope: str | None = None
-    new_unit_price: PositiveNumber | None = None
-    assumed_volume_multiplier: PositiveNumber | None = None
-
-    @model_validator(mode="after")
-    def validate_price_change_shape(self) -> "PriceChangeAction":
-        percent_shape = self.pct_increase is not None or self.scope is not None
-        unit_price_shape = (
-            self.new_unit_price is not None or self.assumed_volume_multiplier is not None
-        )
-
-        if percent_shape and unit_price_shape:
-            raise ValueError(
-                "price_change must use either percentage fields or unit-price fields, not both"
-            )
-
-        return self
-
-
-class AcceptOrderAction(ActionBase):
-    type: Literal["accept_order"]
-    units: int | None = Field(default=None, gt=0)
-    due_months: int | None = Field(default=None, gt=0)
-    unit_price: PositiveNumber | None = Field(default=None, gt=0)
-
-
-class CapexExpansionAction(ActionBase):
-    type: Literal["capex_expansion"]
-    cost: PositiveNumber | None = Field(default=None, gt=0)
-    capacity_from: int | None = Field(default=None, gt=0)
-    capacity_to: int | None = Field(default=None, gt=0)
-    ramp_months: int | None = Field(default=None, gt=0)
-
-    @model_validator(mode="after")
-    def validate_capacity_growth(self) -> "CapexExpansionAction":
-        if (
-            self.capacity_from is not None
-            and self.capacity_to is not None
-            and self.capacity_to <= self.capacity_from
-        ):
-            raise ValueError("'capacity_to' must be greater than 'capacity_from'")
-        return self
-
-
-class LaunchSkuAction(ActionBase):
-    type: Literal["launch_sku"]
-    launch_cost: PositiveNumber | None = Field(default=None, gt=0)
-    projected_monthly_revenue: PositiveNumber | None = Field(default=None, gt=0)
-    contribution_margin: PositiveNumber | None = Field(default=None, gt=0)
-
-
-class MarketingIncreaseAction(ActionBase):
-    type: Literal["marketing_increase"]
-    added_monthly_spend: PositiveNumber | None = Field(default=None, gt=0)
-    target: str | None = Field(default=None, min_length=1)
-
-
-class DiscontinueLineAction(ActionBase):
-    type: Literal["discontinue_line"]
-    line: str | None = Field(default=None, min_length=1)
-    reallocate_to: str | None = Field(default=None, min_length=1)
-
-
-class RetentionProgramAction(ActionBase):
-    type: Literal["retention_program"]
-    churn_from: float | None = Field(default=None, ge=0)
-    churn_to: float | None = Field(default=None, ge=0)
-    cost: PositiveNumber | None = Field(default=None, gt=0)
-
-    @model_validator(mode="after")
-    def validate_churn_improvement(self) -> "RetentionProgramAction":
-        if (
-            self.churn_from is not None
-            and self.churn_to is not None
-            and self.churn_to >= self.churn_from
-        ):
-            raise ValueError("'churn_to' must be lower than 'churn_from'")
-        return self
-
-
-class SupplierRenegotiationAction(ActionBase):
-    type: Literal["supplier_renegotiation"]
-    cost: float | None = Field(default=None, ge=0)
-    line_A_cogs_reduction_pts: float | None = Field(default=None, gt=0)
 
 
 def _is_json_compatible(value: Any) -> bool:
@@ -142,59 +19,40 @@ def _is_json_compatible(value: Any) -> bool:
     return False
 
 
-class GenericActionPayload(BaseModel):
+class StructuredAction(BaseModel):
     model_config = ConfigDict(extra="allow")
 
     type: str = Field(min_length=1)
 
     @model_validator(mode="after")
-    def validate_extras(self) -> "GenericActionPayload":
+    def validate_extras(self) -> "StructuredAction":
         extras = self.model_extra or {}
-        if not extras:
-            raise ValueError("generic actions require at least one parameter besides 'type'")
         for key, value in extras.items():
             if not key:
-                raise ValueError("generic action parameter names must be non-empty strings")
+                raise ValueError("action parameter names must be non-empty strings")
             if not _is_json_compatible(value):
                 raise ValueError(
-                    f"generic action parameter '{key}' must be JSON-compatible, got {type(value).__name__}"
+                    f"action parameter '{key}' must be JSON-compatible, got {type(value).__name__}"
                 )
         return self
 
+    def value_for(self, key: str) -> JsonValue:
+        if key == "type":
+            return self.type
+        extras = self.model_extra or {}
+        return extras.get(key)
 
-ActionPayload: TypeAlias = (
-    HireAction
-    | ChannelTestAction
-    | AcquisitionAction
-    | OneTimeSpendAction
-    | PriceChangeAction
-    | AcceptOrderAction
-    | CapexExpansionAction
-    | LaunchSkuAction
-    | MarketingIncreaseAction
-    | DiscontinueLineAction
-    | RetentionProgramAction
-    | SupplierRenegotiationAction
-    | GenericActionPayload
-)
-
-ACTION_REGISTRY = {
-    "hire": HireAction,
-    "channel_test": ChannelTestAction,
-    "acquisition": AcquisitionAction,
-    "one_time_spend": OneTimeSpendAction,
-    "price_change": PriceChangeAction,
-    "accept_order": AcceptOrderAction,
-    "capex_expansion": CapexExpansionAction,
-    "launch_sku": LaunchSkuAction,
-    "marketing_increase": MarketingIncreaseAction,
-    "discontinue_line": DiscontinueLineAction,
-    "retention_program": RetentionProgramAction,
-    "supplier_renegotiation": SupplierRenegotiationAction,
-}
+    def has_field(self, key: str) -> bool:
+        if key == "type":
+            return True
+        extras = self.model_extra or {}
+        return key in extras
 
 
-def validate_action_payload(value: Any) -> ActionPayload:
+ActionPayload: TypeAlias = StructuredAction
+
+
+def validate_action_payload(value: Any) -> StructuredAction:
     if not isinstance(value, dict):
         raise TypeError("action payload must be an object")
 
@@ -202,8 +60,4 @@ def validate_action_payload(value: Any) -> ActionPayload:
     if not isinstance(action_type, str) or not action_type.strip():
         raise ValueError("action.type must be a non-empty string")
 
-    model = ACTION_REGISTRY.get(action_type, GenericActionPayload)
-    try:
-        return model.model_validate(value)
-    except ValidationError:
-        raise
+    return StructuredAction.model_validate(value)

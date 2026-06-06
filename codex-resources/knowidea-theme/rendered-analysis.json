@@ -1,0 +1,6072 @@
+[
+  {
+    "slug": "home",
+    "url": "https://www.knowidea.dev/",
+    "screenshotPath": "/Users/edisoncai/Documents/GitHub/KnowIdeaAssessment/codex-resources/knowidea-theme/screenshots/home-desktop-full.jpg",
+    "analysis": {
+      "body": {
+        "bg": null,
+        "color": "#fafafa",
+        "font": "Poppins, sans-serif, Arial, system-ui, sans-serif"
+      },
+      "buttons": [
+        {
+          "rect": {
+            "height": 48,
+            "width": 87,
+            "x": 955,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.88)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgba(255, 255, 255, 0.88)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.88)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "letterSpacing": "normal",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Sign in"
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 178,
+            "x": 1050,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(26, 21, 48)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgb(26, 21, 48)",
+            "boxShadow": "rgba(26, 21, 48, 0.1) 0px -1px 0px 0px inset, rgba(26, 21, 48, 0.18) 0px 2px 6px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.075px",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "24px",
+            "paddingRight": "22px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Get your edge"
+        },
+        {
+          "rect": {
+            "height": 28,
+            "width": 111,
+            "x": 988,
+            "y": 1506
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(26, 21, 48)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "borderTopColor": "rgb(255, 255, 255)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "14px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.07px",
+            "lineHeight": "21px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "20px",
+            "paddingRight": "20px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Apply for a report"
+        },
+        {
+          "rect": {
+            "height": 32,
+            "width": 68,
+            "x": 58,
+            "y": 3443
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(26, 21, 48)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgb(255, 255, 255)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "letterSpacing": "normal",
+            "lineHeight": "18px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "7px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "7px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Slides"
+        },
+        {
+          "rect": {
+            "height": 32,
+            "width": 72,
+            "x": 126,
+            "y": 3443
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.55)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.55)",
+            "boxShadow": "none",
+            "color": "rgba(26, 21, 48, 0.55)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "letterSpacing": "normal",
+            "lineHeight": "18px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "7px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "7px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Report"
+        },
+        {
+          "rect": {
+            "height": 34,
+            "width": 114,
+            "x": 1103,
+            "y": 3442
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(243, 237, 255)",
+            "borderColor": "rgba(124, 58, 237, 0.3)",
+            "borderRadius": "8px",
+            "borderTopColor": "rgba(124, 58, 237, 0.3)",
+            "boxShadow": "none",
+            "color": "rgb(109, 40, 217)",
+            "fontFamily": "Poppins, sans-serif",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "letterSpacing": "normal",
+            "lineHeight": "18px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "7px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "7px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Book a Demo"
+        },
+        {
+          "rect": {
+            "height": 45,
+            "width": 204,
+            "x": 535,
+            "y": 4050
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1) rgba(26, 21, 48, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "13.5px",
+            "fontWeight": "600",
+            "letterSpacing": "normal",
+            "lineHeight": "20.25px",
+            "marginBottom": "0px",
+            "marginTop": "28px",
+            "paddingBottom": "12px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "12px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": "Browse all 90 case studies"
+        },
+        {
+          "rect": {
+            "height": 454,
+            "width": 384,
+            "x": 37,
+            "y": 5303
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgb(253, 249, 241)",
+            "borderColor": "rgba(26, 21, 48, 0.1)",
+            "borderRadius": "16px",
+            "borderTopColor": "rgba(26, 21, 48, 0.1)",
+            "boxShadow": "rgba(26, 21, 48, 0.04) 0px 1px 3px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": "POSITION PAPER · 8 MIN READ Command-Pilot: The Layer Nobody Is Building. The next trillion-dollar company will not sell the work. It will replace the thinking that decides which work needs to happen. Apr 12, 2026 Read"
+        },
+        {
+          "rect": {
+            "height": 454,
+            "width": 384,
+            "x": 445,
+            "y": 5303
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgb(253, 249, 241)",
+            "borderColor": "rgba(26, 21, 48, 0.1)",
+            "borderRadius": "16px",
+            "borderTopColor": "rgba(26, 21, 48, 0.1)",
+            "boxShadow": "rgba(26, 21, 48, 0.04) 0px 1px 3px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": "POSITION PAPER · 18 MIN READ AI Will Not Replace Consulting. It Will Replace Everything Except the Part That Matters. Which half of consulting will AI take over — and which half becomes more valuable because of it? Apr 10, 2026 Read"
+        },
+        {
+          "rect": {
+            "height": 454,
+            "width": 384,
+            "x": 853,
+            "y": 5303
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgb(253, 249, 241)",
+            "borderColor": "rgba(26, 21, 48, 0.1)",
+            "borderRadius": "16px",
+            "borderTopColor": "rgba(26, 21, 48, 0.1)",
+            "boxShadow": "rgba(26, 21, 48, 0.04) 0px 1px 3px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": "PRODUCT RELEASE · 15 MIN READ KNOWIDEA V5.0: We Replaced the Dashboard with an Agent That Thinks What we actually built, why it works, and the decision intelligence framework behind it Mar 31, 2026 Read"
+        },
+        {
+          "rect": {
+            "height": 58,
+            "width": 279,
+            "x": 498,
+            "y": 7215
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgb(26, 21, 48)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "12px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "rgba(26, 21, 48, 0.12) 0px 6px 20px 0px",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15.5px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.0775px",
+            "lineHeight": "23.25px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": "Book a free consultation"
+        },
+        {
+          "rect": {
+            "height": 30,
+            "width": 237,
+            "x": 720,
+            "y": 7485
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgba(26, 21, 48, 0.62)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "13.5px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "20.25px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "5px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "5px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": "Contact"
+        },
+        {
+          "rect": {
+            "height": 40,
+            "width": 94,
+            "x": 921,
+            "y": 741
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(26, 21, 48)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "borderTopColor": "rgb(255, 255, 255)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "13.5px",
+            "fontWeight": "600",
+            "letterSpacing": "normal",
+            "lineHeight": "20.25px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Apply"
+        }
+      ],
+      "colors": [
+        {
+          "count": 1442,
+          "value": "#ffffff / 0.1"
+        },
+        {
+          "count": 419,
+          "value": "none"
+        },
+        {
+          "count": 379,
+          "value": "#000000"
+        },
+        {
+          "count": 220,
+          "value": "#1a1530"
+        },
+        {
+          "count": 89,
+          "value": "#1a1530 / 0.1"
+        },
+        {
+          "count": 47,
+          "value": "#6d28d9"
+        },
+        {
+          "count": 38,
+          "value": "#ffffff"
+        },
+        {
+          "count": 38,
+          "value": "#5a5470"
+        },
+        {
+          "count": 36,
+          "value": "#7c3aed / 0.25"
+        },
+        {
+          "count": 30,
+          "value": "#2e2845"
+        },
+        {
+          "count": 26,
+          "value": "#e2e8f0 / 0.78"
+        },
+        {
+          "count": 22,
+          "value": "#8b859d"
+        },
+        {
+          "count": 20,
+          "value": "#fdf9f1"
+        },
+        {
+          "count": 16,
+          "value": "#7c3aed / 0.3"
+        },
+        {
+          "count": 14,
+          "value": "#047857"
+        },
+        {
+          "count": 13,
+          "value": "#1a1530 / 0.55"
+        },
+        {
+          "count": 12,
+          "value": "#7c3aed / 0.22"
+        },
+        {
+          "count": 11,
+          "value": "#ffffff / 0.88"
+        },
+        {
+          "count": 11,
+          "value": "#1a1530 / 0.62"
+        },
+        {
+          "count": 10,
+          "value": "#1a1530 / 0.06"
+        },
+        {
+          "count": 10,
+          "value": "#ffffff / 0.04"
+        },
+        {
+          "count": 9,
+          "value": "#4ade80"
+        },
+        {
+          "count": 6,
+          "value": "#f7f5f2"
+        },
+        {
+          "count": 6,
+          "value": "#f3edff"
+        },
+        {
+          "count": 5,
+          "value": "#efebe6"
+        },
+        {
+          "count": 4,
+          "value": "#ffffff / 0.08"
+        },
+        {
+          "count": 4,
+          "value": "#ffffff / 0.4"
+        },
+        {
+          "count": 4,
+          "value": "#e2e8f0"
+        },
+        {
+          "count": 4,
+          "value": "#7c3aed / 0.28"
+        },
+        {
+          "count": 4,
+          "value": "#1a1530 / 0.12"
+        },
+        {
+          "count": 4,
+          "value": "#1a1530 / 0.08"
+        },
+        {
+          "count": 3,
+          "value": "#fafafa"
+        },
+        {
+          "count": 3,
+          "value": "#e0c770"
+        },
+        {
+          "count": 2,
+          "value": "#d8bc68"
+        },
+        {
+          "count": 2,
+          "value": "#be185d"
+        },
+        {
+          "count": 2,
+          "value": "#0c0a1a"
+        },
+        {
+          "count": 1,
+          "value": "#09090b"
+        },
+        {
+          "count": 1,
+          "value": "#08060e / 0.72"
+        },
+        {
+          "count": 1,
+          "value": "#000000 / 0.35"
+        },
+        {
+          "count": 1,
+          "value": "#4ade80 / 0.15"
+        },
+        {
+          "count": 1,
+          "value": "#ffffff / 0.8"
+        },
+        {
+          "count": 1,
+          "value": "#c9a84c"
+        }
+      ],
+      "cssVariables": [
+        {
+          "name": "--border",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-ring-offset-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-gradient-from-position",
+          "value": ""
+        },
+        {
+          "name": "--text-secondary",
+          "value": "245 15% 75%"
+        },
+        {
+          "name": "--sidebar-background",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--chart-tertiary-blue",
+          "value": "linear-gradient(135deg, #39f, #4d9fff)"
+        },
+        {
+          "name": "--tw-ring-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--sidebar-primary-foreground",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--card",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-sepia",
+          "value": ""
+        },
+        {
+          "name": "--chart-secondary-blue",
+          "value": "linear-gradient(135deg, #66b3ff, #80c7ff)"
+        },
+        {
+          "name": "--tw-sepia",
+          "value": ""
+        },
+        {
+          "name": "--accent",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-ordinal",
+          "value": ""
+        },
+        {
+          "name": "--text-tertiary",
+          "value": "245 12% 65%"
+        },
+        {
+          "name": "--chart-secondary",
+          "value": "linear-gradient(135deg, #a0a0a0, silver)"
+        },
+        {
+          "name": "--tw-backdrop-saturate",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-style",
+          "value": ""
+        },
+        {
+          "name": "--primary-foreground",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--tw-ring-inset",
+          "value": ""
+        },
+        {
+          "name": "--text-muted",
+          "value": "245 10% 55%"
+        },
+        {
+          "name": "--card-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-invert",
+          "value": ""
+        },
+        {
+          "name": "--tw-numeric-spacing",
+          "value": ""
+        },
+        {
+          "name": "--secondary-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--sidebar-accent-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--blue-slate-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-border-spacing-x",
+          "value": "0"
+        },
+        {
+          "name": "--muted",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--background",
+          "value": "0 0% 3.9%"
+        },
+        {
+          "name": "--tw-brightness",
+          "value": ""
+        },
+        {
+          "name": "--tw-backdrop-grayscale",
+          "value": ""
+        },
+        {
+          "name": "--tw-hue-rotate",
+          "value": ""
+        },
+        {
+          "name": "--chart-senary",
+          "value": "linear-gradient(135deg, #d3d3d3, #f5f5f5)"
+        },
+        {
+          "name": "--tw-scale-y",
+          "value": "1"
+        },
+        {
+          "name": "--accent-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-pan-y",
+          "value": ""
+        },
+        {
+          "name": "--tw-backdrop-contrast",
+          "value": ""
+        },
+        {
+          "name": "--tw-drop-shadow",
+          "value": ""
+        },
+        {
+          "name": "--tw-ring-color",
+          "value": "#3b82f680"
+        },
+        {
+          "name": "--tw-backdrop-brightness",
+          "value": ""
+        },
+        {
+          "name": "--tw-pan-x",
+          "value": ""
+        },
+        {
+          "name": "--tw-translate-y",
+          "value": "0"
+        },
+        {
+          "name": "--chart-tertiary",
+          "value": "linear-gradient(135deg, #696969, gray)"
+        },
+        {
+          "name": "--chart-septenary",
+          "value": "linear-gradient(135deg, #2f2f2f, #505050)"
+        },
+        {
+          "name": "--chart-primary-blue",
+          "value": "linear-gradient(135deg, #4d9fff, #66b3ff)"
+        },
+        {
+          "name": "--popover",
+          "value": "220 13% 4%"
+        },
+        {
+          "name": "--ring",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-rotate",
+          "value": "0"
+        },
+        {
+          "name": "--tw-ring-offset-color",
+          "value": "#fff"
+        },
+        {
+          "name": "--tw-contain-size",
+          "value": ""
+        },
+        {
+          "name": "--tw-contrast",
+          "value": ""
+        },
+        {
+          "name": "--chart-5",
+          "value": "0 0% 32%"
+        },
+        {
+          "name": "--blue-slate",
+          "value": "214 52% 24%"
+        },
+        {
+          "name": "--sidebar-border",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--chart-senary-blue",
+          "value": "linear-gradient(135deg, #99d9ff, #b3e6ff)"
+        },
+        {
+          "name": "--sidebar-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--muted-foreground",
+          "value": "0 0% 64%"
+        },
+        {
+          "name": "--tw-skew-x",
+          "value": "0"
+        },
+        {
+          "name": "--sidebar-accent",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--radius",
+          "value": ".75rem"
+        },
+        {
+          "name": "--tw-backdrop-blur",
+          "value": ""
+        },
+        {
+          "name": "--popover-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-quaternary",
+          "value": "linear-gradient(135deg, silver, #d3d3d3)"
+        },
+        {
+          "name": "--tw-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-translate-x",
+          "value": "0"
+        },
+        {
+          "name": "--tw-ring-offset-width",
+          "value": "0px"
+        },
+        {
+          "name": "--tw-gradient-via-position",
+          "value": ""
+        },
+        {
+          "name": "--input",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-saturate",
+          "value": ""
+        },
+        {
+          "name": "--chart-quinary",
+          "value": "linear-gradient(135deg, #505050, #696969)"
+        },
+        {
+          "name": "--tw-scroll-snap-strictness",
+          "value": "proximity"
+        },
+        {
+          "name": "--tw-grayscale",
+          "value": ""
+        },
+        {
+          "name": "--destructive",
+          "value": "0 73% 50%"
+        },
+        {
+          "name": "--tw-scale-x",
+          "value": "1"
+        },
+        {
+          "name": "--chart-3",
+          "value": "0 0% 64%"
+        },
+        {
+          "name": "--tw-backdrop-hue-rotate",
+          "value": ""
+        },
+        {
+          "name": "--tw-shadow-colored",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-gradient-to-position",
+          "value": ""
+        },
+        {
+          "name": "--tw-border-spacing-y",
+          "value": "0"
+        },
+        {
+          "name": "--tw-numeric-fraction",
+          "value": ""
+        },
+        {
+          "name": "--destructive-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-4",
+          "value": "0 0% 45%"
+        },
+        {
+          "name": "--chart-2",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-skew-y",
+          "value": "0"
+        },
+        {
+          "name": "--primary",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-slashed-zero",
+          "value": ""
+        },
+        {
+          "name": "--tw-blur",
+          "value": ""
+        },
+        {
+          "name": "--tw-invert",
+          "value": ""
+        },
+        {
+          "name": "--foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-primary",
+          "value": "linear-gradient(135deg, gray, #a0a0a0)"
+        },
+        {
+          "name": "--chart-quinary-blue",
+          "value": "linear-gradient(135deg, #1a7fff, #39f)"
+        },
+        {
+          "name": "--sidebar-primary",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-opacity",
+          "value": ""
+        },
+        {
+          "name": "--secondary",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--chart-septenary-blue",
+          "value": "linear-gradient(135deg, #06c, #1a7fff)"
+        },
+        {
+          "name": "--tw-numeric-figure",
+          "value": ""
+        },
+        {
+          "name": "--sidebar-ring",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-pinch-zoom",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-paint",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-layout",
+          "value": ""
+        },
+        {
+          "name": "--chart-1",
+          "value": "0 0% 89%"
+        },
+        {
+          "name": "--chart-quaternary-blue",
+          "value": "linear-gradient(135deg, #80c7ff, #99d9ff)"
+        }
+      ],
+      "elements": [
+        {
+          "rect": {
+            "height": 7661,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "body",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "body",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge VERIFIED Enterprise-grade security. SOC 2 AI POWERED PREDICTIVE INTELLIGENCE FOR DECISION MAKING ◆ AS FEATURED IN FORTUNE THE TOP VOICES INDIE HACKERS KNOWIDEA is created for one singula"
+        },
+        {
+          "rect": {
+            "height": 45,
+            "width": 573,
+            "x": 307,
+            "y": 25
+          },
+          "selector": "nav",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "nav",
+          "text": "About Product Case Studies Newsletter Pricing Press"
+        },
+        {
+          "rect": {
+            "height": 94,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "header",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "14px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "14px",
+            "textTransform": "none"
+          },
+          "tag": "header",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge"
+        },
+        {
+          "rect": {
+            "height": 138,
+            "width": 1274,
+            "x": 0,
+            "y": 856
+          },
+          "selector": "section",
+          "style": {
+            "backgroundColor": "rgb(253, 249, 241)",
+            "borderColor": "rgba(26, 21, 48, 0.06) rgba(255, 255, 255, 0.1)",
+            "borderRadius": "32px 32px 0px 0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.06)",
+            "boxShadow": "rgba(0, 0, 0, 0.45) 0px -30px 80px 0px, rgba(0, 0, 0, 0.28) 0px -6px 24px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "-80px",
+            "paddingBottom": "28px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "32px",
+            "textTransform": "none"
+          },
+          "tag": "section",
+          "text": "◆ AS FEATURED IN FORTUNE THE TOP VOICES INDIE HACKERS"
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 1204,
+            "x": 38,
+            "y": 367
+          },
+          "selector": "h1",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "41.6px",
+            "fontWeight": "400",
+            "letterSpacing": "-0.832px",
+            "lineHeight": "47.84px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h1",
+          "text": "AI POWERED PREDICTIVE INTELLIGENCE FOR DECISION MAKING"
+        },
+        {
+          "rect": {
+            "height": 250,
+            "width": 900,
+            "x": 32,
+            "y": 2075
+          },
+          "selector": "h2",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "60px",
+            "fontWeight": "300",
+            "letterSpacing": "-1.5px",
+            "lineHeight": "62.4px",
+            "marginBottom": "16px",
+            "marginTop": "8px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h2",
+          "text": "KNOWIDEA delivers clarity by combining three pillars of Intelligence. Each pillar supports the others."
+        },
+        {
+          "rect": {
+            "height": 30,
+            "width": 331,
+            "x": 61,
+            "y": 2522
+          },
+          "selector": "h3",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "26px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.468px",
+            "lineHeight": "29.9px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h3",
+          "text": "Business Intelligence"
+        },
+        {
+          "rect": {
+            "height": 84,
+            "width": 540,
+            "x": 32,
+            "y": 1503
+          },
+          "selector": "p",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgba(226, 232, 240, 0.78)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "18px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "27.9px",
+            "marginBottom": "40px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "p",
+          "text": "You as a leader require clarity when making critical business decisions related to strategy, operations, or personnel."
+        },
+        {
+          "rect": {
+            "height": 42,
+            "width": 166,
+            "x": 66,
+            "y": 26
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": ""
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 87,
+            "x": 955,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.88)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgba(255, 255, 255, 0.88)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.88)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "letterSpacing": "normal",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Sign in"
+        },
+        {
+          "rect": {
+            "height": 361,
+            "width": 1274,
+            "x": 0,
+            "y": 7300
+          },
+          "selector": "footer",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.06) rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.06)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "36px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "60px",
+            "textTransform": "none"
+          },
+          "tag": "footer",
+          "text": "We deliver the Clarity. You bring the Judgement. PRODUCT The P.I.E. engine Case studies Book consultation Pricing COMPANY About Press Careers Contact LEGAL Privacy Policy Terms of Service Security © 2026 KNOWIDEA. All rights reserved. SOC2"
+        },
+        {
+          "rect": {
+            "height": 278,
+            "width": 344,
+            "x": 784,
+            "y": 1320
+          },
+          "selector": "[class*=card i]",
+          "style": {
+            "backgroundColor": "rgb(253, 249, 241)",
+            "borderColor": "rgba(124, 58, 237, 0.22)",
+            "borderRadius": "22px",
+            "borderTopColor": "rgba(124, 58, 237, 0.22)",
+            "boxShadow": "rgba(124, 58, 237, 0.07) 0px 0px 0px 6px, rgba(26, 21, 48, 0.14) 0px 28px 72px 0px, rgba(26, 21, 48, 0.06) 0px 4px 12px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "36px",
+            "paddingLeft": "40px",
+            "paddingRight": "40px",
+            "paddingTop": "44px",
+            "textTransform": "none"
+          },
+          "tag": "form",
+          "text": "Company URL (leave blank) ◆ INTELLIGENCE BRIEFING · LIMITED INTAKE What does the engine see in your business? A free 5-page report on your competitive position. Built on your data, names your rivals. We accept a small number each month. Apply for a report Limi"
+        },
+        {
+          "rect": {
+            "height": 936,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "[class*=hero i]",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "div",
+          "text": "VERIFIED Enterprise-grade security. SOC 2 AI POWERED PREDICTIVE INTELLIGENCE FOR DECISION MAKING"
+        }
+      ],
+      "fonts": [
+        {
+          "count": 344,
+          "value": "Poppins, sans-serif, Arial, system-ui, sans-serif"
+        },
+        {
+          "count": 50,
+          "value": "Poppins, sans-serif, Arial, monospace"
+        },
+        {
+          "count": 17,
+          "value": "Poppins, sans-serif, Arial, Georgia, serif"
+        },
+        {
+          "count": 4,
+          "value": "Poppins, sans-serif, Arial, Poppins, sans-serif, Arial, system-ui, sans-serif"
+        },
+        {
+          "count": 1,
+          "value": "Poppins, sans-serif, Arial, Georgia, \"Times New Roman\", serif"
+        },
+        {
+          "count": 1,
+          "value": "Poppins, sans-serif, Arial, sans-serif, Arial"
+        },
+        {
+          "count": 1,
+          "value": "Poppins, sans-serif"
+        }
+      ],
+      "headings": [
+        {
+          "style": {
+            "color": "#ffffff",
+            "fontFamily": "Poppins, sans-serif, Arial, Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "41.6px",
+            "fontWeight": "400",
+            "letterSpacing": "-0.832px",
+            "lineHeight": "47.84px"
+          },
+          "tag": "h1",
+          "text": "AI POWERED PREDICTIVE INTELLIGENCE FOR DECISION MAKING"
+        },
+        {
+          "style": {
+            "color": "#e2e8f0",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "79.36px",
+            "fontWeight": "300",
+            "letterSpacing": "-3.1744px",
+            "lineHeight": "77.7728px"
+          },
+          "tag": "h1",
+          "text": "KNOWIDEA is created for one singular purpose. To provide Clarity."
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "60px",
+            "fontWeight": "300",
+            "letterSpacing": "-1.5px",
+            "lineHeight": "62.4px"
+          },
+          "tag": "h2",
+          "text": "KNOWIDEA delivers clarity by combining three pillars of Intelligence. Each pillar supports the others."
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "26px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.468px",
+            "lineHeight": "29.9px"
+          },
+          "tag": "h3",
+          "text": "Business Intelligence"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "26px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.468px",
+            "lineHeight": "29.9px"
+          },
+          "tag": "h3",
+          "text": "Market Intelligence"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "26px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.468px",
+            "lineHeight": "29.9px"
+          },
+          "tag": "h3",
+          "text": "Predictive Intelligence"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "56px",
+            "fontWeight": "300",
+            "letterSpacing": "-1.96px",
+            "lineHeight": "58.8px"
+          },
+          "tag": "h2",
+          "text": "Can Williams lock in a top-quartile technology envelope before 2026?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "24px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.24px",
+            "lineHeight": "31.2px"
+          },
+          "tag": "h3",
+          "text": "Can Williams lock in a top-quartile technology envelope before the 2026 capex wave, TSA reissue, and Project Socrates go-live arrive simultaneously?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "48px",
+            "fontWeight": "300",
+            "letterSpacing": "-1.68px",
+            "lineHeight": "50.4px"
+          },
+          "tag": "h2",
+          "text": "If you want a similar result for your company, book a free strategy session. Walk away with a custom report in 30 minutes."
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "44px",
+            "fontWeight": "300",
+            "letterSpacing": "-0.968px",
+            "lineHeight": "46.64px"
+          },
+          "tag": "h2",
+          "text": "Recent writing and releases."
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.28px",
+            "lineHeight": "24.4px"
+          },
+          "tag": "h3",
+          "text": "Command-Pilot: The Layer Nobody Is Building."
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.28px",
+            "lineHeight": "24.4px"
+          },
+          "tag": "h3",
+          "text": "AI Will Not Replace Consulting. It Will Replace Everything Except the Part That Matters."
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "20px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.28px",
+            "lineHeight": "24.4px"
+          },
+          "tag": "h3",
+          "text": "KNOWIDEA V5.0: We Replaced the Dashboard with an Agent That Thinks"
+        },
+        {
+          "style": {
+            "color": "#e2e8f0",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "51.2px",
+            "fontWeight": "300",
+            "letterSpacing": "-1.536px",
+            "lineHeight": "53.76px"
+          },
+          "tag": "h2",
+          "text": "Frequently Asked Questions"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "How is KNOWIDEA different from AlphaSense or Parallel.ai?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "What exactly is a 'Predictive Insight'?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "Why don’t you over-explain the “how”?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "How accurate are the recommendations?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "How is this different from consultants?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "What data do you need?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "How fast until we see value?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "Who is this for?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "17px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.085px",
+            "lineHeight": "22.95px"
+          },
+          "tag": "h3",
+          "text": "Are you replacing our BI or AI tools?"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "70.4px",
+            "fontWeight": "300",
+            "letterSpacing": "-2.816px",
+            "lineHeight": "77.44px"
+          },
+          "tag": "h2",
+          "text": "Months and millions. Or 30 minutes of clarity."
+        }
+      ],
+      "images": [
+        {
+          "alt": "KNOWIDEA",
+          "rect": {
+            "height": 42,
+            "width": 166,
+            "x": 66,
+            "y": 26
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Flogo-dark-gradient-cropped.jpg&w=384&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "Command-Pilot: The Layer Nobody Is Building.",
+          "rect": {
+            "height": 215,
+            "width": 382,
+            "x": 38,
+            "y": 5304
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffeature_1.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "AI Will Not Replace Consulting. It Will Replace Everything Except the Part That Matters.",
+          "rect": {
+            "height": 215,
+            "width": 382,
+            "x": 446,
+            "y": 5304
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffeature_2.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA V5.0: We Replaced the Dashboard with an Agent That Thinks",
+          "rect": {
+            "height": 215,
+            "width": 382,
+            "x": 854,
+            "y": 5304
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffeature_3.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA",
+          "rect": {
+            "height": 54,
+            "width": 180,
+            "x": 32,
+            "y": 7361
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Flogo-light-cropped.jpg&w=384&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        }
+      ],
+      "links": [
+        {
+          "href": "https://www.knowidea.dev/",
+          "text": ""
+        },
+        {
+          "href": "https://www.knowidea.dev/about",
+          "text": "About"
+        },
+        {
+          "href": "https://www.knowidea.dev/product",
+          "text": "Product"
+        },
+        {
+          "href": "https://www.knowidea.dev/case-studies",
+          "text": "Case Studies"
+        },
+        {
+          "href": "https://www.knowidea.dev/newsletter",
+          "text": "Newsletter"
+        },
+        {
+          "href": "https://www.knowidea.dev/pricing",
+          "text": "Pricing"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases",
+          "text": "Press"
+        },
+        {
+          "href": "https://app.vanta.com/knowidea.dev/trust/ll900szxy0o1zi0bztn1e1",
+          "text": "VERIFIED Enterprise-grade security. SOC 2"
+        },
+        {
+          "href": "https://fortune.com/2026/04/18/ai-layoff-became-founder-team-of-3-instant-profit/",
+          "text": "FORTUNE"
+        },
+        {
+          "href": "https://thetopvoices.com/story/knowidea-reinvents-performance-with-real-time-business-insights",
+          "text": "THE TOP VOICES"
+        },
+        {
+          "href": "https://www.indiehackers.com/post/services/hitting-500k-arr-in-four-months-ZMs1IKVqpctHenipKau5",
+          "text": "INDIE HACKERS"
+        },
+        {
+          "href": "https://www.knowidea.dev/#consultation",
+          "text": "Or book a free 30-min session"
+        },
+        {
+          "href": "https://www.knowidea.dev/case-studies",
+          "text": "Browse all 90 case studies"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases",
+          "text": "All press"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases/the-third-layer",
+          "text": "POSITION PAPER · 8 MIN READ Command-Pilot: The Layer Nobody Is Building. The next trillion-dollar company will not sell the work. It will replace the thinking that decides which work needs to happen. Apr 12, 2026 Read"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases/ai-will-not-replace-consulting",
+          "text": "POSITION PAPER · 18 MIN READ AI Will Not Replace Consulting. It Will Replace Everything Except the Part That Matters. Which half of consulting will AI take over — and which half becomes more valuable because of it? Apr 10, 2026 Read"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases/knowidea-v5-decision-intelligence",
+          "text": "PRODUCT RELEASE · 15 MIN READ KNOWIDEA V5.0: We Replaced the Dashboard with an Agent That Thinks What we actually built, why it works, and the decision intelligence framework behind it Mar 31, 2026 Read"
+        },
+        {
+          "href": "https://www.knowidea.dev/#consultation",
+          "text": "Book a free consultation"
+        },
+        {
+          "href": "https://www.knowidea.dev/",
+          "text": ""
+        },
+        {
+          "href": "https://www.knowidea.dev/#pie",
+          "text": "The P.I.E. engine"
+        },
+        {
+          "href": "https://www.knowidea.dev/case-studies",
+          "text": "Case studies"
+        },
+        {
+          "href": "https://www.knowidea.dev/#consultation",
+          "text": "Book consultation"
+        },
+        {
+          "href": "https://www.knowidea.dev/pricing",
+          "text": "Pricing"
+        },
+        {
+          "href": "https://www.knowidea.dev/about",
+          "text": "About"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases",
+          "text": "Press"
+        },
+        {
+          "href": "https://www.knowidea.dev/careers",
+          "text": "Careers"
+        },
+        {
+          "href": "mailto:hello@knowidea.ai",
+          "text": "Contact"
+        },
+        {
+          "href": "https://www.knowidea.dev/privacy-policy",
+          "text": "Privacy Policy"
+        },
+        {
+          "href": "https://www.knowidea.dev/terms-of-service",
+          "text": "Terms of Service"
+        },
+        {
+          "href": "https://app.vanta.com/knowidea.dev/trust/ll900szxy0o1zi0bztn1e1",
+          "text": "Security"
+        },
+        {
+          "href": "https://app.vanta.com/knowidea.dev/trust/ll900szxy0o1zi0bztn1e1",
+          "text": "SOC2"
+        }
+      ],
+      "metaThemeColor": null,
+      "radii": [
+        {
+          "count": 42,
+          "value": "16px"
+        },
+        {
+          "count": 14,
+          "value": "999px"
+        },
+        {
+          "count": 4,
+          "value": "12px"
+        },
+        {
+          "count": 3,
+          "value": "8px"
+        },
+        {
+          "count": 3,
+          "value": "50%"
+        },
+        {
+          "count": 1,
+          "value": "32px 32px 0px 0px"
+        },
+        {
+          "count": 1,
+          "value": "22px"
+        },
+        {
+          "count": 1,
+          "value": "9999px"
+        },
+        {
+          "count": 1,
+          "value": "9px"
+        },
+        {
+          "count": 1,
+          "value": "4px"
+        },
+        {
+          "count": 1,
+          "value": "18px"
+        },
+        {
+          "count": 1,
+          "value": "14px"
+        }
+      ],
+      "scriptSrcs": [
+        "https://www.knowidea.dev/_next/static/chunks/0kqnva_47_fg7.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/1788a7n7b3-2m.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/030lje4w49skv.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0yytip0.~m7o6.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/turbopack-0hfyonrr8g96r.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0qai.666z3j9r.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/058gz.0_11bff.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/037c7q~_g8gun.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0q3qgtnx_zgu_.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/09-qa3be_v4h~.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/10hq9sh1nnpq..js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/03~yq9q893hmn.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1",
+        "https://www.knowidea.dev/_vercel/insights/script.js",
+        "https://www.gstatic.com/cast/sdk/libs/sender/1.0/cast_framework.js",
+        "https://www.gstatic.com/eureka/clank/148/cast_sender.js",
+        "https://www.knowidea.dev/_next/static/chunks/16pxp5p5xcpas.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0xa-2i5uazo-8.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/11.ryto2tk6bs.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0v-1.dc71ip1k.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/06lb-rtimz-3s.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/106ey.n4njd1f.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0qwtsefxkh1ve.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0kjfnsppi62pd.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.googletagmanager.com/gtag/js?id=G-YDEQXP9DV9"
+      ],
+      "shadows": [
+        {
+          "count": 15,
+          "value": "rgba(26, 21, 48, 0.04) 0px 1px 3px 0px"
+        },
+        {
+          "count": 10,
+          "value": "rgba(26, 21, 48, 0.08) 0px 12px 40px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(0, 0, 0, 0.28) 0px 8px 32px 0px, rgba(255, 255, 255, 0.06) 0px 1px 0px 0px inset"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.1) 0px -1px 0px 0px inset, rgba(26, 21, 48, 0.18) 0px 2px 6px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(0, 0, 0, 0.45) 0px -30px 80px 0px, rgba(0, 0, 0, 0.28) 0px -6px 24px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(124, 58, 237, 0.07) 0px 0px 0px 6px, rgba(26, 21, 48, 0.14) 0px 28px 72px 0px, rgba(26, 21, 48, 0.06) 0px 4px 12px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(124, 58, 237, 0.1) 0px 4px 14px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.08) 0px 30px 80px 0px, rgba(26, 21, 48, 0.04) 0px 4px 16px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.12) 0px 6px 20px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.15) 0px 16px 40px 0px"
+        }
+      ],
+      "stylesheetHrefs": [
+        "https://www.knowidea.dev/_next/static/chunks/0~z2v6ox98wko.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0gqi6xn-kdic_.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0cc-591-wqr2v.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+      ],
+      "title": "KN✧WIDEA",
+      "url": "https://www.knowidea.dev/",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    }
+  },
+  {
+    "slug": "about",
+    "url": "https://www.knowidea.dev/about",
+    "screenshotPath": "/Users/edisoncai/Documents/GitHub/KnowIdeaAssessment/codex-resources/knowidea-theme/screenshots/about-desktop-full.jpg",
+    "analysis": {
+      "body": {
+        "bg": null,
+        "color": "#fafafa",
+        "font": "Poppins, sans-serif, Arial, system-ui, sans-serif"
+      },
+      "buttons": [
+        {
+          "rect": {
+            "height": 48,
+            "width": 87,
+            "x": 955,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.88)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgba(255, 255, 255, 0.88)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.88)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "letterSpacing": "normal",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Sign in"
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 178,
+            "x": 1050,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(26, 21, 48)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgb(26, 21, 48)",
+            "boxShadow": "rgba(26, 21, 48, 0.1) 0px -1px 0px 0px inset, rgba(26, 21, 48, 0.18) 0px 2px 6px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.075px",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "24px",
+            "paddingRight": "22px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Get your edge"
+        },
+        {
+          "rect": {
+            "height": 60,
+            "width": 413,
+            "x": 112,
+            "y": 1996
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "16px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "16px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Our Journey"
+        },
+        {
+          "rect": {
+            "height": 60,
+            "width": 413,
+            "x": 112,
+            "y": 2060
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "4px",
+            "paddingBottom": "16px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "16px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Why KNOWIDEA"
+        },
+        {
+          "rect": {
+            "height": 60,
+            "width": 413,
+            "x": 112,
+            "y": 2124
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "4px",
+            "paddingBottom": "16px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "16px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Our Capabilities"
+        }
+      ],
+      "colors": [
+        {
+          "count": 556,
+          "value": "#ffffff / 0.1"
+        },
+        {
+          "count": 144,
+          "value": "none"
+        },
+        {
+          "count": 124,
+          "value": "#000000"
+        },
+        {
+          "count": 84,
+          "value": "#fafafa"
+        },
+        {
+          "count": 29,
+          "value": "#ffffff / 0.6"
+        },
+        {
+          "count": 11,
+          "value": "#ffffff / 0.88"
+        },
+        {
+          "count": 11,
+          "value": "#1a1530"
+        },
+        {
+          "count": 7,
+          "value": "#ffffff"
+        },
+        {
+          "count": 5,
+          "value": "#ffffff / 0.5"
+        },
+        {
+          "count": 5,
+          "value": "#ffffff / 0.4"
+        },
+        {
+          "count": 4,
+          "value": "#ffffff / 0.08"
+        },
+        {
+          "count": 4,
+          "value": "#ffffff / 0.06"
+        },
+        {
+          "count": 2,
+          "value": "#b6b5d8 / 0.2"
+        },
+        {
+          "count": 2,
+          "value": "#b6b5d8 / 0.5"
+        },
+        {
+          "count": 2,
+          "value": "#ffffff / 0.04"
+        },
+        {
+          "count": 2,
+          "value": "#ffffff / 0.2"
+        },
+        {
+          "count": 2,
+          "value": "#ffffff / 0.05"
+        },
+        {
+          "count": 2,
+          "value": "#4ade80"
+        },
+        {
+          "count": 1,
+          "value": "#09090b"
+        },
+        {
+          "count": 1,
+          "value": "#08060e / 0.72"
+        },
+        {
+          "count": 1,
+          "value": "#000000 / 0.8"
+        },
+        {
+          "count": 1,
+          "value": "url(\"#ringFillGradient0\")"
+        },
+        {
+          "count": 1,
+          "value": "url(\"#ringFillGradient1\")"
+        },
+        {
+          "count": 1,
+          "value": "url(\"#ringFillGradient2\")"
+        },
+        {
+          "count": 1,
+          "value": "url(\"#strokeGradient\")"
+        },
+        {
+          "count": 1,
+          "value": "#dcdaf0"
+        },
+        {
+          "count": 1,
+          "value": "#ffffff / 0.8"
+        },
+        {
+          "count": 1,
+          "value": "#b6b5d8"
+        },
+        {
+          "count": 1,
+          "value": "#ffffff / 0.9"
+        },
+        {
+          "count": 1,
+          "value": "#ffffff / 0.3"
+        }
+      ],
+      "cssVariables": [
+        {
+          "name": "--border",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-ring-offset-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-gradient-from-position",
+          "value": ""
+        },
+        {
+          "name": "--text-secondary",
+          "value": "245 15% 75%"
+        },
+        {
+          "name": "--sidebar-background",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--chart-tertiary-blue",
+          "value": "linear-gradient(135deg, #39f, #4d9fff)"
+        },
+        {
+          "name": "--tw-ring-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--sidebar-primary-foreground",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--card",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-sepia",
+          "value": ""
+        },
+        {
+          "name": "--chart-secondary-blue",
+          "value": "linear-gradient(135deg, #66b3ff, #80c7ff)"
+        },
+        {
+          "name": "--tw-sepia",
+          "value": ""
+        },
+        {
+          "name": "--accent",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-ordinal",
+          "value": ""
+        },
+        {
+          "name": "--text-tertiary",
+          "value": "245 12% 65%"
+        },
+        {
+          "name": "--chart-secondary",
+          "value": "linear-gradient(135deg, #a0a0a0, silver)"
+        },
+        {
+          "name": "--tw-backdrop-saturate",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-style",
+          "value": ""
+        },
+        {
+          "name": "--primary-foreground",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--tw-ring-inset",
+          "value": ""
+        },
+        {
+          "name": "--text-muted",
+          "value": "245 10% 55%"
+        },
+        {
+          "name": "--card-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-invert",
+          "value": ""
+        },
+        {
+          "name": "--tw-numeric-spacing",
+          "value": ""
+        },
+        {
+          "name": "--secondary-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--sidebar-accent-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--blue-slate-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-border-spacing-x",
+          "value": "0"
+        },
+        {
+          "name": "--muted",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--background",
+          "value": "0 0% 3.9%"
+        },
+        {
+          "name": "--tw-brightness",
+          "value": ""
+        },
+        {
+          "name": "--tw-backdrop-grayscale",
+          "value": ""
+        },
+        {
+          "name": "--tw-hue-rotate",
+          "value": ""
+        },
+        {
+          "name": "--chart-senary",
+          "value": "linear-gradient(135deg, #d3d3d3, #f5f5f5)"
+        },
+        {
+          "name": "--tw-scale-y",
+          "value": "1"
+        },
+        {
+          "name": "--accent-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-pan-y",
+          "value": ""
+        },
+        {
+          "name": "--tw-backdrop-contrast",
+          "value": ""
+        },
+        {
+          "name": "--tw-drop-shadow",
+          "value": ""
+        },
+        {
+          "name": "--tw-ring-color",
+          "value": "#3b82f680"
+        },
+        {
+          "name": "--tw-backdrop-brightness",
+          "value": ""
+        },
+        {
+          "name": "--tw-pan-x",
+          "value": ""
+        },
+        {
+          "name": "--tw-translate-y",
+          "value": "0"
+        },
+        {
+          "name": "--chart-tertiary",
+          "value": "linear-gradient(135deg, #696969, gray)"
+        },
+        {
+          "name": "--chart-septenary",
+          "value": "linear-gradient(135deg, #2f2f2f, #505050)"
+        },
+        {
+          "name": "--chart-primary-blue",
+          "value": "linear-gradient(135deg, #4d9fff, #66b3ff)"
+        },
+        {
+          "name": "--popover",
+          "value": "220 13% 4%"
+        },
+        {
+          "name": "--ring",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-rotate",
+          "value": "0"
+        },
+        {
+          "name": "--tw-ring-offset-color",
+          "value": "#fff"
+        },
+        {
+          "name": "--tw-contain-size",
+          "value": ""
+        },
+        {
+          "name": "--tw-contrast",
+          "value": ""
+        },
+        {
+          "name": "--chart-5",
+          "value": "0 0% 32%"
+        },
+        {
+          "name": "--blue-slate",
+          "value": "214 52% 24%"
+        },
+        {
+          "name": "--sidebar-border",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--chart-senary-blue",
+          "value": "linear-gradient(135deg, #99d9ff, #b3e6ff)"
+        },
+        {
+          "name": "--sidebar-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--muted-foreground",
+          "value": "0 0% 64%"
+        },
+        {
+          "name": "--tw-skew-x",
+          "value": "0"
+        },
+        {
+          "name": "--sidebar-accent",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--radius",
+          "value": ".75rem"
+        },
+        {
+          "name": "--tw-backdrop-blur",
+          "value": ""
+        },
+        {
+          "name": "--popover-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-quaternary",
+          "value": "linear-gradient(135deg, silver, #d3d3d3)"
+        },
+        {
+          "name": "--tw-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-translate-x",
+          "value": "0"
+        },
+        {
+          "name": "--tw-ring-offset-width",
+          "value": "0px"
+        },
+        {
+          "name": "--tw-gradient-via-position",
+          "value": ""
+        },
+        {
+          "name": "--input",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-saturate",
+          "value": ""
+        },
+        {
+          "name": "--chart-quinary",
+          "value": "linear-gradient(135deg, #505050, #696969)"
+        },
+        {
+          "name": "--tw-scroll-snap-strictness",
+          "value": "proximity"
+        },
+        {
+          "name": "--tw-grayscale",
+          "value": ""
+        },
+        {
+          "name": "--destructive",
+          "value": "0 73% 50%"
+        },
+        {
+          "name": "--tw-scale-x",
+          "value": "1"
+        },
+        {
+          "name": "--chart-3",
+          "value": "0 0% 64%"
+        },
+        {
+          "name": "--tw-backdrop-hue-rotate",
+          "value": ""
+        },
+        {
+          "name": "--tw-shadow-colored",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-gradient-to-position",
+          "value": ""
+        },
+        {
+          "name": "--tw-border-spacing-y",
+          "value": "0"
+        },
+        {
+          "name": "--tw-numeric-fraction",
+          "value": ""
+        },
+        {
+          "name": "--destructive-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-4",
+          "value": "0 0% 45%"
+        },
+        {
+          "name": "--chart-2",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-skew-y",
+          "value": "0"
+        },
+        {
+          "name": "--primary",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-slashed-zero",
+          "value": ""
+        },
+        {
+          "name": "--tw-blur",
+          "value": ""
+        },
+        {
+          "name": "--tw-invert",
+          "value": ""
+        },
+        {
+          "name": "--foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-primary",
+          "value": "linear-gradient(135deg, gray, #a0a0a0)"
+        },
+        {
+          "name": "--chart-quinary-blue",
+          "value": "linear-gradient(135deg, #1a7fff, #39f)"
+        },
+        {
+          "name": "--sidebar-primary",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-opacity",
+          "value": ""
+        },
+        {
+          "name": "--secondary",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--chart-septenary-blue",
+          "value": "linear-gradient(135deg, #06c, #1a7fff)"
+        },
+        {
+          "name": "--tw-numeric-figure",
+          "value": ""
+        },
+        {
+          "name": "--sidebar-ring",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-pinch-zoom",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-paint",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-layout",
+          "value": ""
+        },
+        {
+          "name": "--chart-1",
+          "value": "0 0% 89%"
+        },
+        {
+          "name": "--chart-quaternary-blue",
+          "value": "linear-gradient(135deg, #80c7ff, #99d9ff)"
+        }
+      ],
+      "elements": [
+        {
+          "rect": {
+            "height": 3754,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "body",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "body",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge Clarity When It Counts At KNOWIDEA, we exist to give executives clarity at the moment decisions matter most. VISION MISSION CORE PHILOSOPHY A new paradigm for decision making Our Journey"
+        },
+        {
+          "rect": {
+            "height": 45,
+            "width": 573,
+            "x": 307,
+            "y": 25
+          },
+          "selector": "nav",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "nav",
+          "text": "About Product Case Studies Newsletter Pricing Press"
+        },
+        {
+          "rect": {
+            "height": 94,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "header",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "14px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "14px",
+            "textTransform": "none"
+          },
+          "tag": "header",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge"
+        },
+        {
+          "rect": {
+            "height": 720,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "section",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "section",
+          "text": "Clarity When It Counts At KNOWIDEA, we exist to give executives clarity at the moment decisions matter most. VISION MISSION CORE PHILOSOPHY"
+        },
+        {
+          "rect": {
+            "height": 72,
+            "width": 771,
+            "x": 251,
+            "y": 148
+          },
+          "selector": "h1",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "72px",
+            "fontWeight": "500",
+            "letterSpacing": "-1.8px",
+            "lineHeight": "72px",
+            "marginBottom": "24px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h1",
+          "text": "Clarity When It Counts"
+        },
+        {
+          "rect": {
+            "height": 256,
+            "width": 413,
+            "x": 112,
+            "y": 1676
+          },
+          "selector": "h2",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "64px",
+            "fontWeight": "300",
+            "letterSpacing": "-1.28px",
+            "lineHeight": "64px",
+            "marginBottom": "64px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h2",
+          "text": "A new paradigm for decision making"
+        },
+        {
+          "rect": {
+            "height": 36,
+            "width": 430,
+            "x": 80,
+            "y": 3191
+          },
+          "selector": "h3",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "30px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "36px",
+            "marginBottom": "12px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h3",
+          "text": "Yatharth Sejpal"
+        },
+        {
+          "rect": {
+            "height": 64,
+            "width": 672,
+            "x": 301,
+            "y": 244
+          },
+          "selector": "p",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.6)",
+            "fontFamily": "googleSans, \"googleSans Fallback\", sans-serif, Arial, sans-serif",
+            "fontSize": "24px",
+            "fontWeight": "300",
+            "letterSpacing": "normal",
+            "lineHeight": "32px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "p",
+          "text": "At KNOWIDEA, we exist to give executives clarity at the moment decisions matter most."
+        },
+        {
+          "rect": {
+            "height": 42,
+            "width": 166,
+            "x": 66,
+            "y": 26
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": ""
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 87,
+            "x": 955,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.88)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgba(255, 255, 255, 0.88)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.88)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "letterSpacing": "normal",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Sign in"
+        },
+        {
+          "rect": {
+            "height": 314,
+            "width": 1274,
+            "x": 0,
+            "y": 3440
+          },
+          "selector": "footer",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "32px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "48px",
+            "textTransform": "none"
+          },
+          "tag": "footer",
+          "text": "About Careers Blog Privacy Policy Terms of Service SOC 2 © 2026 KNOWIDEA. All rights reserved."
+        }
+      ],
+      "fonts": [
+        {
+          "count": 108,
+          "value": "Poppins, sans-serif, Arial, system-ui, sans-serif"
+        },
+        {
+          "count": 28,
+          "value": "googleSans, \"googleSans Fallback\", sans-serif, Arial, sans-serif"
+        },
+        {
+          "count": 7,
+          "value": "Poppins, sans-serif, Arial, sans-serif, Arial"
+        }
+      ],
+      "headings": [
+        {
+          "style": {
+            "color": "#ffffff",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "72px",
+            "fontWeight": "500",
+            "letterSpacing": "-1.8px",
+            "lineHeight": "72px"
+          },
+          "tag": "h1",
+          "text": "Clarity When It Counts"
+        },
+        {
+          "style": {
+            "color": "#ffffff",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "64px",
+            "fontWeight": "300",
+            "letterSpacing": "-1.28px",
+            "lineHeight": "64px"
+          },
+          "tag": "h2",
+          "text": "A new paradigm for decision making"
+        },
+        {
+          "style": {
+            "color": "#ffffff",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "48px",
+            "fontWeight": "400",
+            "letterSpacing": "-0.96px",
+            "lineHeight": "48px"
+          },
+          "tag": "h2",
+          "text": "Built by combining operator's experience and deep AI and ML research"
+        },
+        {
+          "style": {
+            "color": "#ffffff",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "30px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "36px"
+          },
+          "tag": "h3",
+          "text": "Yatharth Sejpal"
+        },
+        {
+          "style": {
+            "color": "#ffffff",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "30px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "36px"
+          },
+          "tag": "h3",
+          "text": "Brian Zhengyu Li"
+        }
+      ],
+      "images": [
+        {
+          "alt": "KNOWIDEA",
+          "rect": {
+            "height": 42,
+            "width": 166,
+            "x": 66,
+            "y": 26
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Flogo-dark-gradient-cropped.jpg&w=384&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "Scroll to next section",
+          "rect": {
+            "height": 36,
+            "width": 36,
+            "x": 619,
+            "y": 666
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Fknowidea-star.jpg&w=96&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "Yatharth Sejpal",
+          "rect": {
+            "height": 591,
+            "width": 444,
+            "x": 81,
+            "y": 2551
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffounders%2Fyatharth.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "Brian Zhengyu Li",
+          "rect": {
+            "height": 591,
+            "width": 444,
+            "x": 749,
+            "y": 2711
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffounders%2Fbrian.jpeg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA",
+          "rect": {
+            "height": 80,
+            "width": 317,
+            "x": 479,
+            "y": 3508
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Flogo-dark-gradient-cropped.jpg&w=384&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        }
+      ],
+      "links": [
+        {
+          "href": "https://www.knowidea.dev/",
+          "text": ""
+        },
+        {
+          "href": "https://www.knowidea.dev/about",
+          "text": "About"
+        },
+        {
+          "href": "https://www.knowidea.dev/product",
+          "text": "Product"
+        },
+        {
+          "href": "https://www.knowidea.dev/case-studies",
+          "text": "Case Studies"
+        },
+        {
+          "href": "https://www.knowidea.dev/newsletter",
+          "text": "Newsletter"
+        },
+        {
+          "href": "https://www.knowidea.dev/pricing",
+          "text": "Pricing"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases",
+          "text": "Press"
+        },
+        {
+          "href": "https://www.linkedin.com/in/yatharth-sejpal/",
+          "text": "LinkedIn"
+        },
+        {
+          "href": "https://www.linkedin.com/in/zhengyu-brian-li/",
+          "text": "LinkedIn"
+        },
+        {
+          "href": "https://www.knowidea.dev/",
+          "text": ""
+        },
+        {
+          "href": "https://www.knowidea.dev/about",
+          "text": "About"
+        },
+        {
+          "href": "https://www.knowidea.dev/careers",
+          "text": "Careers"
+        },
+        {
+          "href": "https://www.knowidea.dev/blog",
+          "text": "Blog"
+        },
+        {
+          "href": "https://www.knowidea.dev/privacy-policy",
+          "text": "Privacy Policy"
+        },
+        {
+          "href": "https://www.knowidea.dev/terms-of-service",
+          "text": "Terms of Service"
+        },
+        {
+          "href": "https://app.vanta.com/knowidea.dev/trust/ll900szxy0o1zi0bztn1e1",
+          "text": "SOC 2"
+        }
+      ],
+      "metaThemeColor": null,
+      "radii": [
+        {
+          "count": 9,
+          "value": "999px"
+        },
+        {
+          "count": 8,
+          "value": "9999px"
+        },
+        {
+          "count": 4,
+          "value": "16px"
+        },
+        {
+          "count": 3,
+          "value": "12px"
+        },
+        {
+          "count": 2,
+          "value": "32px 32px 0px 0px"
+        }
+      ],
+      "scriptSrcs": [
+        "https://www.knowidea.dev/_next/static/chunks/0kqnva_47_fg7.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/1788a7n7b3-2m.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/030lje4w49skv.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0yytip0.~m7o6.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/turbopack-0hfyonrr8g96r.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0qai.666z3j9r.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/058gz.0_11bff.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0q3qgtnx_zgu_.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0qwtsefxkh1ve.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/09-qa3be_v4h~.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/10hq9sh1nnpq..js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/03~yq9q893hmn.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0ktubjw5tburd.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/10ysttex1bzzh.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_vercel/insights/script.js",
+        "https://www.knowidea.dev/_next/static/chunks/16pxp5p5xcpas.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0xa-2i5uazo-8.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/11.ryto2tk6bs.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/06lb-rtimz-3s.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0v-1.dc71ip1k.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/106ey.n4njd1f.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/037c7q~_g8gun.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0kjfnsppi62pd.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.googletagmanager.com/gtag/js?id=G-YDEQXP9DV9"
+      ],
+      "shadows": [
+        {
+          "count": 2,
+          "value": "rgba(0, 0, 0, 0.6) 0px -30px 80px 0px, rgba(0, 0, 0, 0.4) 0px -4px 20px 0px"
+        },
+        {
+          "count": 2,
+          "value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.25) 0px 25px 50px -12px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(0, 0, 0, 0.28) 0px 8px 32px 0px, rgba(255, 255, 255, 0.06) 0px 1px 0px 0px inset"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.1) 0px -1px 0px 0px inset, rgba(26, 21, 48, 0.18) 0px 2px 6px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(182, 181, 216, 0.5) 0px 0px 10px 0px"
+        }
+      ],
+      "stylesheetHrefs": [
+        "https://www.knowidea.dev/_next/static/chunks/0~z2v6ox98wko.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0gqi6xn-kdic_.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0cc-591-wqr2v.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+      ],
+      "title": "KN✧WIDEA",
+      "url": "https://www.knowidea.dev/about",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    }
+  },
+  {
+    "slug": "product",
+    "url": "https://www.knowidea.dev/product",
+    "screenshotPath": "/Users/edisoncai/Documents/GitHub/KnowIdeaAssessment/codex-resources/knowidea-theme/screenshots/product-desktop-full.jpg",
+    "analysis": {
+      "body": {
+        "bg": null,
+        "color": "#fafafa",
+        "font": "Poppins, sans-serif, Arial, system-ui, sans-serif"
+      },
+      "buttons": [
+        {
+          "rect": {
+            "height": 48,
+            "width": 87,
+            "x": 955,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.88)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgba(255, 255, 255, 0.88)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.88)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "letterSpacing": "normal",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Sign in"
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 178,
+            "x": 1050,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(26, 21, 48)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgb(26, 21, 48)",
+            "boxShadow": "rgba(26, 21, 48, 0.1) 0px -1px 0px 0px inset, rgba(26, 21, 48, 0.18) 0px 2px 6px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.075px",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "24px",
+            "paddingRight": "22px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Get your edge"
+        },
+        {
+          "rect": {
+            "height": 68,
+            "width": 347,
+            "x": 64,
+            "y": 1370
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.1) rgb(109, 40, 217) rgb(109, 40, 217)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(109, 40, 217)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "13px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "13px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "01 Data Fusion Connect 12+ silos into one model."
+        },
+        {
+          "rect": {
+            "height": 68,
+            "width": 347,
+            "x": 64,
+            "y": 1438
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.06) rgb(109, 40, 217) rgb(109, 40, 217)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.06)",
+            "boxShadow": "none",
+            "color": "rgb(109, 40, 217)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "13px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "13px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "02 Diagnostic Deep Scan 200+ checks surface hidden anomalies."
+        },
+        {
+          "rect": {
+            "height": 68,
+            "width": 347,
+            "x": 64,
+            "y": 1505
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.06) rgb(109, 40, 217) rgb(109, 40, 217)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.06)",
+            "boxShadow": "none",
+            "color": "rgb(109, 40, 217)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "13px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "13px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "03 Competitive Triangulation Benchmark against 40+ industry signals."
+        },
+        {
+          "rect": {
+            "height": 68,
+            "width": 347,
+            "x": 464,
+            "y": 1370
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.1) rgb(190, 24, 93) rgb(190, 24, 93)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(190, 24, 93)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "13px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "13px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "04 SWOT-to-Strategy Conversion Risks become ranked, EV-scored bets."
+        },
+        {
+          "rect": {
+            "height": 68,
+            "width": 347,
+            "x": 464,
+            "y": 1438
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.06) rgb(190, 24, 93) rgb(190, 24, 93)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.06)",
+            "boxShadow": "none",
+            "color": "rgb(190, 24, 93)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "13px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "13px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "05 Predictive Scenario Modeling Three futures, modeled with probabilities."
+        },
+        {
+          "rect": {
+            "height": 68,
+            "width": 347,
+            "x": 863,
+            "y": 1370
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.1) rgb(4, 120, 87) rgb(4, 120, 87)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(4, 120, 87)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "13px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "13px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "06 Insight Crystallization Hundreds of signals → 5 ranked insights."
+        },
+        {
+          "rect": {
+            "height": 68,
+            "width": 347,
+            "x": 863,
+            "y": 1438
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.06) rgb(4, 120, 87) rgb(4, 120, 87)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.06)",
+            "boxShadow": "none",
+            "color": "rgb(4, 120, 87)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "13px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "13px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "07 Decision Architecture Priority matrix with 90-day milestones."
+        },
+        {
+          "rect": {
+            "height": 37,
+            "width": 171,
+            "x": 431,
+            "y": 1985
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "4px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, monospace",
+            "fontSize": "11.5px",
+            "fontWeight": "700",
+            "letterSpacing": "1.15px",
+            "lineHeight": "17.25px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "10px",
+            "paddingLeft": "16px",
+            "paddingRight": "16px",
+            "paddingTop": "10px",
+            "textTransform": "uppercase"
+          },
+          "tag": "a",
+          "text": "APPLY FOR YOURS"
+        },
+        {
+          "rect": {
+            "height": 30,
+            "width": 237,
+            "x": 720,
+            "y": 2772
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgba(26, 21, 48, 0.62)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "13.5px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "20.25px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "5px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "5px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": "Contact"
+        },
+        {
+          "rect": {
+            "height": 40,
+            "width": 94,
+            "x": 921,
+            "y": 741
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(26, 21, 48)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderRadius": "8px",
+            "borderTopColor": "rgb(255, 255, 255)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "13.5px",
+            "fontWeight": "600",
+            "letterSpacing": "normal",
+            "lineHeight": "20.25px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Apply"
+        }
+      ],
+      "colors": [
+        {
+          "count": 682,
+          "value": "#ffffff / 0.1"
+        },
+        {
+          "count": 211,
+          "value": "none"
+        },
+        {
+          "count": 180,
+          "value": "#000000"
+        },
+        {
+          "count": 76,
+          "value": "#1a1530"
+        },
+        {
+          "count": 76,
+          "value": "#6d28d9"
+        },
+        {
+          "count": 57,
+          "value": "#1a1530 / 0.1"
+        },
+        {
+          "count": 46,
+          "value": "#be185d"
+        },
+        {
+          "count": 44,
+          "value": "#047857"
+        },
+        {
+          "count": 18,
+          "value": "#5a5470"
+        },
+        {
+          "count": 17,
+          "value": "#ffffff"
+        },
+        {
+          "count": 15,
+          "value": "#fdf9f1"
+        },
+        {
+          "count": 14,
+          "value": "#1a1530 / 0.06"
+        },
+        {
+          "count": 11,
+          "value": "#ffffff / 0.88"
+        },
+        {
+          "count": 11,
+          "value": "#1a1530 / 0.62"
+        },
+        {
+          "count": 10,
+          "value": "#8b859d"
+        },
+        {
+          "count": 7,
+          "value": "#1a1530 / 0.55"
+        },
+        {
+          "count": 5,
+          "value": "#f7f5f2"
+        },
+        {
+          "count": 4,
+          "value": "#ffffff / 0.08"
+        },
+        {
+          "count": 4,
+          "value": "#7c3aed / 0.18"
+        },
+        {
+          "count": 4,
+          "value": "#1a1530 / 0.08"
+        },
+        {
+          "count": 3,
+          "value": "#fafafa"
+        },
+        {
+          "count": 3,
+          "value": "#7c3aed / 0.04"
+        },
+        {
+          "count": 3,
+          "value": "#4ade80"
+        },
+        {
+          "count": 1,
+          "value": "#09090b"
+        },
+        {
+          "count": 1,
+          "value": "#08060e / 0.72"
+        },
+        {
+          "count": 1,
+          "value": "#f3edff"
+        },
+        {
+          "count": 1,
+          "value": "#1a1530 / 0.6"
+        },
+        {
+          "count": 1,
+          "value": "#1a1530 / 0.5"
+        },
+        {
+          "count": 1,
+          "value": "#1a1530 / 0.03"
+        }
+      ],
+      "cssVariables": [
+        {
+          "name": "--border",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-ring-offset-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-gradient-from-position",
+          "value": ""
+        },
+        {
+          "name": "--text-secondary",
+          "value": "245 15% 75%"
+        },
+        {
+          "name": "--sidebar-background",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--chart-tertiary-blue",
+          "value": "linear-gradient(135deg, #39f, #4d9fff)"
+        },
+        {
+          "name": "--tw-ring-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--sidebar-primary-foreground",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--card",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-sepia",
+          "value": ""
+        },
+        {
+          "name": "--chart-secondary-blue",
+          "value": "linear-gradient(135deg, #66b3ff, #80c7ff)"
+        },
+        {
+          "name": "--tw-sepia",
+          "value": ""
+        },
+        {
+          "name": "--accent",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-ordinal",
+          "value": ""
+        },
+        {
+          "name": "--text-tertiary",
+          "value": "245 12% 65%"
+        },
+        {
+          "name": "--chart-secondary",
+          "value": "linear-gradient(135deg, #a0a0a0, silver)"
+        },
+        {
+          "name": "--tw-backdrop-saturate",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-style",
+          "value": ""
+        },
+        {
+          "name": "--primary-foreground",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--tw-ring-inset",
+          "value": ""
+        },
+        {
+          "name": "--text-muted",
+          "value": "245 10% 55%"
+        },
+        {
+          "name": "--card-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-invert",
+          "value": ""
+        },
+        {
+          "name": "--tw-numeric-spacing",
+          "value": ""
+        },
+        {
+          "name": "--secondary-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--sidebar-accent-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--blue-slate-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-border-spacing-x",
+          "value": "0"
+        },
+        {
+          "name": "--muted",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--background",
+          "value": "0 0% 3.9%"
+        },
+        {
+          "name": "--tw-brightness",
+          "value": ""
+        },
+        {
+          "name": "--tw-backdrop-grayscale",
+          "value": ""
+        },
+        {
+          "name": "--tw-hue-rotate",
+          "value": ""
+        },
+        {
+          "name": "--chart-senary",
+          "value": "linear-gradient(135deg, #d3d3d3, #f5f5f5)"
+        },
+        {
+          "name": "--tw-scale-y",
+          "value": "1"
+        },
+        {
+          "name": "--accent-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-pan-y",
+          "value": ""
+        },
+        {
+          "name": "--tw-backdrop-contrast",
+          "value": ""
+        },
+        {
+          "name": "--tw-drop-shadow",
+          "value": ""
+        },
+        {
+          "name": "--tw-ring-color",
+          "value": "#3b82f680"
+        },
+        {
+          "name": "--tw-backdrop-brightness",
+          "value": ""
+        },
+        {
+          "name": "--tw-pan-x",
+          "value": ""
+        },
+        {
+          "name": "--tw-translate-y",
+          "value": "0"
+        },
+        {
+          "name": "--chart-tertiary",
+          "value": "linear-gradient(135deg, #696969, gray)"
+        },
+        {
+          "name": "--chart-septenary",
+          "value": "linear-gradient(135deg, #2f2f2f, #505050)"
+        },
+        {
+          "name": "--chart-primary-blue",
+          "value": "linear-gradient(135deg, #4d9fff, #66b3ff)"
+        },
+        {
+          "name": "--popover",
+          "value": "220 13% 4%"
+        },
+        {
+          "name": "--ring",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-rotate",
+          "value": "0"
+        },
+        {
+          "name": "--tw-ring-offset-color",
+          "value": "#fff"
+        },
+        {
+          "name": "--tw-contain-size",
+          "value": ""
+        },
+        {
+          "name": "--tw-contrast",
+          "value": ""
+        },
+        {
+          "name": "--chart-5",
+          "value": "0 0% 32%"
+        },
+        {
+          "name": "--blue-slate",
+          "value": "214 52% 24%"
+        },
+        {
+          "name": "--sidebar-border",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--chart-senary-blue",
+          "value": "linear-gradient(135deg, #99d9ff, #b3e6ff)"
+        },
+        {
+          "name": "--sidebar-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--muted-foreground",
+          "value": "0 0% 64%"
+        },
+        {
+          "name": "--tw-skew-x",
+          "value": "0"
+        },
+        {
+          "name": "--sidebar-accent",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--radius",
+          "value": ".75rem"
+        },
+        {
+          "name": "--tw-backdrop-blur",
+          "value": ""
+        },
+        {
+          "name": "--popover-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-quaternary",
+          "value": "linear-gradient(135deg, silver, #d3d3d3)"
+        },
+        {
+          "name": "--tw-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-translate-x",
+          "value": "0"
+        },
+        {
+          "name": "--tw-ring-offset-width",
+          "value": "0px"
+        },
+        {
+          "name": "--tw-gradient-via-position",
+          "value": ""
+        },
+        {
+          "name": "--input",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-saturate",
+          "value": ""
+        },
+        {
+          "name": "--chart-quinary",
+          "value": "linear-gradient(135deg, #505050, #696969)"
+        },
+        {
+          "name": "--tw-scroll-snap-strictness",
+          "value": "proximity"
+        },
+        {
+          "name": "--tw-grayscale",
+          "value": ""
+        },
+        {
+          "name": "--destructive",
+          "value": "0 73% 50%"
+        },
+        {
+          "name": "--tw-scale-x",
+          "value": "1"
+        },
+        {
+          "name": "--chart-3",
+          "value": "0 0% 64%"
+        },
+        {
+          "name": "--tw-backdrop-hue-rotate",
+          "value": ""
+        },
+        {
+          "name": "--tw-shadow-colored",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-gradient-to-position",
+          "value": ""
+        },
+        {
+          "name": "--tw-border-spacing-y",
+          "value": "0"
+        },
+        {
+          "name": "--tw-numeric-fraction",
+          "value": ""
+        },
+        {
+          "name": "--destructive-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-4",
+          "value": "0 0% 45%"
+        },
+        {
+          "name": "--chart-2",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-skew-y",
+          "value": "0"
+        },
+        {
+          "name": "--primary",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-slashed-zero",
+          "value": ""
+        },
+        {
+          "name": "--tw-blur",
+          "value": ""
+        },
+        {
+          "name": "--tw-invert",
+          "value": ""
+        },
+        {
+          "name": "--foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-primary",
+          "value": "linear-gradient(135deg, gray, #a0a0a0)"
+        },
+        {
+          "name": "--chart-quinary-blue",
+          "value": "linear-gradient(135deg, #1a7fff, #39f)"
+        },
+        {
+          "name": "--sidebar-primary",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-opacity",
+          "value": ""
+        },
+        {
+          "name": "--secondary",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--chart-septenary-blue",
+          "value": "linear-gradient(135deg, #06c, #1a7fff)"
+        },
+        {
+          "name": "--tw-numeric-figure",
+          "value": ""
+        },
+        {
+          "name": "--sidebar-ring",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-pinch-zoom",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-paint",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-layout",
+          "value": ""
+        },
+        {
+          "name": "--chart-1",
+          "value": "0 0% 89%"
+        },
+        {
+          "name": "--chart-quaternary-blue",
+          "value": "linear-gradient(135deg, #80c7ff, #99d9ff)"
+        }
+      ],
+      "elements": [
+        {
+          "rect": {
+            "height": 2948,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "body",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "body",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge THE PIE FRAMEWORK How clarity is engineered. The framework that turns raw data into decision-ready intelligence. HOW CLARITY IS BUILT · THE SEVEN-PHASE ENGINE The Predictive Insights Eng"
+        },
+        {
+          "rect": {
+            "height": 45,
+            "width": 573,
+            "x": 307,
+            "y": 25
+          },
+          "selector": "nav",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "nav",
+          "text": "About Product Case Studies Newsletter Pricing Press"
+        },
+        {
+          "rect": {
+            "height": 94,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "header",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "14px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "14px",
+            "textTransform": "none"
+          },
+          "tag": "header",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge"
+        },
+        {
+          "rect": {
+            "height": 898,
+            "width": 1274,
+            "x": 0,
+            "y": 144
+          },
+          "selector": "section",
+          "style": {
+            "backgroundColor": "rgb(247, 245, 242)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "56px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "64px",
+            "textTransform": "none"
+          },
+          "tag": "section",
+          "text": "THE PIE FRAMEWORK How clarity is engineered. The framework that turns raw data into decision-ready intelligence."
+        },
+        {
+          "rect": {
+            "height": 47,
+            "width": 1100,
+            "x": 87,
+            "y": 255
+          },
+          "selector": "h2",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "44px",
+            "fontWeight": "300",
+            "letterSpacing": "-0.968px",
+            "lineHeight": "46.64px",
+            "marginBottom": "12px",
+            "marginTop": "8px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h2",
+          "text": "How clarity is engineered."
+        },
+        {
+          "rect": {
+            "height": 25,
+            "width": 720,
+            "x": 87,
+            "y": 314
+          },
+          "selector": "p",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(90, 84, 112)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24.8px",
+            "marginBottom": "28px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "p",
+          "text": "The framework that turns raw data into decision-ready intelligence."
+        },
+        {
+          "rect": {
+            "height": 42,
+            "width": 166,
+            "x": 66,
+            "y": 26
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": ""
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 87,
+            "x": 955,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.88)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgba(255, 255, 255, 0.88)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.88)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "letterSpacing": "normal",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Sign in"
+        },
+        {
+          "rect": {
+            "height": 361,
+            "width": 1274,
+            "x": 0,
+            "y": 2587
+          },
+          "selector": "footer",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(26, 21, 48, 0.06) rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(26, 21, 48, 0.06)",
+            "boxShadow": "none",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "36px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "60px",
+            "textTransform": "none"
+          },
+          "tag": "footer",
+          "text": "We deliver the Clarity. You bring the Judgement. PRODUCT The P.I.E. engine Case studies Book consultation Pricing COMPANY About Press Careers Contact LEGAL Privacy Policy Terms of Service Security © 2026 KNOWIDEA. All rights reserved. SOC2"
+        }
+      ],
+      "fonts": [
+        {
+          "count": 175,
+          "value": "Poppins, sans-serif, Arial, system-ui, sans-serif"
+        },
+        {
+          "count": 27,
+          "value": "Poppins, sans-serif, Arial, monospace"
+        },
+        {
+          "count": 9,
+          "value": "Poppins, sans-serif, Arial, Georgia, serif"
+        }
+      ],
+      "headings": [
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "44px",
+            "fontWeight": "300",
+            "letterSpacing": "-0.968px",
+            "lineHeight": "46.64px"
+          },
+          "tag": "h2",
+          "text": "How clarity is engineered."
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "56px",
+            "fontWeight": "300",
+            "letterSpacing": "-1.96px",
+            "lineHeight": "58.8px"
+          },
+          "tag": "h2",
+          "text": "The Predictive Insights Engine"
+        },
+        {
+          "style": {
+            "color": "#1a1530",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "44px",
+            "fontWeight": "300",
+            "letterSpacing": "-0.968px",
+            "lineHeight": "46.64px"
+          },
+          "tag": "h2",
+          "text": "From signal to decision."
+        }
+      ],
+      "images": [
+        {
+          "alt": "KNOWIDEA",
+          "rect": {
+            "height": 42,
+            "width": 166,
+            "x": 66,
+            "y": 26
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Flogo-dark-gradient-cropped.jpg&w=384&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA PIE framework diagram",
+          "rect": {
+            "height": 618,
+            "width": 1098,
+            "x": 88,
+            "y": 368
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Fpie_framework.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA PI value chain diagram",
+          "rect": {
+            "height": 618,
+            "width": 1098,
+            "x": 88,
+            "y": 1912
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Fpie_value_chain.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA",
+          "rect": {
+            "height": 54,
+            "width": 253,
+            "x": 32,
+            "y": 2648
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Flogo-light-cropped.jpg&w=384&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        }
+      ],
+      "links": [
+        {
+          "href": "https://www.knowidea.dev/",
+          "text": ""
+        },
+        {
+          "href": "https://www.knowidea.dev/about",
+          "text": "About"
+        },
+        {
+          "href": "https://www.knowidea.dev/product",
+          "text": "Product"
+        },
+        {
+          "href": "https://www.knowidea.dev/case-studies",
+          "text": "Case Studies"
+        },
+        {
+          "href": "https://www.knowidea.dev/newsletter",
+          "text": "Newsletter"
+        },
+        {
+          "href": "https://www.knowidea.dev/pricing",
+          "text": "Pricing"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases",
+          "text": "Press"
+        },
+        {
+          "href": "https://www.knowidea.dev/#hero",
+          "text": "APPLY FOR YOURS"
+        },
+        {
+          "href": "https://www.knowidea.dev/",
+          "text": ""
+        },
+        {
+          "href": "https://www.knowidea.dev/product#pie",
+          "text": "The P.I.E. engine"
+        },
+        {
+          "href": "https://www.knowidea.dev/case-studies",
+          "text": "Case studies"
+        },
+        {
+          "href": "https://www.knowidea.dev/#consultation",
+          "text": "Book consultation"
+        },
+        {
+          "href": "https://www.knowidea.dev/pricing",
+          "text": "Pricing"
+        },
+        {
+          "href": "https://www.knowidea.dev/about",
+          "text": "About"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases",
+          "text": "Press"
+        },
+        {
+          "href": "https://www.knowidea.dev/careers",
+          "text": "Careers"
+        },
+        {
+          "href": "mailto:hello@knowidea.ai",
+          "text": "Contact"
+        },
+        {
+          "href": "https://www.knowidea.dev/privacy-policy",
+          "text": "Privacy Policy"
+        },
+        {
+          "href": "https://www.knowidea.dev/terms-of-service",
+          "text": "Terms of Service"
+        },
+        {
+          "href": "https://app.vanta.com/knowidea.dev/trust/ll900szxy0o1zi0bztn1e1",
+          "text": "Security"
+        },
+        {
+          "href": "https://app.vanta.com/knowidea.dev/trust/ll900szxy0o1zi0bztn1e1",
+          "text": "SOC2"
+        }
+      ],
+      "metaThemeColor": null,
+      "radii": [
+        {
+          "count": 18,
+          "value": "50%"
+        },
+        {
+          "count": 10,
+          "value": "999px"
+        },
+        {
+          "count": 4,
+          "value": "14px"
+        },
+        {
+          "count": 2,
+          "value": "4px"
+        },
+        {
+          "count": 2,
+          "value": "10px"
+        },
+        {
+          "count": 1,
+          "value": "16px"
+        },
+        {
+          "count": 1,
+          "value": "12px"
+        },
+        {
+          "count": 1,
+          "value": "8px"
+        }
+      ],
+      "scriptSrcs": [
+        "https://www.knowidea.dev/_next/static/chunks/0kqnva_47_fg7.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/1788a7n7b3-2m.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/030lje4w49skv.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0yytip0.~m7o6.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/turbopack-0hfyonrr8g96r.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0qai.666z3j9r.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/058gz.0_11bff.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/106ey.n4njd1f.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0q3qgtnx_zgu_.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/09-qa3be_v4h~.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/10hq9sh1nnpq..js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/03~yq9q893hmn.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_vercel/insights/script.js",
+        "https://www.knowidea.dev/_next/static/chunks/16pxp5p5xcpas.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0xa-2i5uazo-8.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/11.ryto2tk6bs.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0v-1.dc71ip1k.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/06lb-rtimz-3s.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0qwtsefxkh1ve.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/037c7q~_g8gun.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/042.9s9cr-9wj.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/10uqtv36y433i.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0gpu60lwjtght.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0eg9lqjkh~_qs.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0kjfnsppi62pd.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.googletagmanager.com/gtag/js?id=G-YDEQXP9DV9"
+      ],
+      "shadows": [
+        {
+          "count": 2,
+          "value": "rgba(26, 21, 48, 0.04) 0px 1px 2px 0px, rgba(26, 21, 48, 0.18) 0px 18px 50px -20px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(0, 0, 0, 0.28) 0px 8px 32px 0px, rgba(255, 255, 255, 0.06) 0px 1px 0px 0px inset"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.1) 0px -1px 0px 0px inset, rgba(26, 21, 48, 0.18) 0px 2px 6px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.08) 0px 30px 80px 0px"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.15) 0px 16px 40px 0px"
+        }
+      ],
+      "stylesheetHrefs": [
+        "https://www.knowidea.dev/_next/static/chunks/0~z2v6ox98wko.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0gqi6xn-kdic_.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0cc-591-wqr2v.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+      ],
+      "title": "KN✧WIDEA",
+      "url": "https://www.knowidea.dev/product",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    }
+  },
+  {
+    "slug": "press-releases",
+    "url": "https://www.knowidea.dev/press-releases",
+    "screenshotPath": "/Users/edisoncai/Documents/GitHub/KnowIdeaAssessment/codex-resources/knowidea-theme/screenshots/press-releases-desktop-full.jpg",
+    "analysis": {
+      "body": {
+        "bg": null,
+        "color": "#fafafa",
+        "font": "Poppins, sans-serif, Arial, system-ui, sans-serif"
+      },
+      "buttons": [
+        {
+          "rect": {
+            "height": 48,
+            "width": 87,
+            "x": 955,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.88)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgba(255, 255, 255, 0.88)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.88)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "letterSpacing": "normal",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Sign in"
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 178,
+            "x": 1050,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(26, 21, 48)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgb(26, 21, 48)",
+            "boxShadow": "rgba(26, 21, 48, 0.1) 0px -1px 0px 0px inset, rgba(26, 21, 48, 0.18) 0px 2px 6px 0px",
+            "color": "rgb(26, 21, 48)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "600",
+            "letterSpacing": "-0.075px",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "24px",
+            "paddingRight": "22px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Get your edge"
+        }
+      ],
+      "colors": [
+        {
+          "count": 840,
+          "value": "#ffffff / 0.1"
+        },
+        {
+          "count": 228,
+          "value": "none"
+        },
+        {
+          "count": 191,
+          "value": "#000000"
+        },
+        {
+          "count": 86,
+          "value": "#ffffff"
+        },
+        {
+          "count": 81,
+          "value": "#9d9bb0"
+        },
+        {
+          "count": 57,
+          "value": "#b7b6c9"
+        },
+        {
+          "count": 36,
+          "value": "#ffffff / 0.08"
+        },
+        {
+          "count": 28,
+          "value": "#ffffff / 0.06"
+        },
+        {
+          "count": 11,
+          "value": "#ffffff / 0.88"
+        },
+        {
+          "count": 11,
+          "value": "#1a1530"
+        },
+        {
+          "count": 8,
+          "value": "#838198"
+        },
+        {
+          "count": 8,
+          "value": "#ffffff / 0.95"
+        },
+        {
+          "count": 3,
+          "value": "#fafafa"
+        },
+        {
+          "count": 1,
+          "value": "#09090b"
+        },
+        {
+          "count": 1,
+          "value": "#08060e / 0.72"
+        }
+      ],
+      "cssVariables": [
+        {
+          "name": "--border",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-ring-offset-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-gradient-from-position",
+          "value": ""
+        },
+        {
+          "name": "--text-secondary",
+          "value": "245 15% 75%"
+        },
+        {
+          "name": "--sidebar-background",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--chart-tertiary-blue",
+          "value": "linear-gradient(135deg, #39f, #4d9fff)"
+        },
+        {
+          "name": "--tw-ring-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--sidebar-primary-foreground",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--card",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-sepia",
+          "value": ""
+        },
+        {
+          "name": "--chart-secondary-blue",
+          "value": "linear-gradient(135deg, #66b3ff, #80c7ff)"
+        },
+        {
+          "name": "--tw-sepia",
+          "value": ""
+        },
+        {
+          "name": "--accent",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-ordinal",
+          "value": ""
+        },
+        {
+          "name": "--text-tertiary",
+          "value": "245 12% 65%"
+        },
+        {
+          "name": "--chart-secondary",
+          "value": "linear-gradient(135deg, #a0a0a0, silver)"
+        },
+        {
+          "name": "--tw-backdrop-saturate",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-style",
+          "value": ""
+        },
+        {
+          "name": "--primary-foreground",
+          "value": "0 0% 4%"
+        },
+        {
+          "name": "--tw-ring-inset",
+          "value": ""
+        },
+        {
+          "name": "--text-muted",
+          "value": "245 10% 55%"
+        },
+        {
+          "name": "--card-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-invert",
+          "value": ""
+        },
+        {
+          "name": "--tw-numeric-spacing",
+          "value": ""
+        },
+        {
+          "name": "--secondary-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--sidebar-accent-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--blue-slate-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-border-spacing-x",
+          "value": "0"
+        },
+        {
+          "name": "--muted",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--background",
+          "value": "0 0% 3.9%"
+        },
+        {
+          "name": "--tw-brightness",
+          "value": ""
+        },
+        {
+          "name": "--tw-backdrop-grayscale",
+          "value": ""
+        },
+        {
+          "name": "--tw-hue-rotate",
+          "value": ""
+        },
+        {
+          "name": "--chart-senary",
+          "value": "linear-gradient(135deg, #d3d3d3, #f5f5f5)"
+        },
+        {
+          "name": "--tw-scale-y",
+          "value": "1"
+        },
+        {
+          "name": "--accent-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-pan-y",
+          "value": ""
+        },
+        {
+          "name": "--tw-backdrop-contrast",
+          "value": ""
+        },
+        {
+          "name": "--tw-drop-shadow",
+          "value": ""
+        },
+        {
+          "name": "--tw-ring-color",
+          "value": "#3b82f680"
+        },
+        {
+          "name": "--tw-backdrop-brightness",
+          "value": ""
+        },
+        {
+          "name": "--tw-pan-x",
+          "value": ""
+        },
+        {
+          "name": "--tw-translate-y",
+          "value": "0"
+        },
+        {
+          "name": "--chart-tertiary",
+          "value": "linear-gradient(135deg, #696969, gray)"
+        },
+        {
+          "name": "--chart-septenary",
+          "value": "linear-gradient(135deg, #2f2f2f, #505050)"
+        },
+        {
+          "name": "--chart-primary-blue",
+          "value": "linear-gradient(135deg, #4d9fff, #66b3ff)"
+        },
+        {
+          "name": "--popover",
+          "value": "220 13% 4%"
+        },
+        {
+          "name": "--ring",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-rotate",
+          "value": "0"
+        },
+        {
+          "name": "--tw-ring-offset-color",
+          "value": "#fff"
+        },
+        {
+          "name": "--tw-contain-size",
+          "value": ""
+        },
+        {
+          "name": "--tw-contrast",
+          "value": ""
+        },
+        {
+          "name": "--chart-5",
+          "value": "0 0% 32%"
+        },
+        {
+          "name": "--blue-slate",
+          "value": "214 52% 24%"
+        },
+        {
+          "name": "--sidebar-border",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--chart-senary-blue",
+          "value": "linear-gradient(135deg, #99d9ff, #b3e6ff)"
+        },
+        {
+          "name": "--sidebar-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--muted-foreground",
+          "value": "0 0% 64%"
+        },
+        {
+          "name": "--tw-skew-x",
+          "value": "0"
+        },
+        {
+          "name": "--sidebar-accent",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--radius",
+          "value": ".75rem"
+        },
+        {
+          "name": "--tw-backdrop-blur",
+          "value": ""
+        },
+        {
+          "name": "--popover-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-quaternary",
+          "value": "linear-gradient(135deg, silver, #d3d3d3)"
+        },
+        {
+          "name": "--tw-shadow",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-translate-x",
+          "value": "0"
+        },
+        {
+          "name": "--tw-ring-offset-width",
+          "value": "0px"
+        },
+        {
+          "name": "--tw-gradient-via-position",
+          "value": ""
+        },
+        {
+          "name": "--input",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--tw-saturate",
+          "value": ""
+        },
+        {
+          "name": "--chart-quinary",
+          "value": "linear-gradient(135deg, #505050, #696969)"
+        },
+        {
+          "name": "--tw-scroll-snap-strictness",
+          "value": "proximity"
+        },
+        {
+          "name": "--tw-grayscale",
+          "value": ""
+        },
+        {
+          "name": "--destructive",
+          "value": "0 73% 50%"
+        },
+        {
+          "name": "--tw-scale-x",
+          "value": "1"
+        },
+        {
+          "name": "--chart-3",
+          "value": "0 0% 64%"
+        },
+        {
+          "name": "--tw-backdrop-hue-rotate",
+          "value": ""
+        },
+        {
+          "name": "--tw-shadow-colored",
+          "value": "0 0 #0000"
+        },
+        {
+          "name": "--tw-gradient-to-position",
+          "value": ""
+        },
+        {
+          "name": "--tw-border-spacing-y",
+          "value": "0"
+        },
+        {
+          "name": "--tw-numeric-fraction",
+          "value": ""
+        },
+        {
+          "name": "--destructive-foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-4",
+          "value": "0 0% 45%"
+        },
+        {
+          "name": "--chart-2",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-skew-y",
+          "value": "0"
+        },
+        {
+          "name": "--primary",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-slashed-zero",
+          "value": ""
+        },
+        {
+          "name": "--tw-blur",
+          "value": ""
+        },
+        {
+          "name": "--tw-invert",
+          "value": ""
+        },
+        {
+          "name": "--foreground",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--chart-primary",
+          "value": "linear-gradient(135deg, gray, #a0a0a0)"
+        },
+        {
+          "name": "--chart-quinary-blue",
+          "value": "linear-gradient(135deg, #1a7fff, #39f)"
+        },
+        {
+          "name": "--sidebar-primary",
+          "value": "0 0% 98%"
+        },
+        {
+          "name": "--tw-backdrop-opacity",
+          "value": ""
+        },
+        {
+          "name": "--secondary",
+          "value": "0 0% 15%"
+        },
+        {
+          "name": "--chart-septenary-blue",
+          "value": "linear-gradient(135deg, #06c, #1a7fff)"
+        },
+        {
+          "name": "--tw-numeric-figure",
+          "value": ""
+        },
+        {
+          "name": "--sidebar-ring",
+          "value": "0 0% 83%"
+        },
+        {
+          "name": "--tw-pinch-zoom",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-paint",
+          "value": ""
+        },
+        {
+          "name": "--tw-contain-layout",
+          "value": ""
+        },
+        {
+          "name": "--chart-1",
+          "value": "0 0% 89%"
+        },
+        {
+          "name": "--chart-quaternary-blue",
+          "value": "linear-gradient(135deg, #80c7ff, #99d9ff)"
+        }
+      ],
+      "elements": [
+        {
+          "rect": {
+            "height": 3267,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "body",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(250, 250, 250)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "body",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge Press & Announcements The latest news, updates, and insights from KNOWIDEA POSITION PAPER · 8 min read Command-Pilot: The Layer Nobody Is Building. The next trillion-dollar company will "
+        },
+        {
+          "rect": {
+            "height": 45,
+            "width": 573,
+            "x": 307,
+            "y": 25
+          },
+          "selector": "nav",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "nav",
+          "text": "About Product Case Studies Newsletter Pricing Press"
+        },
+        {
+          "rect": {
+            "height": 94,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "header",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "14px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "14px",
+            "textTransform": "none"
+          },
+          "tag": "header",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge"
+        },
+        {
+          "rect": {
+            "height": 3267,
+            "width": 1274,
+            "x": 0,
+            "y": 0
+          },
+          "selector": "main",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "main",
+          "text": "About Product Case Studies Newsletter Pricing Press Sign in Get your edge Press & Announcements The latest news, updates, and insights from KNOWIDEA POSITION PAPER · 8 min read Command-Pilot: The Layer Nobody Is Building. The next trillion-dollar company will "
+        },
+        {
+          "rect": {
+            "height": 288,
+            "width": 1024,
+            "x": 125,
+            "y": 0
+          },
+          "selector": "section",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "144px",
+            "textTransform": "none"
+          },
+          "tag": "section",
+          "text": "Press & Announcements The latest news, updates, and insights from KNOWIDEA"
+        },
+        {
+          "rect": {
+            "height": 60,
+            "width": 707,
+            "x": 284,
+            "y": 144
+          },
+          "selector": "h1",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "60px",
+            "fontWeight": "500",
+            "letterSpacing": "-1.5px",
+            "lineHeight": "60px",
+            "marginBottom": "16px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h1",
+          "text": "Press & Announcements"
+        },
+        {
+          "rect": {
+            "height": 72,
+            "width": 415,
+            "x": 669,
+            "y": 397
+          },
+          "selector": "h2",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.95)",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "30px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.75px",
+            "lineHeight": "36px",
+            "marginBottom": "16px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h2",
+          "text": "Command-Pilot: The Layer Nobody Is Building."
+        },
+        {
+          "rect": {
+            "height": 84,
+            "width": 420,
+            "x": 182,
+            "y": 1044
+          },
+          "selector": "h3",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.95)",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.5px",
+            "lineHeight": "28px",
+            "marginBottom": "12px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "h3",
+          "text": "AI Will Not Replace Consulting. It Will Replace Everything Except the Part That Matters."
+        },
+        {
+          "rect": {
+            "height": 28,
+            "width": 672,
+            "x": 301,
+            "y": 220
+          },
+          "selector": "p",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(183, 182, 201)",
+            "fontFamily": "googleSans, \"googleSans Fallback\", sans-serif, Arial, sans-serif",
+            "fontSize": "18px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "28px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "p",
+          "text": "The latest news, updates, and insights from KNOWIDEA"
+        },
+        {
+          "rect": {
+            "height": 42,
+            "width": 166,
+            "x": 66,
+            "y": 26
+          },
+          "selector": "a",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "a",
+          "text": ""
+        },
+        {
+          "rect": {
+            "height": 48,
+            "width": 87,
+            "x": 955,
+            "y": 23
+          },
+          "selector": "button",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.88)",
+            "borderRadius": "999px",
+            "borderTopColor": "rgba(255, 255, 255, 0.88)",
+            "boxShadow": "none",
+            "color": "rgba(255, 255, 255, 0.88)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "15px",
+            "fontWeight": "500",
+            "letterSpacing": "normal",
+            "lineHeight": "22.5px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "0px",
+            "paddingLeft": "18px",
+            "paddingRight": "18px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "button",
+          "text": "Sign in"
+        },
+        {
+          "rect": {
+            "height": 189,
+            "width": 1274,
+            "x": 0,
+            "y": 3078
+          },
+          "selector": "footer",
+          "style": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "borderColor": "rgba(255, 255, 255, 0.1)",
+            "borderRadius": "0px",
+            "borderTopColor": "rgba(255, 255, 255, 0.1)",
+            "boxShadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "fontFamily": "Poppins, sans-serif, Arial, system-ui, sans-serif",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "letterSpacing": "normal",
+            "lineHeight": "24px",
+            "marginBottom": "0px",
+            "marginTop": "0px",
+            "paddingBottom": "40px",
+            "paddingLeft": "32px",
+            "paddingRight": "32px",
+            "paddingTop": "0px",
+            "textTransform": "none"
+          },
+          "tag": "footer",
+          "text": "© 2025 KNOWIDEA. All rights reserved."
+        }
+      ],
+      "fonts": [
+        {
+          "count": 210,
+          "value": "Poppins, sans-serif, Arial, system-ui, sans-serif"
+        },
+        {
+          "count": 9,
+          "value": "Poppins, sans-serif, Arial, sans-serif, Arial"
+        },
+        {
+          "count": 9,
+          "value": "googleSans, \"googleSans Fallback\", sans-serif, Arial, sans-serif"
+        }
+      ],
+      "headings": [
+        {
+          "style": {
+            "color": "#ffffff",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "60px",
+            "fontWeight": "500",
+            "letterSpacing": "-1.5px",
+            "lineHeight": "60px"
+          },
+          "tag": "h1",
+          "text": "Press & Announcements"
+        },
+        {
+          "style": {
+            "color": "#ffffff / 0.95",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "30px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.75px",
+            "lineHeight": "36px"
+          },
+          "tag": "h2",
+          "text": "Command-Pilot: The Layer Nobody Is Building."
+        },
+        {
+          "style": {
+            "color": "#ffffff / 0.95",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.5px",
+            "lineHeight": "28px"
+          },
+          "tag": "h3",
+          "text": "AI Will Not Replace Consulting. It Will Replace Everything Except the Part That Matters."
+        },
+        {
+          "style": {
+            "color": "#ffffff / 0.95",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.5px",
+            "lineHeight": "28px"
+          },
+          "tag": "h3",
+          "text": "KNOWIDEA V5.0: We Replaced the Dashboard with an Agent That Thinks"
+        },
+        {
+          "style": {
+            "color": "#ffffff / 0.95",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.5px",
+            "lineHeight": "28px"
+          },
+          "tag": "h3",
+          "text": "KNOWIDEA Crosses $500K ARR Within First Two Months of Operations; Expands Enterprise Contracts Across Two Continents"
+        },
+        {
+          "style": {
+            "color": "#ffffff / 0.95",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.5px",
+            "lineHeight": "28px"
+          },
+          "tag": "h3",
+          "text": "KNOWIDEA V3.5: Moving to Agentic Business Intelligence"
+        },
+        {
+          "style": {
+            "color": "#ffffff / 0.95",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.5px",
+            "lineHeight": "28px"
+          },
+          "tag": "h3",
+          "text": "KNOWIDEA Reaches $15M Valuation 2 Months After Launch By Taking a Partnership-Led Path"
+        },
+        {
+          "style": {
+            "color": "#ffffff / 0.95",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.5px",
+            "lineHeight": "28px"
+          },
+          "tag": "h3",
+          "text": "KNOWIDEA Expands Strategic Research Through Partnership With Leading U.S. AI Lab"
+        },
+        {
+          "style": {
+            "color": "#ffffff / 0.95",
+            "fontFamily": "Poppins, sans-serif, Arial, sans-serif, Arial",
+            "fontSize": "20px",
+            "fontWeight": "500",
+            "letterSpacing": "-0.5px",
+            "lineHeight": "28px"
+          },
+          "tag": "h3",
+          "text": "Beyond AGI: The Case for Artificial Business Intelligence"
+        }
+      ],
+      "images": [
+        {
+          "alt": "KNOWIDEA",
+          "rect": {
+            "height": 42,
+            "width": 166,
+            "x": 66,
+            "y": 26
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Flogo-dark-gradient-cropped.jpg&w=384&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "Command-Pilot: The Layer Nobody Is Building.",
+          "rect": {
+            "height": 380,
+            "width": 479,
+            "x": 158,
+            "y": 289
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffeature_1.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "AI Will Not Replace Consulting. It Will Replace Everything Except the Part That Matters.",
+          "rect": {
+            "height": 293,
+            "width": 468,
+            "x": 158,
+            "y": 691
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffeature_2.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA V5.0: We Replaced the Dashboard with an Agent That Thinks",
+          "rect": {
+            "height": 293,
+            "width": 468,
+            "x": 648,
+            "y": 691
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffeature_3.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA Crosses $500K ARR Within First Two Months of Operations; Expands Enterprise Contracts Across Two Continents",
+          "rect": {
+            "height": 293,
+            "width": 468,
+            "x": 158,
+            "y": 1284
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffeature_4.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA V3.5: Moving to Agentic Business Intelligence",
+          "rect": {
+            "height": 293,
+            "width": 468,
+            "x": 648,
+            "y": 1284
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Ffeature_5.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA Reaches $15M Valuation 2 Months After Launch By Taking a Partnership-Led Path",
+          "rect": {
+            "height": 293,
+            "width": 468,
+            "x": 158,
+            "y": 1877
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Fpress-15m-valuation.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA Expands Strategic Research Through Partnership With Leading U.S. AI Lab",
+          "rect": {
+            "height": 293,
+            "width": 468,
+            "x": 648,
+            "y": 1877
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Fpress-georgia-tech.jpg&w=3840&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        },
+        {
+          "alt": "KNOWIDEA",
+          "rect": {
+            "height": 80,
+            "width": 317,
+            "x": 479,
+            "y": 3111
+          },
+          "src": "https://www.knowidea.dev/_next/image?url=%2Flogo-dark-gradient-cropped.jpg&w=384&q=75&dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+        }
+      ],
+      "links": [
+        {
+          "href": "https://www.knowidea.dev/",
+          "text": ""
+        },
+        {
+          "href": "https://www.knowidea.dev/about",
+          "text": "About"
+        },
+        {
+          "href": "https://www.knowidea.dev/product",
+          "text": "Product"
+        },
+        {
+          "href": "https://www.knowidea.dev/case-studies",
+          "text": "Case Studies"
+        },
+        {
+          "href": "https://www.knowidea.dev/newsletter",
+          "text": "Newsletter"
+        },
+        {
+          "href": "https://www.knowidea.dev/pricing",
+          "text": "Pricing"
+        },
+        {
+          "href": "https://www.knowidea.dev/press-releases",
+          "text": "Press"
+        },
+        {
+          "href": "https://www.knowidea.dev/",
+          "text": ""
+        }
+      ],
+      "metaThemeColor": null,
+      "radii": [
+        {
+          "count": 16,
+          "value": "16px"
+        },
+        {
+          "count": 9,
+          "value": "999px"
+        },
+        {
+          "count": 2,
+          "value": "9999px"
+        }
+      ],
+      "scriptSrcs": [
+        "https://www.knowidea.dev/_next/static/chunks/0kqnva_47_fg7.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/1788a7n7b3-2m.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/030lje4w49skv.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0yytip0.~m7o6.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/turbopack-0hfyonrr8g96r.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0qai.666z3j9r.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/058gz.0_11bff.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/16pxp5p5xcpas.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0q3qgtnx_zgu_.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/09-qa3be_v4h~.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/10hq9sh1nnpq..js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0xa-2i5uazo-8.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/03~yq9q893hmn.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_vercel/insights/script.js",
+        "https://www.knowidea.dev/_next/static/chunks/11.ryto2tk6bs.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0v-1.dc71ip1k.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/06lb-rtimz-3s.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0qwtsefxkh1ve.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/106ey.n4njd1f.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/037c7q~_g8gun.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0kjfnsppi62pd.js?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.googletagmanager.com/gtag/js?id=G-YDEQXP9DV9"
+      ],
+      "shadows": [
+        {
+          "count": 1,
+          "value": "rgba(0, 0, 0, 0.28) 0px 8px 32px 0px, rgba(255, 255, 255, 0.06) 0px 1px 0px 0px inset"
+        },
+        {
+          "count": 1,
+          "value": "rgba(26, 21, 48, 0.1) 0px -1px 0px 0px inset, rgba(26, 21, 48, 0.18) 0px 2px 6px 0px"
+        }
+      ],
+      "stylesheetHrefs": [
+        "https://www.knowidea.dev/_next/static/chunks/0~z2v6ox98wko.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0gqi6xn-kdic_.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL",
+        "https://www.knowidea.dev/_next/static/chunks/0cc-591-wqr2v.css?dpl=dpl_DoS5AuxEbxtkEjwk76k8AVHPaJsL"
+      ],
+      "title": "KN✧WIDEA",
+      "url": "https://www.knowidea.dev/press-releases",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    }
+  }
+]

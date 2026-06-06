@@ -5,20 +5,10 @@ import pytest
 fastapi = pytest.importorskip("fastapi")
 from fastapi.testclient import TestClient
 
-from decision_prover.contracts.battery import (
-    BatterySchemaDescription,
-    Company,
-    Decision,
-    DecisionBattery,
-    StatedAssumption,
-    VerdictDefinitions,
-)
 from decision_prover.contracts.output import (
     BindingConstraintResult,
     ClarificationNeededOutcome,
     DerivationStep,
-    GroundingEntry,
-    GroundingReport,
     OperationStatus,
     RefutationResult,
     Stage1CompanyContext,
@@ -26,6 +16,10 @@ from decision_prover.contracts.output import (
     Stage1ReadyOutcome,
     Stage1SuggestedAnswer,
     Stage1WorkingContext,
+    Stage2ProofComparison,
+    Stage2ProofDraft,
+    Stage2ProofPremise,
+    Stage2ProofValidationReport,
     VerificationResult,
 )
 from decision_prover.settings import ConfigurationError
@@ -94,82 +88,42 @@ def _ready_result(proposal_id: str, proposal_text: str) -> Stage1ReadyOutcome:
     )
 
 
-def _battery_document(proposal_id: str, proposal_text: str) -> DecisionBattery:
-    return DecisionBattery(
-        battery_version="1.0",
-        title="Decision Prover — Evaluation Battery",
-        note_to_candidate="note",
-        verdict_definitions=VerdictDefinitions(
-            SUPPORTED="supported",
-            REFUTED="refuted",
-            UNDECIDABLE="undecidable",
-            precedence_rule="hard constraints first",
-        ),
-        schema_=BatterySchemaDescription(
-            company="company",
-            decision="decision",
-            expected_output_per_decision="output",
-        ),
-        companies=[
-            Company(
-                id="northwind-software",
-                name="Northwind Software",
-                sector="B2B SaaS",
-                facts={},
-                constraints=[],
-            )
-        ],
-        decisions=[
-            Decision(
-                id=proposal_id,
-                company="northwind-software",
-                proposal=proposal_text,
-                action={"type": "price_change", "pct_increase": 0.2, "scope": "new_customers_only"},
-                objective="Increase revenue while monitoring conversion quality.",
-                stated_assumptions=[
-                    StatedAssumption(
-                        id="A1",
-                        statement="Conversion impact is not yet measured for the price change.",
-                        status="given",
-                    )
-                ],
-            )
-        ],
-    )
-
-
-def _formalization_success(proposal_id: str, proposal_text: str):
-    from decision_prover.contracts.output import (
-        NormalizedAction,
-        NormalizedFeasibilityBundle,
-        Stage2FormalizationSuccess,
-    )
+def _formalization_success(_proposal_id: str, _proposal_text: str):
+    from decision_prover.contracts.output import Stage2FormalizationSuccess
 
     return Stage2FormalizationSuccess(
         status="formalized",
-        normalized_bundle=NormalizedFeasibilityBundle(
-            action=NormalizedAction(
-                statement="Raise prices by 20% for new customers only.",
-                type="price_change",
-                parameters={"pct_increase": 0.2, "scope": "new_customers_only"},
-            ),
-            facts=[],
-            gating_conditions=[],
-            assumptions=[],
-            unknowns=[],
-            notes=[],
-        ),
-        battery_document=_battery_document(proposal_id, proposal_text),
-        primary_decision_id=proposal_id,
-        grounding_report=GroundingReport(
-            entries=[
-                GroundingEntry(
-                    field="decisions[0].action.scope",
-                    source_type="answer",
-                    source_quote="new customers only",
-                    source_locator=f"{proposal_id}_Q1_1",
+        proof_draft=Stage2ProofDraft(
+            claim="Projected revenue from new customers remains above the required floor.",
+            premises=[
+                Stage2ProofPremise(
+                    id="P1",
+                    statement="The proposal mentions a 20% price increase.",
+                    kind="fact",
+                    source_locator="working_context.what_we_know[0]",
                 )
-            ]
+            ],
+            computations=[],
+            comparisons=[
+                Stage2ProofComparison(
+                    id="K1",
+                    lhs={"kind": "ref", "value": "P1"},
+                    operator=">=",
+                    rhs={"kind": "literal", "value": 0.2},
+                )
+            ],
+            proposed_verdict="SUPPORTED",
+            refutation_attempt="The proposal fails if projected revenue drops below the stated floor.",
+            unresolved_gaps=[],
+        ),
+        validation_report=Stage2ProofValidationReport(
+            accepted=True,
+            issues=[],
+            checked_premise_ids=["P1"],
+            checked_computation_ids=[],
+            checked_comparison_ids=["K1"],
+            final_classification="SUPPORTED",
+            downgraded_from_model_verdict=False,
         ),
         notes=[],
     )
@@ -181,7 +135,7 @@ def _formalization_error():
     return Stage2FormalizationError(
         status="formalization_error",
         message="OpenRouter returned invalid Stage 2 formalization JSON.",
-        grounding_report=None,
+        validation_report=None,
         notes=[],
     )
 
@@ -331,8 +285,8 @@ def test_web_workspace_auto_formalizes_after_answers_and_skip(
     ready_view = client.get("/")
     assert ready_view.status_code == 200
     assert "Stage 2 Verdict" in ready_view.text
-    assert "Formalized Battery Document" in ready_view.text
-    assert "Grounding Report" in ready_view.text
+    assert "Stage 2 Proof Draft" in ready_view.text
+    assert "Validation Report" in ready_view.text
 
     reset_response = client.delete("/api/workspace/proposal")
     assert reset_response.status_code == 200
